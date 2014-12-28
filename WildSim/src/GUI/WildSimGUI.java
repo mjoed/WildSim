@@ -81,41 +81,38 @@ public class WildSimGUI {
 		
 		
 		JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		Thread progthread = new Thread(){
+			public void run() {
+        		try {
+        			Thread.sleep(50);
+        		} catch (InterruptedException f) {}
+        		            		
+            	while (testCombat.getCurrTime() < testCombat.getMaxtime() && testCombat.getCurrTime() != 0) {
+            		SwingUtilities.invokeLater(new Runnable() {
+            			public void run() {
+            				System.out.println(testCombat.getCurrTime());
+                    		progress.setValue(testCombat.getCurrTime());
+                    	
+            			}
+            		});
+
+            		try {
+            			Thread.sleep(100);
+            		} catch (InterruptedException f) {}
+            	}
+            	progress.setValue(0);
+            	logPanel.setValues();		
+    			combatThread = new Thread(testCombat);
+			}
+		};
 		
 		startButton = new JButton("Start");
 		startButton.addActionListener(e -> {
-			
-			Thread progthread = new Thread(){
-				public void run() {
-            		try {
-            			Thread.sleep(50);
-            		} catch (InterruptedException f) {}
-            		            		
-                	while (testCombat.getCurrTime() < testCombat.getMaxtime() && testCombat.getCurrTime() != 0) {
-                		SwingUtilities.invokeLater(new Runnable() {
-                			public void run() {
-                				System.out.println(testCombat.getCurrTime());
-	                    		progress.setValue(testCombat.getCurrTime());
-	                    	
-                			}
-                		});
-
-                		try {
-                			Thread.sleep(100);
-                		} catch (InterruptedException f) {}
-                	}
-                	progress.setValue(0);
-                	logPanel.setValues();		
-        			combatThread = new Thread(testCombat);
-				}
-			};
-			
 			progress.setMaximum(testCombat.getMaxtime());
 			combatThread.start();
 			progthread.start();
-			
-					
 		});
+		
 		
 		JLabel maxTime = new JLabel("RunTime (h): ");
 		JTextField maxTimeinsert = new JTextField(Integer.toString(testCombat.getMaxtime() / 3600000));
@@ -130,8 +127,6 @@ public class WildSimGUI {
 				testCombat.setMaxtime(Integer.parseInt(maxTimeinsert.getText()) * 3600000);
 			}
 		});
-		
-		
 
 		toolBar.add(startButton);
 		toolBar.add(maxTime);
