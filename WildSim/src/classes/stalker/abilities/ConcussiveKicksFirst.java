@@ -48,7 +48,7 @@ public class ConcussiveKicksFirst implements Ability {
 
 	@Override
 	public float calculateTooltipDmg(float ap, float sp) {
-		return ((ap * (0.3864f + ((tier/100) * 2.4f))) + 837);
+		return ((ap * (0.3864f + (((float)tier/100f) * 2.0f))) + 837f);
 	}
 
 	@Override

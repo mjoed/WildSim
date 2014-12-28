@@ -38,7 +38,7 @@ public class Collapse implements Ability {
 
 	@Override
 	public float calculateTooltipDmg(float ap, float sp) {
-		return ((ap * (0.2237f + ((tier/100) * 5.0f))) + 973.5f + (sp * (0.2237f + ((tier/100) * 5.0f))));
+		return ((ap * (0.2237f + (((float)tier/100f) * 5.0f))) + 973.5f + (sp * (0.2237f + (((float)tier/100f) * 5.0f))));
 	}
 
 	@Override

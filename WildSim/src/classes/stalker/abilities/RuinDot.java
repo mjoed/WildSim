@@ -56,7 +56,7 @@ public class RuinDot implements Ability {
 
 	@Override
 	public float calculateTooltipDmg(float ap, float sp) {
-		return ((ap * (0.0648f + ((tier/100) * 0.6f))) + 141);
+		return ((ap * (0.0648f + (((float)tier/100f) * 0.6f))) + 141f);
 	}
 
 	@Override

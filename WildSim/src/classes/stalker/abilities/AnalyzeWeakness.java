@@ -60,7 +60,7 @@ public class AnalyzeWeakness implements Ability {
 
 	@Override
 	public float calculateTooltipDmg(float ap, float sp) {
-		return ((ap * (0.5032f + (tier/100f * 2.27f))) + 1094f);
+		return ((ap * (0.5032f + ((float)tier/100f * 2.27f))) + 1094f);
 	}
 
 	@Override

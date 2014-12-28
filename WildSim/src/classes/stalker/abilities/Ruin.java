@@ -49,7 +49,7 @@ public class Ruin implements Ability {
 
 	@Override
 	public float calculateTooltipDmg(float ap, float sp) {
-		return ((ap * (0.1629f + ((tier/100) * 1.52f))) + 354.5f);
+		return ((ap * (0.1629f + (((float)tier/100f) * 1.52f))) + 354.5f);
 	}
 
 	@Override

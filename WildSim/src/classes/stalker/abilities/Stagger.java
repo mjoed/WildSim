@@ -43,7 +43,7 @@ public class Stagger implements Ability {
 
 	@Override
 	public float calculateTooltipDmg(float ap, float sp) {
-		return 4 * ((ap * (0.035f + ((tier/100) * 0.5f))) + 150f + (sp * (0.035f + ((tier/100) * 0.5f))));
+		return 4 * ((ap * (0.035f + (((float)tier/100) * 0.5f))) + 150f + (sp * (0.035f + (((float)tier/100) * 0.5f))));
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public class Punish implements Ability {
 
 	@Override
 	public float calculateTooltipDmg(float ap, float sp) {
-		return ((ap * (0.5455f + ((tier/100f) * 6.95f))) + 1187f);
+		return ((ap * (0.5455f + (((float)tier/100f) * 6.95f))) + 1187f);
 	}
 
 	@Override
