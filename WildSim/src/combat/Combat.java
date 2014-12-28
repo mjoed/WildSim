@@ -15,7 +15,7 @@ import classes.stalker.Stalker;
  */
 public class Combat implements Runnable {
 	
-	boolean combatlogdmg = true;
+	boolean combatlogdmg = false;
 	
 	int globalcd = 0;
 	int maxtime = 36000000;
@@ -54,9 +54,9 @@ public class Combat implements Runnable {
 	
 	public Combat() {
 		target = new WildstarMob();
-		wildclass = new Stalker(2155.665f, 820.524f, 0.0893f, 1.6535f, 0.0340f, 0.0f, 0.00f);
+		wildclass = new Stalker(3930.5f, 862.5f, 0.2018f, 1.8429f, 0.0854f, 0.15f, 0.06f);
 		
-		punish = new PhysicalDamageTaken(false, 1.0f);
+		punish = new PhysicalDamageTaken(true, 0.85f);
 		powerlinkt4 = new PowerLinkT4(0.025f, false, 1.0f);
 		powerlink = new PowerLink(0.14f, false, 1.0f);
 		empowering = new EmpoweringProbes(0.1f, false, 1.0f);

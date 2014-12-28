@@ -129,28 +129,28 @@ public class Stalker implements WildstarClass {
 		enabler = new Enabler(true);
 		devastateamp = new DevastateAMP(true);
 		devastate = new Devastate(true);
-		stealthmastery = new StealthMastery(true);
+		stealthmastery = new StealthMastery(false);
 		unfairadvantage = new UnfairAdvantage(true);
 		riposte = new Riposte(true);
 		fatalwounds = new FatalWoundsAMP(true);
 		fatalwoundshit = new FatalWounds(true);
 		onslaught = new Onslaught(true);
-		battlemastery = new BattleMastery(true);
-		killerinstinct = new KillerInstinct(true);
+		battlemastery = new BattleMastery(false);
+		killerinstinct = new KillerInstinct(false);
 		
 		//abilities
-		punish = new Punish(0, true);
-		shred = new Shred(8, true);
-		shredaddhits = new ShredAddHits(8, true);
-		impale = new Impale(2, true);
+		punish = new Punish(8, true);
+		shred = new Shred(0, true);
+		shredaddhits = new ShredAddHits(0, true);
+		impale = new Impale(8, true);
 		aw = new AnalyzeWeakness(0, true);
 		ck = new ConcussiveKicks(8, true);
 		ckfirst = new ConcussiveKicksFirst(8, true);
 		ckaddhits = new ConcussiveKicksAddHits(8, true);
-		ruin = new Ruin(0, true);
-		ruindot = new RuinDot(0, true);
-		collapse = new Collapse(0, true);
-		stagger = new Stagger(0, true);
+		ruin = new Ruin(0, false);
+		ruindot = new RuinDot(0, false);
+		collapse = new Collapse(0, false);
+		stagger = new Stagger(0, false);
 		prep = new Preparation(0, true);
 		
 		tretreat = new TacticalRetreat(true);
