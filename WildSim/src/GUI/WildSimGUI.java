@@ -81,33 +81,35 @@ public class WildSimGUI {
 		
 		
 		JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		Thread progthread = new Thread(){
-			public void run() {
-        		try {
-        			Thread.sleep(50);
-        		} catch (InterruptedException f) {}
-        		            		
-            	while (testCombat.getCurrTime() < testCombat.getMaxtime() && testCombat.getCurrTime() != 0) {
-            		SwingUtilities.invokeLater(new Runnable() {
-            			public void run() {
-            				System.out.println(testCombat.getCurrTime());
-                    		progress.setValue(testCombat.getCurrTime());
-                    	
-            			}
-            		});
-
-            		try {
-            			Thread.sleep(100);
-            		} catch (InterruptedException f) {}
-            	}
-            	progress.setValue(0);
-            	logPanel.setValues();		
-    			combatThread = new Thread(testCombat);
-			}
-		};
+		
 		
 		startButton = new JButton("Start");
 		startButton.addActionListener(e -> {
+			
+			Thread progthread = new Thread(){
+				public void run() {
+	        		try {
+	        			Thread.sleep(50);
+	        		} catch (InterruptedException f) {}
+	        		            		
+	            	while (testCombat.getCurrTime() < testCombat.getMaxtime() && testCombat.getCurrTime() != 0) {
+	            		SwingUtilities.invokeLater(new Runnable() {
+	            			public void run() {
+	                    		progress.setValue(testCombat.getCurrTime());
+	                    	
+	            			}
+	            		});
+
+	            		try {
+	            			Thread.sleep(100);
+	            		} catch (InterruptedException f) {}
+	            	}
+	            	progress.setValue(0);
+	            	logPanel.setValues();		
+	    			combatThread = new Thread(testCombat);
+				}
+			};
+			
 			progress.setMaximum(testCombat.getMaxtime());
 			combatThread.start();
 			progthread.start();

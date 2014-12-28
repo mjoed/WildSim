@@ -201,7 +201,7 @@ public class Impale implements Ability {
 		if (innate.getCurrentCD() == 0) {
 			innate.addHit(0);
 			innate.setCurrentCD(innate.getCooldown());
-			System.out.println("Innate applied");
+//			System.out.println("Innate applied");
 			guarantcrit.apply();
 			//enable unfair advantage cost reduction
 			if (uaactive) {
@@ -213,7 +213,7 @@ public class Impale implements Ability {
 		if (tretreat.getCurrentCD() == 0) {
 			tretreat.addHit(0);
 			tretreat.setCurrentCD(tretreat.getCooldown());
-			System.out.println("Tactical Retreat applied");
+//			System.out.println("Tactical Retreat applied");
 			guarantcrit.apply();
 			//enable unfair advantage cost reduction
 			if (uaactive) {

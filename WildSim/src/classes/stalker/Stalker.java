@@ -9,7 +9,7 @@ import classes.stalker.buffs.*;
 public class Stalker implements WildstarClass {
 	
 	
-	boolean combatlogressource = true;
+	boolean combatlogressource = false;
 	int SuitPower;
 	float ap;
 	float baseap;
@@ -323,11 +323,14 @@ public class Stalker implements WildstarClass {
 	
 		Ability returnAbility = null;
 		
+
 		if (shred.isActive() && shred.isReady(this)) returnAbility = shred;
+		if (ck.isActive() && ck.isReady(this) && ck.getTier() < 8) returnAbility = ck;
+		if (ckfirst.isActive() && ckfirst.isReady(this) && ckfirst.getTier() < 8) returnAbility = ckfirst;
 		if (ruin.isActive() && ruin.isReady(this)) returnAbility = ruin;
 		if (impale.isActive() && impale.isReady(this)) returnAbility = impale;
-		if (ck.isActive() && ck.isReady(this)) returnAbility = ck;
-		if (ckfirst.isActive() && ckfirst.isReady(this)) returnAbility = ckfirst;
+		if (ck.isActive() && ck.isReady(this) && ck.getTier() == 8) returnAbility = ck;
+		if (ckfirst.isActive() && ckfirst.isReady(this) && ckfirst.getTier() == 8) returnAbility = ckfirst;
 		
 		if (returnAbility != null) {
 			if (enabler.isActive() && SuitPower > 35 && (SuitPower - returnAbility.getCost()) < 35 && enablerbuff.durationLeft() == 0) {
