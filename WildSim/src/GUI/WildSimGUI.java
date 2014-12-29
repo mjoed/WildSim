@@ -9,6 +9,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,6 +18,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -32,6 +34,8 @@ public class WildSimGUI {
 	private JPanel targetPanel;
 	private JPanel classPanel;
 	private JPanel raidbuffPanel;
+	private JPanel runesetPanel;
+	private JTabbedPane leftTabPane;
 	private StalkerLogPanel logPanel;
 	private JPanel centerPanel;
 	private JFrame mainFrame;
@@ -146,22 +150,25 @@ public class WildSimGUI {
 		classPanel = new StalkerOptionPanel(testCombat.getPlayer());
 		raidbuffPanel = new RaidBuffPanel(testCombat);
 		logPanel = new StalkerLogPanel(testCombat);
+		runesetPanel = new RuneSetPanel(testCombat);
 				
 		generalPanel.add(statPanel);
 		generalPanel.add(targetPanel);
 		
 		
-		JPanel leftPanel = new JPanel(new GridLayout(1, 1));
-		leftPanel.add(raidbuffPanel);
-		JPanel midPanel = new JPanel(new GridLayout(2, 1));
-		midPanel.add(generalPanel);
-		midPanel.add(classPanel);
+		leftTabPane = new JTabbedPane();
+		leftTabPane.addTab("RaidBuffs/Debuffs", raidbuffPanel);
+		leftTabPane.addTab("Player/Target Stats", generalPanel);
+		leftTabPane.addTab("Ability/AMP", classPanel);
+		leftTabPane.addTab("Rune Sets", runesetPanel);
+		
+		
 		JPanel rightPanel = new JPanel(new GridLayout(1, 1));
 		rightPanel.add(logPanel);
 		
-		centerPanel = new JPanel(new GridLayout(1, 3));
-		centerPanel.add(leftPanel);
-		centerPanel.add(midPanel);
+		centerPanel = new JPanel(new GridLayout(1, 2));
+		centerPanel.add(leftTabPane);
+//		centerPanel.add(midPanel);
 		centerPanel.add(rightPanel);
 		
 		
@@ -173,7 +180,7 @@ public class WildSimGUI {
 		mainFrame.setLocation(400, 200);
 		mainFrame.pack();
 		mainFrame.setVisible(true);
-		mainFrame.setResizable(true);
+		mainFrame.setResizable(false);
 	}
 		
 	public static void main(String[] args) {

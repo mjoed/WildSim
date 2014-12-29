@@ -1,6 +1,8 @@
 package GUI;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -16,17 +18,23 @@ import classes.WildstarMob;
 public class TargetPanel extends JPanel {
 	
 	public TargetPanel(WildstarMob target) {
-		this.setLayout(new GridLayout(8, 2));
+		this.setLayout(new FlowLayout());
+		this.setPreferredSize(new Dimension(240, 100));
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		JLabel targetStats = new JLabel("Target Stats");
+		targetStats.setPreferredSize(new Dimension(120, 20));
 		JLabel targetStats2 = new JLabel("###");
+		targetStats2.setPreferredSize(new Dimension(120, 20));
+
 		
 		this.add(targetStats);
 		this.add(targetStats2);
 		
 		JLabel deflect = new JLabel("Deflect: ");
+		deflect.setPreferredSize(new Dimension(120, 20));
 		JTextField deflectinsert = new JTextField(Float.toString(target.getDeflectchance()));
+		deflectinsert.setPreferredSize(new Dimension(120, 20));
 		deflectinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -40,7 +48,9 @@ public class TargetPanel extends JPanel {
 		});
 		
 		JLabel armor = new JLabel("Armor: ");
+		armor.setPreferredSize(new Dimension(120, 20));
 		JTextField armorinsert = new JTextField(Float.toString(target.getArmor()));
+		armorinsert.setPreferredSize(new Dimension(120, 20));
 		armorinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -54,7 +64,9 @@ public class TargetPanel extends JPanel {
 		});
 		
 		JLabel physres = new JLabel("Phys. Res.: ");
+		physres.setPreferredSize(new Dimension(120, 20));
 		JTextField physresinsert = new JTextField(Float.toString(target.getPhysRes()));
+		physresinsert.setPreferredSize(new Dimension(120, 20));
 		physresinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -68,7 +80,9 @@ public class TargetPanel extends JPanel {
 		});
 	
 		JLabel magres = new JLabel("Mag. Res.: ");
+		magres.setPreferredSize(new Dimension(120, 20));
 		JTextField magresinsert = new JTextField(Float.toString(target.getMagRes()));
+		magresinsert.setPreferredSize(new Dimension(120, 20));
 		magresinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -82,7 +96,9 @@ public class TargetPanel extends JPanel {
 		});
 	
 		JLabel techres = new JLabel("Tech Res.: ");
+		techres.setPreferredSize(new Dimension(120, 20));
 		JTextField techresinsert = new JTextField(Float.toString(target.getTechRes()));
+		techresinsert.setPreferredSize(new Dimension(120, 20));
 		techresinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {

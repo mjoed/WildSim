@@ -193,16 +193,18 @@ public class Impale implements Ability {
 		Ability innate = player.getInnate();
 		Ability tretreat = player.getTacticalRetreat();
 		Buff guarantcrit = player.getGuarantCrit();
+		Buff uabuff = player.getUABuff();
 				
 		uaactive = ua.isActive();
 		
 		//use either innate or tactical retreat if one is up
 	
-		if (innate.getCurrentCD() == 0) {
+		if (innate.isActive() && innate.getCurrentCD() == 0) {
 			innate.addHit(0);
 			innate.setCurrentCD(innate.getCooldown());
 //			System.out.println("Innate applied");
 			guarantcrit.apply();
+			if (uabuff != null) uabuff.apply();
 			//enable unfair advantage cost reduction
 			if (uaactive) {
 				cost = cost - 8;
@@ -210,11 +212,12 @@ public class Impale implements Ability {
 			return;
 		}
 		
-		if (tretreat.getCurrentCD() == 0) {
+		if (tretreat.isActive() && tretreat.getCurrentCD() == 0) {
 			tretreat.addHit(0);
 			tretreat.setCurrentCD(tretreat.getCooldown());
 //			System.out.println("Tactical Retreat applied");
 			guarantcrit.apply();
+			if (uabuff != null) uabuff.apply();
 			//enable unfair advantage cost reduction
 			if (uaactive) {
 				cost = cost - 8;

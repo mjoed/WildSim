@@ -1,17 +1,25 @@
-package classes.stalker.buffs;
+package classes.general.runesets;
 
 import classes.Buff;
 
-public class FatalWoundsDot implements Buff {
+public class UnfairAdvantageBuff implements Buff {
 	
 	boolean isActive;
-	int duration = 8000;
+	int duration = 5000;
 	int currDuration = 0;
-	int stacks;
-
+	int amount;
+	
+	public UnfairAdvantageBuff(int amount) {
+		this.amount = amount;
+	}
+	
+	public int getAmount() {
+		return amount;
+	}
+	
 	@Override
 	public String getName() {
-		return "FatalWoundsDot";
+		return "SpecterBuff";
 	}
 
 	@Override
@@ -21,9 +29,6 @@ public class FatalWoundsDot implements Buff {
 
 	@Override
 	public void apply() {
-		stacks += 1;
-		if (stacks > 5) stacks = 5;
-		
 		isActive = true;
 		currDuration = duration;
 	}
@@ -32,7 +37,6 @@ public class FatalWoundsDot implements Buff {
 	public void remove() {
 		isActive = false;
 		currDuration = 0;
-		stacks = 0;
 	}
 
 	@Override
@@ -61,7 +65,8 @@ public class FatalWoundsDot implements Buff {
 
 	@Override
 	public int getStacks() {
-		return stacks;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 

@@ -19,7 +19,7 @@ import combat.Combat;
 public class RaidBuffPanel extends JPanel {
 	
 	public RaidBuffPanel(Combat combat) {
-		JPanel raidbuff = new JPanel(new GridLayout(18, 4));
+		JPanel raidbuff = new JPanel(new GridLayout(21, 4));
 		
 				
 		JLabel raidbuff1 = new JLabel("Active");
@@ -298,6 +298,139 @@ public class RaidBuffPanel extends JPanel {
 				
 		
 		
+		JCheckBox weaponspecdebuffbox = new JCheckBox();
+		weaponspecdebuffbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (weaponspecdebuffbox.isSelected()) {
+					combat.getWeaponSpecDebuff().setActive(true);
+				} else {
+					combat.getWeaponSpecDebuff().setActive(false);
+				}
+			}
+		});
+		weaponspecdebuffbox.setSelected(combat.getWeaponSpecDebuff().isActive());
+		JLabel weaponspecdebuff = new JLabel("Weapon Spec Debuff");
+		JTextField weaponspecdebuffamount = new JTextField(Float.toString(combat.getWeaponSpecDebuff().getAmount()));
+		weaponspecdebuffamount.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				combat.getWeaponSpecDebuff().setAmount(Float.parseFloat(weaponspecdebuffamount.getText()));
+			}
+		});
+		JTextField weaponspecdebuffuptime = new JTextField(Float.toString(combat.getWeaponSpecDebuff().getUptime()));
+		weaponspecdebuffuptime.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				combat.getWeaponSpecDebuff().setUptime(Float.parseFloat(weaponspecdebuffuptime.getText()));
+			}
+		});
+		raidbuff.add(weaponspecdebuffbox);
+		raidbuff.add(weaponspecdebuff);
+		raidbuff.add(weaponspecdebuffamount);
+		raidbuff.add(weaponspecdebuffuptime);
+		
+		
+		
+		
+		
+		JCheckBox technophiledebuffbox = new JCheckBox();
+		technophiledebuffbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (technophiledebuffbox.isSelected()) {
+					combat.getTechnophileDebuff().setActive(true);
+				} else {
+					combat.getTechnophileDebuff().setActive(false);
+				}
+			}
+		});
+		technophiledebuffbox.setSelected(combat.getTechnophileDebuff().isActive());
+		JLabel technophiledebuff = new JLabel("Technophile Debuff");
+		JTextField technophiledebuffamount = new JTextField(Float.toString(combat.getTechnophileDebuff().getAmount()));
+		technophiledebuffamount.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				combat.getTechnophileDebuff().setAmount(Float.parseFloat(technophiledebuffamount.getText()));
+			}
+		});
+		JTextField technophiledebuffuptime = new JTextField(Float.toString(combat.getTechnophileDebuff().getUptime()));
+		technophiledebuffuptime.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				combat.getTechnophileDebuff().setUptime(Float.parseFloat(technophiledebuffuptime.getText()));
+			}
+		});
+		raidbuff.add(technophiledebuffbox);
+		raidbuff.add(technophiledebuff);
+		raidbuff.add(technophiledebuffamount);
+		raidbuff.add(technophiledebuffuptime);
+		
+		
+		
+		
+		
+		JCheckBox spellweaverdebuffbox = new JCheckBox();
+		spellweaverdebuffbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (spellweaverdebuffbox.isSelected()) {
+					combat.getSpellweaverDebuff().setActive(true);
+				} else {
+					combat.getSpellweaverDebuff().setActive(false);
+				}
+			}
+		});
+		spellweaverdebuffbox.setSelected(combat.getSpellweaverDebuff().isActive());
+		JLabel spellweaverdebuff = new JLabel("Spellweaver Debuff");
+		JTextField spellweaverdebuffamount = new JTextField(Float.toString(combat.getSpellweaverDebuff().getAmount()));
+		spellweaverdebuffamount.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				combat.getSpellweaverDebuff().setAmount(Float.parseFloat(spellweaverdebuffamount.getText()));
+			}
+		});
+		JTextField spellweaverdebuffuptime = new JTextField(Float.toString(combat.getSpellweaverDebuff().getUptime()));
+		spellweaverdebuffuptime.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				combat.getSpellweaverDebuff().setUptime(Float.parseFloat(spellweaverdebuffuptime.getText()));
+			}
+		});
+		raidbuff.add(spellweaverdebuffbox);
+		raidbuff.add(spellweaverdebuff);
+		raidbuff.add(spellweaverdebuffamount);
+		raidbuff.add(spellweaverdebuffuptime);
 		
 		
 		JCheckBox punishbox = new JCheckBox();

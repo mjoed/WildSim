@@ -2,6 +2,10 @@ package classes.stalker;
 
 import helpers.helpers;
 import classes.*;
+import classes.general.runesets.AssassinHit;
+import classes.general.runesets.SpecterBuff;
+import classes.general.runesets.SuckerPunchHit;
+import classes.general.runesets.UnfairAdvantageBuff;
 import classes.stalker.abilities.*;
 import classes.stalker.amps.*;
 import classes.stalker.buffs.*;
@@ -32,10 +36,10 @@ public class Stalker implements WildstarClass {
 	//raidbuffs
 	RaidBuff[] raidbuffs;
 	
-	//all buffs
+	//stalker buffs
 	Buff[] buffs;
 	
-	//all debuffs
+	//stalker debuffs
 	Debuff[] debuffs;
 	
 	//all abilities
@@ -44,6 +48,18 @@ public class Stalker implements WildstarClass {
 	//all amps
 	AMP[] amps;
 	
+	
+	//runesets
+	RuneSet[] runesets;
+	
+	//runeset abilities
+	AssassinHit assassinHit;
+	SuckerPunchHit suckerpunchHit;
+	
+	//runeset buffs
+	SpecterBuff specterbuff;
+	UnfairAdvantageBuff uabuff;
+
 	//amps
 	Cutthroat cutthroat;
 	AMP enabler;
@@ -102,10 +118,6 @@ public class Stalker implements WildstarClass {
 	int fatalwoundhitsleft = 0;
 	
 	
-	
-	//testvariables
-	
-	
 	public Stalker(float ap, float sp, float crit, float critsev, float strikethrough, float cdr, float armorPierce) {
 		this.ap = ap;
 		baseap = ap;
@@ -156,7 +168,11 @@ public class Stalker implements WildstarClass {
 		tretreat = new TacticalRetreat(true);
 		innate = new Innate(true);
 		
-		checkForAMPsBuffs();
+		//runesetabilities
+		assassinHit = new AssassinHit(1, false);
+		suckerpunchHit = new SuckerPunchHit(1, false);
+		
+
 		
 		//CDR handling
 		checkCDReduction();
@@ -168,6 +184,8 @@ public class Stalker implements WildstarClass {
 		fillAbilityArray();
 		fillBuffArray();		
 		fillAMPArray();
+		
+//		checkForAMPsBuffs();
 		
 	}
 	
@@ -185,12 +203,68 @@ public class Stalker implements WildstarClass {
 		}
 	}
 
-
+	/**
+	 * check for AMPs/Buffs/Runesets
+	 */
 	private void checkForAMPsBuffs() {
 		//amp abilities/dmg sources
 		cutthroathit.setActive(cutthroat.isActive());
 		devastate.setActive(devastateamp.isActive());
 		fatalwoundshit.setActive(fatalwounds.isActive());
+		
+		assassinHit.setActive(false);
+		suckerpunchHit.setActive(false);
+		specterbuff = null;
+		uabuff = null;
+		//runeset abilities/dmg sources
+		for (int i = 0; i < runesets.length; i++) {
+			if (runesets[i].getName() == "Assassin") {
+				if (runesets[i].isActive()) {
+					assassinHit.setActive(true);
+					assassinHit.setTier(runesets[i].getAmount());
+				} else {
+					assassinHit.setActive(false);
+				}
+			}
+			if (runesets[i].getName() == "SuckerPunch") {
+				if (runesets[i].isActive()) {
+					suckerpunchHit.setActive(true);
+					suckerpunchHit.setTier(runesets[i].getAmount());
+				} else {
+					suckerpunchHit.setActive(false);
+				}
+			}
+			if (runesets[i].getName() == "Specter") {
+				if (runesets[i].isActive()) {
+					if (runesets[i].getAmount() >= 12) {
+						specterbuff = new SpecterBuff(108);
+					} else if (runesets[i].getAmount() >= 8) {
+						specterbuff = new SpecterBuff(89);
+					} else if (runesets[i].getAmount() >= 4) {
+						specterbuff = new SpecterBuff(65);
+					}
+					
+				} else {
+					specterbuff = null;
+				}
+			}
+			if (runesets[i].getName() == "UnfairAdvantageSet") {
+				if (runesets[i].isActive()) {
+					if (runesets[i].getAmount() >= 15) {
+						uabuff = new UnfairAdvantageBuff(35);
+					} else if (runesets[i].getAmount() >= 11) {
+						uabuff = new UnfairAdvantageBuff(29);
+					} else if (runesets[i].getAmount() >= 6) {
+						uabuff = new UnfairAdvantageBuff(21);
+					}
+					
+				} else {
+					uabuff = null;
+				}
+			}
+			
+			
+		}
 		//buffs/debuffs
 		enablerbuff = enabler.isActive() ? new EnablerBuff() : null;
 		ripostebuff = riposte.isActive() ? new RiposteBuff() : null;
@@ -252,6 +326,18 @@ public class Stalker implements WildstarClass {
 			return devastate;
 		}
 		
+		//assassin runeset handling
+		if (assassinHit.isActive() && assassinHit.isTriggered()) {
+			assassinHit.setTriggered(false);
+			return assassinHit;
+		}
+		
+		//suckerpunch runeset handling
+		if (suckerpunchHit.isActive() && suckerpunchHit.isTriggered()) {
+			suckerpunchHit.setTriggered(false);
+			return suckerpunchHit;
+		}
+		
 		//full prep channel handling
 		if (prep.isActive() && prep.completeChannel() && prep.channelOnCD()) {
 			if (prep.isChanneling()) {
@@ -263,8 +349,6 @@ public class Stalker implements WildstarClass {
 			}
 		}
 			
-		
-		
 		//AW handlichng
 		//apply aw if off CD, set cooldown manually
 		if (aw.isActive() && aw.isReady(this)) {
@@ -504,6 +588,12 @@ public class Stalker implements WildstarClass {
 						devastate.trigger(true);
 					}
 				}
+				if (specterbuff != null) {
+					double specterroll = Math.random();
+					if (specterroll < 0.1f) {
+						specterbuff.apply();
+					}
+				}
 				if (fatalwounds.isActive() && ability.getName() != "CutthroatHit") fatalwoundsdot.apply();
 				if (killerinstinct.isActive() && killerinstinctbuff.isActive()) killerinstinctbuff.remove();
 			}
@@ -520,7 +610,7 @@ public class Stalker implements WildstarClass {
 		}
 		
 		//if hit is a dot, do nothing else.
-		if (ability.getName() == "RuinDot" || ability.getName() == "FatalWounds") {
+		if (ability.getName() == "RuinDot" || ability.getName() == "FatalWounds" || ability.getName() == "AssassinHit" || ability.getName() == "SuckerHit") {
 			return;
 		}
 		
@@ -568,6 +658,24 @@ public class Stalker implements WildstarClass {
 		if (!deflect) {
 			//add cutthroat if hit isn't AW. trigger AW if AW buff is applied.
 			if (ability.getName() != "AW") {
+				//assassin rolls
+				if (assassinHit.isActive()) {
+					double healthroll = Math.random();
+					if (healthroll < 0.3) {
+						double hitroll = Math.random();
+						if (hitroll < 0.25) {
+							assassinHit.setTriggered(true);
+						}
+					}
+				}
+				//suckerpunch rolls
+				if (suckerpunchHit.isActive()) {
+					double hitroll = Math.random();
+					if (hitroll < 0.1) {
+						suckerpunchHit.setTriggered(true);
+					}
+				}
+				
 				if (aw != null && aw.isApplied()) {
 					aw.triggered(true);
 				}
@@ -661,6 +769,20 @@ public class Stalker implements WildstarClass {
 			strikethrough += 0.06f;
 		}
 		
+		//check for specter
+		if (specterbuff != null && specterbuff.isActive()) {
+			float critpercentageadded = (float)specterbuff.getAmount() * 0.0153846f;
+			crit += (critpercentageadded/100);
+			float hitpercentageadded = (float)specterbuff.getAmount() * 0.0076957f;
+			strikethrough += (hitpercentageadded/100);
+		}
+		
+		//check for unfair advantage set buff
+		if (uabuff != null && uabuff.isActive()) {
+			ap += uabuff.getAmount();
+			sp += uabuff.getAmount();
+		}
+		
 		if (onslaughtbuff != null && onslaughtbuff.isActive()) {
 			ap *= 1.12;
 		}
@@ -692,9 +814,7 @@ public class Stalker implements WildstarClass {
 			if (raidbuffs[i].isActive() && raidbuffs[i].getName() == "BloodThirstT4" && raidbuffs[i].getUptime() >= chance) {
 				ap *= (1+raidbuffs[i].getAmount());
 			}
-			
 		}
-		
 	}
 	
 	
@@ -716,6 +836,8 @@ public class Stalker implements WildstarClass {
 		if (onslaughtbuff != null) amount++;
 		if (battlemasterybuff != null) amount++;
 		if (killerinstinctbuff != null) amount++;
+		if (specterbuff != null) amount++;
+		if (uabuff != null) amount++;
 		
 		buffs = new Buff[amount];
 		amount = 0;
@@ -772,6 +894,14 @@ public class Stalker implements WildstarClass {
 			buffs[amount] = killerinstinctbuff;
 			amount++;
 		}
+		if (specterbuff != null) {
+			buffs[amount] = specterbuff;
+			amount++;
+		}
+		if (uabuff != null) {
+			buffs[amount] = uabuff;
+			amount++;
+		}
 		
 	}
 
@@ -799,6 +929,8 @@ public class Stalker implements WildstarClass {
 		if (cutthroathit.isActive()) amount++;
 		if (devastate.isActive()) amount++;
 		if (fatalwoundshit.isActive()) amount++;
+		if (assassinHit.isActive()) amount++;
+		if (suckerpunchHit.isActive()) amount++;
 		
 		abilities = new Ability[amount];
 		amount = 0;
@@ -873,6 +1005,14 @@ public class Stalker implements WildstarClass {
 		}
 		if (fatalwoundshit.isActive()) {
 			abilities[amount] = fatalwoundshit;
+			amount++;
+		}
+		if (assassinHit.isActive()) {
+			abilities[amount] = assassinHit;
+			amount++;
+		}
+		if (suckerpunchHit.isActive()) {
+			abilities[amount] = suckerpunchHit;
 			amount++;
 		}
 		
@@ -1149,7 +1289,7 @@ public class Stalker implements WildstarClass {
 	public Ability getInnate() {
 		return innate;
 	}
-	
+		
 	//AMP getter/setter
 	public AMP getCutthroat() {
 		return cutthroat;
@@ -1245,13 +1385,35 @@ public class Stalker implements WildstarClass {
 
 	@Override
 	public void lastCheck() {
+
 		checkForAMPsBuffs();
 		fillAbilityArray();
 		fillBuffArray();		
 		fillAMPArray();
+		SuitPower = 100;
 		for (int i = 0; i < abilities.length; i++) {
 			abilities[i].resetValues();
 		}
+		for (int i = 0; i < buffs.length; i++) {
+			buffs[i].remove();
+		}
+		if (stealthmastery.isActive()) {
+			innate.setCooldown(innate.getCooldown() - 3000);
+		}
+		shreduptime = 0;
+		awbuffuptime = 0;
+		ruinbuffuptime = 0;
+		fatalwoundhitsleft = 0;
+	}
+
+
+	@Override
+	public void setRuneSets(RuneSet[] runesets) {
+		this.runesets = runesets;
+	}
+	
+	public Buff getUABuff() {
+		return uabuff;
 	}
 	
 		

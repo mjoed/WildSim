@@ -50,5 +50,6 @@ public interface WildstarClass {
 	public float getFlatDamageBuff();
 	
 	public void setRaidBuffs(RaidBuff[] raidbuffs);
+	public void setRuneSets(RuneSet[] runesets);
 	
 }

@@ -4,10 +4,12 @@ import helpers.helpers;
 import classes.Ability;
 import classes.RaidBuff;
 import classes.RaidDebuff;
+import classes.RuneSet;
 import classes.WildstarClass;
 import classes.WildstarMob;
 import classes.general.buffs.*;
 import classes.general.debuffs.*;
+import classes.general.runesets.*;
 import classes.stalker.Stalker;
 
 /**
@@ -51,6 +53,17 @@ public class Combat implements Runnable {
 	RaidDebuff reducemagresist;
 	RaidDebuff reducetechresist;
 	RaidDebuff reducedeflect;
+	RaidDebuff weaponspecdebuff;
+	RaidDebuff technophiledebuff;
+	RaidDebuff spellweaverdebuff;
+	
+	//runesets
+	RuneSet[] runesets;
+	RuneSet assassin;
+	RuneSet suckerpunch;
+	RuneSet weaponspec;
+	RuneSet specter;
+	RuneSet unfairadvantage;
 	
 	public Combat() {
 		target = new WildstarMob();
@@ -74,6 +87,12 @@ public class Combat implements Runnable {
 		reducetechresist = new ReduceTechResist(0.07f, false, 1.0f);
 		//tk storm
 		reducedeflect = new ReduceDeflectChance(0.08f, false, 1.0f);
+		//weapon spec 12/12
+		weaponspecdebuff = new WeaponSpecDebuff(480, false, 1.0f);
+		//spellweaver 12/12
+		spellweaverdebuff = new SpellweaverDebuff(480, false, 1.0f);
+		//technophile 12/12
+		technophiledebuff = new TechnophileDebuff(480, false, 1.0f);
 		
 		//class stat changing raidbuffs
 		empoweringt4 = new EmpoweringProbesT4(0.03f, false, 1.0f);
@@ -85,14 +104,24 @@ public class Combat implements Runnable {
 		
 		fillRaidBuffArray();
 		
+		//runesets
+		assassin = new Assassin(false, 12);
+		suckerpunch = new SuckerPunch(false, 7);
+		weaponspec = new WeaponSpecialist(false, 12);
+		specter = new Specter(false, 12);
+		unfairadvantage = new UnfairAdvantageSet(false, 15);
+		
+		fillRuneSetArray();
+		
 	}
-	
 	
 	//starts combat for defined maxtime
 	@Override
 	public void run() {
 		startTime = System.nanoTime();
+		fillRuneSetArray();
 		wildclass.setRaidBuffs(raidbuffs);
+		wildclass.setRuneSets(runesets);
 		wildclass.lastCheck();
 		
 		dmgoverall = 0;
@@ -169,6 +198,20 @@ public class Combat implements Runnable {
 		checkRaidDebuffs();
 		
 		float tooltipdmg = ability.calculateTooltipDmg(wildclass.getAP(), wildclass.getSP());
+		
+		if (weaponspec.isActive()) {
+			float weaponspecamount;
+			if (weaponspec.getAmount() >= 12) {
+				weaponspecamount = 1.02f;
+			} else if (weaponspec.getAmount() >= 8) {
+				weaponspecamount = 1.015f;
+			} else if (weaponspec.getAmount() >= 4) {
+				weaponspecamount = 1.01f;
+			} else {
+				weaponspecamount = 1f;
+			}
+			tooltipdmg *= weaponspecamount;
+		}
 		
 		//TODO  calculation correct?
 		float actualdmg = (tooltipdmg - ((tooltipdmg * (target.getMitigation(ability.getType()) * (1-(wildclass.getArmorPierce()+ability.getArmorPierce()))))));
@@ -248,6 +291,16 @@ public class Combat implements Runnable {
 		
 		double chance = Math.random();
 		
+		if (weaponspecdebuff.isActive() && weaponspecdebuff.getUptime() >= chance) {
+			target.setPhysRes(target.getPhysRes() - weaponspecdebuff.getAmount());
+		}
+		if (technophiledebuff.isActive() && technophiledebuff.getUptime() >= chance) {
+			target.setTechRes(target.getTechRes() - technophiledebuff.getAmount());
+		}
+		if (spellweaverdebuff.isActive() && technophiledebuff.getUptime() >= chance) {
+			target.setMagRes(target.getMagRes() - spellweaverdebuff.getAmount());
+		}
+		
 		if (armorreduction.isActive() && armorreduction.getUptime() >= chance) {
 			target.setArmor(target.getArmor() - (target.getArmor() * armorreduction.getAmount()));
 		}
@@ -306,6 +359,39 @@ public class Combat implements Runnable {
 			amount++;
 		}		
 	}
+	
+	
+	private void fillRuneSetArray() {
+		int amount = 0;
+		if (assassin.isActive()) amount++;
+		if (suckerpunch.isActive()) amount++;
+		if (weaponspec.isActive()) amount++;
+		if (specter.isActive()) amount++;
+		if (unfairadvantage.isActive()) amount++;
+		runesets = new RuneSet[amount];
+		amount = 0;
+		if (assassin.isActive()) {
+			runesets[amount] = assassin;
+			amount++;
+		}
+		if (weaponspec.isActive()) {
+			runesets[amount] = weaponspec;
+			amount++;
+		}
+		if (specter.isActive()) {
+			runesets[amount] = specter;
+			amount++;
+		}
+		if (unfairadvantage.isActive()) {
+			runesets[amount] = unfairadvantage;
+			amount++;
+		}
+		if (suckerpunch.isActive()) {
+			runesets[amount] = suckerpunch;
+			amount++;
+		}
+	}
+
 
 	
 	public int getMaxtime() {
@@ -355,6 +441,15 @@ public class Combat implements Runnable {
 	public RaidDebuff getReduceDeflect() {
 		return reducedeflect;
 	}
+	public RaidDebuff getWeaponSpecDebuff() {
+		return weaponspecdebuff;
+	}
+	public RaidDebuff getTechnophileDebuff() {
+		return technophiledebuff;
+	}
+	public RaidDebuff getSpellweaverDebuff() {
+		return spellweaverdebuff;
+	}
 	
 	public RaidBuff getPowerLinkT4() {
 		return powerlinkt4;
@@ -385,6 +480,23 @@ public class Combat implements Runnable {
 	}
 	public RaidBuff getBloodThirst() {
 		return bloodthirst;
+	}
+	
+	//runesets getter
+	public RuneSet getAssassin() {
+		return assassin;
+	}
+	public RuneSet getSuckerPunch() {
+		return suckerpunch;
+	}
+	public RuneSet getWeaponSpec() {
+		return weaponspec;
+	}
+	public RuneSet getSpecter() {
+		return specter;
+	}
+	public RuneSet getUnfairAdvantage() {
+		return unfairadvantage;
 	}
 
 }
