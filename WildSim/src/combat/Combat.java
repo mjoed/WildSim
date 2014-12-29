@@ -199,7 +199,7 @@ public class Combat implements Runnable {
 		
 		float tooltipdmg = ability.calculateTooltipDmg(wildclass.getAP(), wildclass.getSP());
 		
-		if (weaponspec.isActive()) {
+		if (weaponspec.isActive() && ability.getType() == 1) {
 			float weaponspecamount;
 			if (weaponspec.getAmount() >= 12) {
 				weaponspecamount = 1.02f;
