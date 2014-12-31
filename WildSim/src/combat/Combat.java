@@ -17,7 +17,7 @@ import classes.stalker.Stalker;
  */
 public class Combat implements Runnable {
 	
-	boolean combatlogdmg = true;
+	boolean combatlogdmg = false;
 	
 	int globalcd = 0;
 	int maxtime = 36000000;
@@ -136,8 +136,6 @@ public class Combat implements Runnable {
 					dmgoverall += currdmg;
 					globalcd = nextAbility.getGCD();
 				}
-
-				
 			} 
 			
 			nextNonGCDAbility = wildclass.getNextNonGCDAbility();
@@ -152,8 +150,6 @@ public class Combat implements Runnable {
 				}
 				
 				nextNonGCDAbility = wildclass.getNextNonGCDAbility();
-				
-
 				
 			}
 			
@@ -257,15 +253,11 @@ public class Combat implements Runnable {
 			wildclass.afterHit(ability, false, false, actualdmg);
 			return actualdmg;
 		}
-		
-		
-		
 	}
 	
 	
 
 	private float checkRaidBuffs(float actualdmg, Ability ability) {
-		
 		
 		double chance = Math.random();
 		float buffeddmg = actualdmg;
@@ -285,7 +277,6 @@ public class Combat implements Runnable {
 		if (surgical.isActive() && surgical.getUptime() >= chance) {
 			buffeddmg *= (1+surgical.getAmount());
 		}
-		
 		
 		return buffeddmg;
 	}

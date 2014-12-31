@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 import classes.stalker.StalkerLogPanel;
 import classes.stalker.StalkerOptionPanel;
@@ -29,6 +28,7 @@ import combat.Combat;
 public class WildSimGUI {
 
 	private JButton startButton;
+	private JButton startStatWeightButton;
 	private JPanel generalPanel;
 	private JPanel statPanel;
 	private JPanel targetPanel;
@@ -39,6 +39,7 @@ public class WildSimGUI {
 	private StalkerLogPanel logPanel;
 	private JPanel centerPanel;
 	private JFrame mainFrame;
+	private JLabel statWeightProgress;
 	
 	private JProgressBar progress;
 	
@@ -86,39 +87,14 @@ public class WildSimGUI {
 		
 		JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		
+		logPanel = new StalkerLogPanel(testCombat);
+		statWeightProgress = new JLabel("");
 		
 		startButton = new JButton("Start");
-		startButton.addActionListener(e -> {
-			
-			Thread progthread = new Thread(){
-				public void run() {
-	        		try {
-	        			Thread.sleep(50);
-	        		} catch (InterruptedException f) {}
-	        		            		
-	            	while (testCombat.getCurrTime() < testCombat.getMaxtime() && testCombat.getCurrTime() != 0) {
-	            		SwingUtilities.invokeLater(new Runnable() {
-	            			public void run() {
-	                    		progress.setValue(testCombat.getCurrTime());
-	                    	
-	            			}
-	            		});
-
-	            		try {
-	            			Thread.sleep(100);
-	            		} catch (InterruptedException f) {}
-	            	}
-	            	progress.setValue(0);
-	            	logPanel.setValues();		
-	    			combatThread = new Thread(testCombat);
-				}
-			};
-			
-			progress.setMaximum(testCombat.getMaxtime());
-			combatThread.start();
-			progthread.start();
-		});
+		startButton.addActionListener(new StartCombatActionListener(testCombat, progress, logPanel));
 		
+		startStatWeightButton = new JButton("StatWeight Calc");
+		startStatWeightButton.addActionListener(new StartStatWeightActionListener(testCombat, progress, logPanel, statWeightProgress));
 		
 		JLabel maxTime = new JLabel("RunTime (h): ");
 		JTextField maxTimeinsert = new JTextField(Integer.toString(testCombat.getMaxtime() / 3600000));
@@ -138,7 +114,8 @@ public class WildSimGUI {
 		toolBar.add(maxTime);
 		toolBar.add(maxTimeinsert);
 		toolBar.add(progress);
-		
+		toolBar.add(startStatWeightButton);
+		toolBar.add(statWeightProgress);
 		
 		mainFrame.add(toolBar, BorderLayout.NORTH);
 		
@@ -149,7 +126,6 @@ public class WildSimGUI {
 		targetPanel = new TargetPanel(testCombat.getTarget());
 		classPanel = new StalkerOptionPanel(testCombat.getPlayer());
 		raidbuffPanel = new RaidBuffPanel(testCombat);
-		logPanel = new StalkerLogPanel(testCombat);
 		runesetPanel = new RuneSetPanel(testCombat);
 				
 		generalPanel.add(statPanel);

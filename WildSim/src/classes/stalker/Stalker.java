@@ -1404,6 +1404,12 @@ public class Stalker implements WildstarClass {
 		awbuffuptime = 0;
 		ruinbuffuptime = 0;
 		fatalwoundhitsleft = 0;
+		crit = basecrit;
+		strikethrough = basestrikethrough;
+		ap = baseap;
+		sp = basesp;
+		flatdamagebuff = 0;
+		
 	}
 
 
