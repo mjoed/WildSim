@@ -65,6 +65,8 @@ public class StalkerOptionPanel extends JPanel {
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				stalker.getShred().setTier(Integer.parseInt(shredinsert.getText()));
+				stalker.getShredAdd().setTier(Integer.parseInt(shredinsert.getText()));
+				
 			}
 		});
 		
@@ -159,6 +161,10 @@ public class StalkerOptionPanel extends JPanel {
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				stalker.getCK().setTier(Integer.parseInt(ckinsert.getText()));
+				stalker.getCKadd().setTier(Integer.parseInt(ckinsert.getText()));
+				stalker.getCKFirst().setTier(Integer.parseInt(ckinsert.getText()));
+				
+			
 			}
 		});
 		
@@ -331,6 +337,8 @@ public class StalkerOptionPanel extends JPanel {
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				stalker.getRuin().setTier(Integer.parseInt(ruininsert.getText()));
+				stalker.getRuinDot().setTier(Integer.parseInt(ruininsert.getText()));
+				
 			}
 		});
 		
