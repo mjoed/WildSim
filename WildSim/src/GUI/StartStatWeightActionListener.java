@@ -33,6 +33,7 @@ public class StartStatWeightActionListener implements ActionListener {
 	
 	int step = 0;
 	int internalstep = 0;
+	int statIncrease = 200;
 	
 	public StartStatWeightActionListener(Combat testCombat, JProgressBar progress, StalkerLogPanel logPanel, JLabel statWeightProgress) {
 		this.testCombat = testCombat;
@@ -70,7 +71,7 @@ public class StartStatWeightActionListener implements ActionListener {
 				baselinedps3 = testCombat.getDmgOverall()/(testCombat.getMaxtime()/1000);
 				statWeightProgress.setText("AP DPS Calc (1/3)");
 				testCombat.getPlayer().lastCheck();
-				testCombat.getPlayer().setAP(testCombat.getPlayer().getAP() + 100);
+				testCombat.getPlayer().setAP(testCombat.getPlayer().getAP() + statIncrease);
 				internalstep = 1;
 				step++;
 			}
@@ -84,8 +85,8 @@ public class StartStatWeightActionListener implements ActionListener {
 				apdps3 = testCombat.getDmgOverall()/(testCombat.getMaxtime()/1000);
 				statWeightProgress.setText("Crit DPS Calc (1/3)");
 				testCombat.getPlayer().lastCheck();
-				testCombat.getPlayer().setAP(testCombat.getPlayer().getAP() - 100);
-				testCombat.getPlayer().setCrit(testCombat.getPlayer().getCrit() + ((100 * 0.0153846f) / 100));
+				testCombat.getPlayer().setAP(testCombat.getPlayer().getAP() - statIncrease);
+				testCombat.getPlayer().setCrit(testCombat.getPlayer().getCrit() + ((statIncrease * 0.0153846f) / 100));
 				internalstep = 1;
 				step++;
 			}
@@ -101,7 +102,7 @@ public class StartStatWeightActionListener implements ActionListener {
 				statWeightProgress.setText("");
 				critdps3 = testCombat.getDmgOverall()/(testCombat.getMaxtime()/1000);
 				testCombat.getPlayer().lastCheck();
-				testCombat.getPlayer().setCrit(testCombat.getPlayer().getCrit() - ((100 * 0.0153846f) / 100));
+				testCombat.getPlayer().setCrit(testCombat.getPlayer().getCrit() - ((statIncrease * 0.0153846f) / 100));
 				
 				baselinedps = (baselinedps1+baselinedps2+baselinedps3) / 3;
 				apdps = (apdps1+apdps2+apdps3) / 3;
