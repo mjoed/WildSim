@@ -197,7 +197,14 @@ public class Combat implements Runnable {
 
 		checkRaidDebuffs();
 		
-		float tooltipdmg = ability.calculateTooltipDmg(wildclass.getAP(), wildclass.getSP());
+		//ap softcap logic
+		float ap = wildclass.getAP();
+		
+		if (ap > 3600) {
+			ap = ((ap - 3600f) * (1f - ((ap - 3600f) * 0.012f / 100f ))) + 3600f;
+		}
+		
+		float tooltipdmg = ability.calculateTooltipDmg(ap, wildclass.getSP());
 		
 		if (weaponspec.isActive() && ability.getType() == 1) {
 			float weaponspecamount;
