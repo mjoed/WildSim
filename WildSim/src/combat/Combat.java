@@ -235,28 +235,46 @@ public class Combat implements Runnable {
 		//1 roll for both
 		double roll = Math.random();
 		
-		if (ability.canDeflect() && roll < (double)(target.getDeflectchance() - wildclass.getStrikethrough())) {
-			if (combatlogdmg) {
-				System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + wildclass.getRessource() + "] " + ability.getName() + " deflected");
+		if (target.getDeflectchance() - wildclass.getStrikethrough() > 0) {
+			if (ability.canDeflect() && roll < (double)(target.getDeflectchance() - wildclass.getStrikethrough())) {
+				if (combatlogdmg) {
+					System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + wildclass.getRessource() + "] " + ability.getName() + " deflected");
+				}
+				wildclass.afterHit(ability, false, true, 0);
+				return 0;
 			}
-			wildclass.afterHit(ability, false, true, 0);
-			return 0;
+			if (ability.canCrit() && (target.getDeflectchance() - wildclass.getStrikethrough()) < roll && roll < ((target.getDeflectchance() - wildclass.getStrikethrough()) + wildclass.getCrit())) {
+				actualdmg *= wildclass.getCritSev();
+				if (combatlogdmg) {
+					System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + wildclass.getRessource() + "] " + ability.getName() + " crits for: " + actualdmg);
+				}
+				wildclass.afterHit(ability, true, false, actualdmg);
+				return actualdmg;
+			} else {
+				if (combatlogdmg) {
+					System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + wildclass.getRessource() + "] " + ability.getName() + " hits for: " + actualdmg);
+				}
+				wildclass.afterHit(ability, false, false, actualdmg);
+				return actualdmg;
+			}
+		} else {
+			if (ability.canCrit() && roll < wildclass.getCrit()) {
+				actualdmg *= wildclass.getCritSev();
+				if (combatlogdmg) {
+					System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + wildclass.getRessource() + "] " + ability.getName() + " crits for: " + actualdmg);
+				}
+				wildclass.afterHit(ability, true, false, actualdmg);
+				return actualdmg;
+			} else {
+				if (combatlogdmg) {
+					System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + wildclass.getRessource() + "] " + ability.getName() + " hits for: " + actualdmg);
+				}
+				wildclass.afterHit(ability, false, false, actualdmg);
+				return actualdmg;
+			}
 		}
 		
-		if (ability.canCrit() && (target.getDeflectchance() - wildclass.getStrikethrough()) <= roll && roll < ((target.getDeflectchance() - wildclass.getStrikethrough()) + wildclass.getCrit())) {
-			actualdmg *= wildclass.getCritSev();
-			if (combatlogdmg) {
-				System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + wildclass.getRessource() + "] " + ability.getName() + " crits for: " + actualdmg);
-			}
-			wildclass.afterHit(ability, true, false, actualdmg);
-			return actualdmg;
-		} else {
-			if (combatlogdmg) {
-				System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + wildclass.getRessource() + "] " + ability.getName() + " hits for: " + actualdmg);
-			}
-			wildclass.afterHit(ability, false, false, actualdmg);
-			return actualdmg;
-		}
+		
 	}
 	
 	
@@ -321,7 +339,12 @@ public class Combat implements Runnable {
 			target.setTechRes(target.getTechRes() - (target.getTechRes() * reducetechresist.getAmount()));
 		}
 		if (reducedeflect.isActive() && reducedeflect.getUptime() >= chance) {
-			target.setDeflectchance(target.getDeflectchance() - (reducedeflect.getAmount()));
+			if (target.getDeflectchance() - reducedeflect.getAmount() < 0) {
+				target.setDeflectchance(0);
+			} else {
+				target.setDeflectchance(target.getDeflectchance() - (reducedeflect.getAmount()));
+			}
+			
 		}
 		
 	}

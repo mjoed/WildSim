@@ -83,10 +83,18 @@ public class WildstarMob {
 	}
 
 	public void setDeflectchance(float deflectchance) {
-		this.deflectchance = deflectchance;
+		if (deflectchance < 0) {
+			this.deflectchance = 0;
+		} else {
+			this.deflectchance = deflectchance;
+		}
 	}
 	public void setDeflectchanceBase(float deflectchance) {
-		deflectchancebase = deflectchance;
+		if (deflectchance < 0) {
+			this.deflectchancebase = 0;
+		} else {
+			deflectchancebase = deflectchance;
+		}
 	}
 	
 	public void resetStats() {
