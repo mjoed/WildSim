@@ -91,7 +91,13 @@ public class StalkerLogPanel extends JPanel {
 			
 			float brutweight = 0.61f * 10;
 			float moxieweight = (0.5f * critweight) + (0.5f * critsevweight);
-			float finweight = (0.5f * strikethroughweight) + (0.5f * critsevweight);
+			float finweight;
+			if (strikethroughweight > 0) {
+				finweight = (0.5f * strikethroughweight) + (0.5f * critsevweight);
+			} else {
+				finweight = (0.5f * critsevweight);
+			}
+			
 			
 			
 			logstring.append("Brut Weight (with +15%): \t" + String.format("%.3f", brutweight) + " (" + String.format("%.3f", brutweight * 1.15) + ")");
