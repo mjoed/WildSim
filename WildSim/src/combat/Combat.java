@@ -321,7 +321,7 @@ public class Combat implements Runnable {
 			target.setTechRes(target.getTechRes() - (target.getTechRes() * reducetechresist.getAmount()));
 		}
 		if (reducedeflect.isActive() && reducedeflect.getUptime() >= chance) {
-			target.setDeflectchance(target.getDeflectchance() - (target.getDeflectchance() * reducedeflect.getAmount()));
+			target.setDeflectchance(target.getDeflectchance() - (reducedeflect.getAmount()));
 		}
 		
 	}
