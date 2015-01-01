@@ -592,6 +592,37 @@ public class StalkerOptionPanel extends JPanel {
 		
 		
 		
+		JCheckBox critsevbox = new JCheckBox();
+		critsevbox.setPreferredSize(new Dimension(35, 20));
+		critsevbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (critsevbox.isSelected()) {
+					stalker.getCritSevAMP().setActive(true);
+				} else {
+					stalker.getCritSevAMP().setActive(false);
+				}
+			}
+		});
+		critsevbox.setSelected(stalker.getCritSevAMP().isActive());
+		JLabel critsev = new JLabel("Crit Sev: ");
+		critsev.setPreferredSize(new Dimension(95, 20));
+		JTextField critsevinsert = new JTextField(Float.toString(stalker.getCritSevAMP().getAmount()));
+		critsevinsert.setPreferredSize(new Dimension(95, 20));
+		critsevinsert.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				stalker.getCritSevAMP().setAmount(Float.parseFloat(critsevinsert.getText()));
+			}
+		});
+		
+		
+		
 		amps.add(amps1);
 		amps.add(amps2);
 		amps.add(cutthroatbox);
@@ -614,6 +645,9 @@ public class StalkerOptionPanel extends JPanel {
 		amps.add(battlemast);
 		amps.add(killerinstbox);
 		amps.add(killerinst);
+		amps.add(critsevbox);
+		amps.add(critsev);
+		amps.add(critsevinsert);
 		
 		
 		

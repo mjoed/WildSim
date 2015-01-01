@@ -62,6 +62,7 @@ public class Stalker implements WildstarClass {
 
 	//amps
 	Cutthroat cutthroat;
+	CritSevAMP critsevamp;
 	AMP enabler;
 	AMP devastateamp;
 	AMP stealthmastery;
@@ -149,6 +150,7 @@ public class Stalker implements WildstarClass {
 		onslaught = new Onslaught(true);
 		battlemastery = new BattleMastery(false);
 		killerinstinct = new KillerInstinct(false);
+		critsevamp = new CritSevAMP(true, 0.12f);
 		
 		//abilities
 		punish = new Punish(8, true);
@@ -1034,6 +1036,7 @@ public class Stalker implements WildstarClass {
 		if (onslaught.isActive()) amount++;
 		if (battlemastery.isActive()) amount++;
 		if (killerinstinct.isActive()) amount++;
+		if (critsevamp.isActive()) amount++;
 		
 		amps = new AMP[amount];
 		amount = 0;
@@ -1075,6 +1078,10 @@ public class Stalker implements WildstarClass {
 		}
 		if (killerinstinct.isActive()) {
 			amps[amount] = killerinstinct;
+			amount++;
+		}
+		if (critsevamp.isActive()) {
+			amps[amount] = critsevamp;
 			amount++;
 		}
 
@@ -1370,6 +1377,10 @@ public class Stalker implements WildstarClass {
 		killerinstinct.setActive(active);
 		checkForAMPsBuffs();
 	}
+	public CritSevAMP getCritSevAMP() {
+		return critsevamp;
+	}
+	
 	
 	//buff getter
 	public Buff getCKCD() {

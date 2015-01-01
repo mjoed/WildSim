@@ -2,12 +2,21 @@ package classes.stalker.amps;
 
 import classes.AMP;
 
-public class Riposte implements AMP {
+public class CritSevAMP implements AMP {
 	
+	float amount;
 	boolean isActive;
 	
-	public Riposte(boolean active) {
+	public CritSevAMP(boolean active, float amount) {
 		isActive = active;
+		this.amount = amount;
+	}
+	
+	public void setAmount(float amount) {
+		this.amount = amount;
+	}
+	public float getAmount() {
+		return amount;
 	}
 
 	@Override
@@ -22,7 +31,7 @@ public class Riposte implements AMP {
 	
 	@Override
 	public String getName() {
-		return "Riposte";
+		return "CritSevAMP";
 	}
 
 }

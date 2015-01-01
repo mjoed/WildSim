@@ -14,4 +14,12 @@ public class helpers {
 		
 		return time;
 	}
+	
+	public static float getCritSevRating(float critsev) {
+		return -((14126 * critsev) / (7 * critsev - 5));
+	}
+	
+	public static float getCritSevPercentage(float critsevrating) {
+		return (critsevrating/(1.4f*critsevrating+2825f));
+	}
 }

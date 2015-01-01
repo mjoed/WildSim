@@ -1,5 +1,7 @@
 package classes;
 
+import classes.stalker.amps.CritSevAMP;
+
 public interface WildstarClass {
 
 	//should return next ability which can't be cast outside GCD lockout. gets called if GCD is 0.
@@ -51,5 +53,7 @@ public interface WildstarClass {
 	
 	public void setRaidBuffs(RaidBuff[] raidbuffs);
 	public void setRuneSets(RuneSet[] runesets);
+	
+	public CritSevAMP getCritSevAMP();
 	
 }

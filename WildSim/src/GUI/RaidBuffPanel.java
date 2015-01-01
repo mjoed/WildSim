@@ -41,6 +41,7 @@ public class RaidBuffPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				if (armorredbox.isSelected()) {
 					combat.getArmorRed().setActive(true);
+					
 				} else {
 					combat.getArmorRed().setActive(false);
 				}

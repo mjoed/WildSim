@@ -47,6 +47,7 @@ public class Combat implements Runnable {
 	RaidBuff bloodthirst;
 	
 	//statreducing raiddebuffs
+	RaidDebuff[] raiddebuffs;
 	RaidDebuff armorreduction;
 	RaidDebuff reduceallresist;
 	RaidDebuff reducephysresist;
@@ -103,6 +104,7 @@ public class Combat implements Runnable {
 		bloodthirst = new BloodThirstT4(0.07f, false, 1.0f);
 		
 		fillRaidBuffArray();
+		fillRaidDebuffArray();
 		
 		//runesets
 		assassin = new Assassin(false, 12);
@@ -120,6 +122,8 @@ public class Combat implements Runnable {
 	public void run() {
 		startTime = System.nanoTime();
 		fillRuneSetArray();
+		fillRaidBuffArray();
+		fillRaidDebuffArray();
 		wildclass.setRaidBuffs(raidbuffs);
 		wildclass.setRuneSets(runesets);
 		wildclass.lastCheck();
@@ -358,6 +362,62 @@ public class Combat implements Runnable {
 		}		
 	}
 	
+	private void fillRaidDebuffArray() {
+		int amount = 0;
+		if (punish.isActive()) amount++;
+		if (armorreduction.isActive()) amount++;
+		if (reduceallresist.isActive()) amount++;
+		if (reducephysresist.isActive()) amount++;
+		if (reducemagresist.isActive()) amount++;
+		if (reducetechresist.isActive()) amount++;
+		if (reducedeflect.isActive()) amount++;
+		if (weaponspecdebuff.isActive()) amount++;
+		if (technophiledebuff.isActive()) amount++;
+		if (spellweaverdebuff.isActive()) amount++;
+		raiddebuffs = new RaidDebuff[amount];
+		amount = 0;
+		if (punish.isActive()) {
+			raiddebuffs[amount] = punish;
+			amount++;
+		}
+		if (armorreduction.isActive()) {
+			raiddebuffs[amount] = armorreduction;
+			amount++;
+		}
+		if (reduceallresist.isActive()) {
+			raiddebuffs[amount] = reduceallresist;
+			amount++;
+		}
+		if (reducephysresist.isActive()) {
+			raiddebuffs[amount] = reducephysresist;
+			amount++;
+		}
+		if (reducemagresist.isActive()) {
+			raiddebuffs[amount] = reducemagresist;
+			amount++;
+		}
+		if (reducetechresist.isActive()) {
+			raiddebuffs[amount] = reducetechresist;
+			amount++;
+		}
+		if (reducedeflect.isActive()) {
+			raiddebuffs[amount] = reducedeflect;
+			amount++;
+		}		
+		if (weaponspecdebuff.isActive()) {
+			raiddebuffs[amount] = weaponspecdebuff;
+			amount++;
+		}
+		if (technophiledebuff.isActive()) {
+			raiddebuffs[amount] = technophiledebuff;
+			amount++;
+		}
+		if (spellweaverdebuff.isActive()) {
+			raiddebuffs[amount] = spellweaverdebuff;
+			amount++;
+		}	
+	}
+	
 	
 	private void fillRuneSetArray() {
 		int amount = 0;
@@ -448,6 +508,9 @@ public class Combat implements Runnable {
 	public RaidDebuff getSpellweaverDebuff() {
 		return spellweaverdebuff;
 	}
+	public RaidDebuff[] getRaidDebuffs() {
+		return raiddebuffs;
+	}
 	
 	public RaidBuff getPowerLinkT4() {
 		return powerlinkt4;
@@ -479,6 +542,9 @@ public class Combat implements Runnable {
 	public RaidBuff getBloodThirst() {
 		return bloodthirst;
 	}
+	public RaidBuff[] getRaidBuffs() {
+		return raidbuffs;
+	}
 	
 	//runesets getter
 	public RuneSet getAssassin() {
@@ -495,6 +561,9 @@ public class Combat implements Runnable {
 	}
 	public RuneSet getUnfairAdvantage() {
 		return unfairadvantage;
+	}
+	public RuneSet[] getRuneSets() {
+		return runesets;
 	}
 
 }

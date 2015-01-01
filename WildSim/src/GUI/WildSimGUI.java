@@ -40,7 +40,7 @@ public class WildSimGUI {
 	private JPanel centerPanel;
 	private JFrame mainFrame;
 	private JLabel statWeightProgress;
-	
+		
 	private JProgressBar progress;
 	
 	Thread combatThread;
@@ -55,6 +55,7 @@ public class WildSimGUI {
 	}
 	
 	private void setup() {
+		
 		mainFrame.setTitle("WildSim");		
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -91,10 +92,10 @@ public class WildSimGUI {
 		statWeightProgress = new JLabel("");
 		
 		startButton = new JButton("Start");
-		startButton.addActionListener(new StartCombatActionListener(testCombat, progress, logPanel));
+		startButton.addActionListener(new StartCombatActionListener(testCombat, progress, logPanel, mainFrame));
 		
 		startStatWeightButton = new JButton("StatWeight Calc");
-		startStatWeightButton.addActionListener(new StartStatWeightActionListener(testCombat, progress, logPanel, statWeightProgress));
+		startStatWeightButton.addActionListener(new StartStatWeightActionListener(testCombat, progress, logPanel, statWeightProgress, mainFrame));
 		
 		JLabel maxTime = new JLabel("RunTime (h): ");
 		JTextField maxTimeinsert = new JTextField(Integer.toString(testCombat.getMaxtime() / 3600000));
@@ -118,7 +119,7 @@ public class WildSimGUI {
 		toolBar.add(statWeightProgress);
 		
 		mainFrame.add(toolBar, BorderLayout.NORTH);
-		
+				
 		generalPanel = new JPanel(new GridLayout(1, 3));
 		
 		

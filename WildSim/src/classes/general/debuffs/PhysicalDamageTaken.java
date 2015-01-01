@@ -20,7 +20,7 @@ public class PhysicalDamageTaken implements RaidDebuff {
 	
 	@Override
 	public String getName() {
-		return "PhysicalDamageTaken";
+		return "Punish";
 	}
 
 	@Override
