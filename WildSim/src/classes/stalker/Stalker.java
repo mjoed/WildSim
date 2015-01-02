@@ -112,6 +112,9 @@ public class Stalker implements WildstarClass {
 	//innate/gadget ability
 	Buff guarantcrit;
 	
+	//prio array for gcd abilities
+	Ability[] gcdabilities = new Ability[4];
+	
 	//buff uptimes for suit power regens (and maybe other stuff?) TODO move to buffs themselves.. maybe.
 	int shreduptime = 0;
 	int awbuffuptime = 0;
@@ -409,14 +412,21 @@ public class Stalker implements WildstarClass {
 	
 		Ability returnAbility = null;
 		
+				
+		for (int i = gcdabilities.length-1; i >= 0; i--) {
+			if (gcdabilities[i].getName() == "CK") {
+				if (gcdabilities[i].isActive() && gcdabilities[i].isReady(this)) returnAbility = gcdabilities[i];
+				if (ckfirst.isActive() && ckfirst.isReady(this)) returnAbility = ckfirst;
+			} else {
+				if (gcdabilities[i].isActive() && gcdabilities[i].isReady(this)) returnAbility = gcdabilities[i];
+			}
+		}
 
-		if (shred.isActive() && shred.isReady(this)) returnAbility = shred;
-		if (ck.isActive() && ck.isReady(this) && ck.getTier() < 8) returnAbility = ck;
-		if (ckfirst.isActive() && ckfirst.isReady(this) && ckfirst.getTier() < 8) returnAbility = ckfirst;
-		if (ruin.isActive() && ruin.isReady(this)) returnAbility = ruin;
-		if (impale.isActive() && impale.isReady(this)) returnAbility = impale;
-		if (ck.isActive() && ck.isReady(this) && ck.getTier() == 8) returnAbility = ck;
-		if (ckfirst.isActive() && ckfirst.isReady(this) && ckfirst.getTier() == 8) returnAbility = ckfirst;
+//		if (shred.isActive() && shred.isReady(this)) returnAbility = shred;
+//		if (ruin.isActive() && ruin.isReady(this)) returnAbility = ruin;
+//		if (impale.isActive() && impale.isReady(this)) returnAbility = impale;
+//		if (ck.isActive() && ck.isReady(this)) returnAbility = ck;
+//		if (ckfirst.isActive() && ckfirst.isReady(this)) returnAbility = ckfirst;
 		
 		if (returnAbility != null) {
 			if (enabler.isActive() && SuitPower > 35 && (SuitPower - returnAbility.getCost()) < 35 && enablerbuff.durationLeft() == 0) {
@@ -1420,6 +1430,25 @@ public class Stalker implements WildstarClass {
 		ap = baseap;
 		sp = basesp;
 		flatdamagebuff = 0;
+		
+		//fill prio array
+		Ability[] priofilltemp = new Ability[4];
+		priofilltemp[0] = shred;
+		priofilltemp[1] = ruin;
+		priofilltemp[2] = impale;
+		priofilltemp[3] = ck;;
+		
+		for (int i = 0; i<priofilltemp.length; i++) {
+			gcdabilities[priofilltemp[i].getPrio()-1] = priofilltemp[i];
+			
+		}
+		
+//		gcdabilities[0] = shred;
+//		gcdabilities[1] = ruin;
+//		gcdabilities[2] = impale;
+//		gcdabilities[3] = ck;
+		
+		
 		
 	}
 

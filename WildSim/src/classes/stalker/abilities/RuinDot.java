@@ -202,5 +202,18 @@ public class RuinDot implements Ability {
 		currentCD = 0;
 		
 	}
+	
+	@Override
+	public int getPrio() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public void setPrio(int prio) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

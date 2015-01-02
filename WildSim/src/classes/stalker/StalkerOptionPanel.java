@@ -27,18 +27,20 @@ public class StalkerOptionPanel extends JPanel {
 		//Abilities
 		
 		JPanel abilities = new JPanel(new FlowLayout());
-		abilities.setPreferredSize(new Dimension(225, 100));
+		abilities.setPreferredSize(new Dimension(225, 150));
 		
 		JLabel abilities1 = new JLabel("Active");
-		abilities1.setPreferredSize(new Dimension(35, 20));
+		abilities1.setPreferredSize(new Dimension(35, 15));
 		JLabel abilities2 = new JLabel("Ability");
-		abilities2.setPreferredSize(new Dimension(95, 20));
+		abilities2.setPreferredSize(new Dimension(95, 15));
 		JLabel abilities3 = new JLabel("Tier");
-		abilities3.setPreferredSize(new Dimension(95, 20));
+		abilities3.setPreferredSize(new Dimension(47, 15));
+		JLabel abilities4 = new JLabel("Prio");
+		abilities4.setPreferredSize(new Dimension(47, 15));
 		
 		//#
 		JCheckBox shredbox = new JCheckBox();
-		shredbox.setPreferredSize(new Dimension(35, 20));
+		shredbox.setPreferredSize(new Dimension(35, 15));
 		shredbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -53,9 +55,9 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		shredbox.setSelected(stalker.getShred().isActive());
 		JLabel shred = new JLabel("Shred: ");
-		shred.setPreferredSize(new Dimension(95, 20));
+		shred.setPreferredSize(new Dimension(95, 15));
 		JTextField shredinsert = new JTextField(Integer.toString(stalker.getShred().getTier()));
-		shredinsert.setPreferredSize(new Dimension(95, 20));
+		shredinsert.setPreferredSize(new Dimension(47, 15));
 		shredinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -69,10 +71,24 @@ public class StalkerOptionPanel extends JPanel {
 				
 			}
 		});
+		JTextField shredprioinsert = new JTextField(Integer.toString(stalker.getShred().getPrio()));
+		shredprioinsert.setPreferredSize(new Dimension(47, 15));
+		shredprioinsert.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				stalker.getShred().setPrio(Integer.parseInt(shredprioinsert.getText()));
+				
+			}
+		});
 		
 		//#
 		JCheckBox impalebox = new JCheckBox();
-		impalebox.setPreferredSize(new Dimension(35, 20));
+		impalebox.setPreferredSize(new Dimension(35, 15));
 		impalebox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -85,9 +101,9 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		impalebox.setSelected(stalker.getImpale().isActive());
 		JLabel impale = new JLabel("Impale: ");
-		impale.setPreferredSize(new Dimension(95, 20));
+		impale.setPreferredSize(new Dimension(95, 15));
 		JTextField impaleinsert = new JTextField(Integer.toString(stalker.getImpale().getTier()));
-		impaleinsert.setPreferredSize(new Dimension(95, 20));
+		impaleinsert.setPreferredSize(new Dimension(47, 15));
 		impaleinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -99,10 +115,26 @@ public class StalkerOptionPanel extends JPanel {
 				stalker.getImpale().setTier(Integer.parseInt(impaleinsert.getText()));
 			}
 		});
+		JTextField impaleprioinsert = new JTextField(Integer.toString(stalker.getImpale().getPrio()));
+		impaleprioinsert.setPreferredSize(new Dimension(47, 15));
+		impaleprioinsert.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				stalker.getImpale().setPrio(Integer.parseInt(impaleprioinsert.getText()));
+				
+			}
+		});
+		
+		
 		
 		//#
 		JCheckBox punishbox = new JCheckBox();
-		punishbox.setPreferredSize(new Dimension(35, 20));
+		punishbox.setPreferredSize(new Dimension(35, 15));
 		punishbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -115,9 +147,9 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		punishbox.setSelected(stalker.getPunish().isActive());
 		JLabel punish = new JLabel("Punish: ");
-		punish.setPreferredSize(new Dimension(95, 20));
+		punish.setPreferredSize(new Dimension(95, 15));
 		JTextField punishinsert = new JTextField(Integer.toString(stalker.getPunish().getTier()));
-		punishinsert.setPreferredSize(new Dimension(95, 20));
+		punishinsert.setPreferredSize(new Dimension(95, 15));
 		punishinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -132,7 +164,7 @@ public class StalkerOptionPanel extends JPanel {
 		
 		//#
 		JCheckBox ckbox = new JCheckBox();
-		ckbox.setPreferredSize(new Dimension(35, 20));
+		ckbox.setPreferredSize(new Dimension(35, 15));
 		ckbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -149,9 +181,9 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		ckbox.setSelected(stalker.getCK().isActive());
 		JLabel ck = new JLabel("CK: ");
-		ck.setPreferredSize(new Dimension(95, 20));
+		ck.setPreferredSize(new Dimension(95, 15));
 		JTextField ckinsert = new JTextField(Integer.toString(stalker.getCK().getTier()));
-		ckinsert.setPreferredSize(new Dimension(95, 20));
+		ckinsert.setPreferredSize(new Dimension(47, 15));
 		ckinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -163,14 +195,29 @@ public class StalkerOptionPanel extends JPanel {
 				stalker.getCK().setTier(Integer.parseInt(ckinsert.getText()));
 				stalker.getCKadd().setTier(Integer.parseInt(ckinsert.getText()));
 				stalker.getCKFirst().setTier(Integer.parseInt(ckinsert.getText()));
+			}
+		});
+		JTextField ckprioinsert = new JTextField(Integer.toString(stalker.getCK().getPrio()));
+		ckprioinsert.setPreferredSize(new Dimension(47, 15));
+		ckprioinsert.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				stalker.getCK().setPrio(Integer.parseInt(ckprioinsert.getText()));
+				stalker.getCKFirst().setPrio(Integer.parseInt(ckprioinsert.getText()));
 				
-			
 			}
 		});
 		
+		
+		
 		//#
 		JCheckBox AWbox = new JCheckBox();
-		AWbox.setPreferredSize(new Dimension(35, 20));
+		AWbox.setPreferredSize(new Dimension(35, 15));
 		AWbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -183,9 +230,9 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		AWbox.setSelected(stalker.getAW().isActive());
 		JLabel AW = new JLabel("AW: ");
-		AW.setPreferredSize(new Dimension(95, 20));
+		AW.setPreferredSize(new Dimension(95, 15));
 		JTextField AWinsert = new JTextField(Integer.toString(stalker.getAW().getTier()));
-		AWinsert.setPreferredSize(new Dimension(95, 20));
+		AWinsert.setPreferredSize(new Dimension(95, 15));
 		AWinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -200,7 +247,7 @@ public class StalkerOptionPanel extends JPanel {
 		
 		//#
 		JCheckBox prepbox = new JCheckBox();
-		prepbox.setPreferredSize(new Dimension(35, 20));
+		prepbox.setPreferredSize(new Dimension(35, 15));
 		prepbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -213,9 +260,9 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		prepbox.setSelected(stalker.getPreparation().isActive());
 		JLabel prep = new JLabel("Prep.: ");
-		prep.setPreferredSize(new Dimension(95, 20));
+		prep.setPreferredSize(new Dimension(95, 15));
 		JTextField prepinsert = new JTextField(Integer.toString(stalker.getPreparation().getTier()));
-		prepinsert.setPreferredSize(new Dimension(95, 20));
+		prepinsert.setPreferredSize(new Dimension(95, 15));
 		prepinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -230,7 +277,7 @@ public class StalkerOptionPanel extends JPanel {
 		
 		//#
 		JCheckBox collapsebox = new JCheckBox();
-		collapsebox.setPreferredSize(new Dimension(35, 20));
+		collapsebox.setPreferredSize(new Dimension(35, 15));
 		collapsebox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -243,9 +290,9 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		collapsebox.setSelected(stalker.getCollapse().isActive());
 		JLabel collapse = new JLabel("Collapse: ");
-		collapse.setPreferredSize(new Dimension(95, 20));
+		collapse.setPreferredSize(new Dimension(95, 15));
 		JTextField collapseinsert = new JTextField(Integer.toString(stalker.getCollapse().getTier()));
-		collapseinsert.setPreferredSize(new Dimension(95, 20));
+		collapseinsert.setPreferredSize(new Dimension(95, 15));
 		collapseinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -260,7 +307,7 @@ public class StalkerOptionPanel extends JPanel {
 		
 		//#
 		JCheckBox staggerbox = new JCheckBox();
-		staggerbox.setPreferredSize(new Dimension(35, 20));
+		staggerbox.setPreferredSize(new Dimension(35, 15));
 		staggerbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -273,9 +320,9 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		staggerbox.setSelected(stalker.getStagger().isActive());
 		JLabel stagger = new JLabel("Stagger: ");
-		stagger.setPreferredSize(new Dimension(95, 20));
+		stagger.setPreferredSize(new Dimension(95, 15));
 		JTextField staggerinsert = new JTextField(Integer.toString(stalker.getStagger().getTier()));
-		staggerinsert.setPreferredSize(new Dimension(95, 20));
+		staggerinsert.setPreferredSize(new Dimension(95, 15));
 		staggerinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -290,7 +337,7 @@ public class StalkerOptionPanel extends JPanel {
 		
 		//#
 		JCheckBox tretreatbox = new JCheckBox();
-		tretreatbox.setPreferredSize(new Dimension(35, 20));
+		tretreatbox.setPreferredSize(new Dimension(35, 15));
 		tretreatbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -303,14 +350,14 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		tretreatbox.setSelected(stalker.getTacticalRetreat().isActive());
 		JLabel tretreat = new JLabel("Use T. Retreat");
-		tretreat.setPreferredSize(new Dimension(95, 20));
+		tretreat.setPreferredSize(new Dimension(95, 15));
 		JTextField tretreatinsert = new JTextField();
-		tretreatinsert.setPreferredSize(new Dimension(95, 20));
+		tretreatinsert.setPreferredSize(new Dimension(95, 15));
 		tretreatinsert.setEditable(false);
 		
 		//#
 		JCheckBox ruinbox = new JCheckBox();
-		ruinbox.setPreferredSize(new Dimension(35, 20));
+		ruinbox.setPreferredSize(new Dimension(35, 15));
 		ruinbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -325,9 +372,9 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		ruinbox.setSelected(stalker.getRuin().isActive());
 		JLabel ruin = new JLabel("Ruin: ");
-		ruin.setPreferredSize(new Dimension(95, 20));
+		ruin.setPreferredSize(new Dimension(95, 15));
 		JTextField ruininsert = new JTextField(Integer.toString(stalker.getRuin().getTier()));
-		ruininsert.setPreferredSize(new Dimension(95, 20));
+		ruininsert.setPreferredSize(new Dimension(47, 15));
 		ruininsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -341,10 +388,24 @@ public class StalkerOptionPanel extends JPanel {
 				
 			}
 		});
+		JTextField ruinprioinsert = new JTextField(Integer.toString(stalker.getRuin().getPrio()));
+		ruinprioinsert.setPreferredSize(new Dimension(47, 15));
+		ruinprioinsert.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				stalker.getRuin().setPrio(Integer.parseInt(ruinprioinsert.getText()));
+				
+			}
+		});
 		
 		//#
 		JCheckBox innatebox = new JCheckBox();
-		innatebox.setPreferredSize(new Dimension(35, 20));
+		innatebox.setPreferredSize(new Dimension(35, 15));
 		innatebox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -357,41 +418,50 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		innatebox.setSelected(stalker.getInnate().isActive());
 		JLabel innate = new JLabel("Use Innate");
-		innate.setPreferredSize(new Dimension(95, 20));
+		innate.setPreferredSize(new Dimension(95, 15));
 		JTextField innateinsert = new JTextField();
-		innateinsert.setPreferredSize(new Dimension(95, 20));
+		innateinsert.setPreferredSize(new Dimension(95, 15));
 		innateinsert.setEditable(false);
 				
+		JLabel nongcd = new JLabel("GCD Independent Abilities");
+		nongcd.setPreferredSize(new Dimension(225, 15));
+		
 		abilities.add(abilities1);
 		abilities.add(abilities2);
 		abilities.add(abilities3);
+		abilities.add(abilities4);
 		abilities.add(shredbox);
 		abilities.add(shred);
 		abilities.add(shredinsert);
+		abilities.add(shredprioinsert);
 		abilities.add(impalebox);
 		abilities.add(impale);
 		abilities.add(impaleinsert);
-		abilities.add(punishbox);
-		abilities.add(punish);
-		abilities.add(punishinsert);
+		abilities.add(impaleprioinsert);
 		abilities.add(ckbox);
 		abilities.add(ck);
 		abilities.add(ckinsert);
+		abilities.add(ckprioinsert);
+		abilities.add(ruinbox);
+		abilities.add(ruin);
+		abilities.add(ruininsert);
+		abilities.add(ruinprioinsert);
+		abilities.add(nongcd);
+		abilities.add(punishbox);
+		abilities.add(punish);
+		abilities.add(punishinsert);
 		abilities.add(AWbox);
 		abilities.add(AW);
 		abilities.add(AWinsert);
-		abilities.add(prepbox);
-		abilities.add(prep);
-		abilities.add(prepinsert);
 		abilities.add(collapsebox);
 		abilities.add(collapse);
 		abilities.add(collapseinsert);
 		abilities.add(staggerbox);
 		abilities.add(stagger);
 		abilities.add(staggerinsert);
-		abilities.add(ruinbox);
-		abilities.add(ruin);
-		abilities.add(ruininsert);
+		abilities.add(prepbox);
+		abilities.add(prep);
+		abilities.add(prepinsert);
 		abilities.add(tretreatbox);
 		abilities.add(tretreat);
 		abilities.add(tretreatinsert);
@@ -404,15 +474,15 @@ public class StalkerOptionPanel extends JPanel {
 		//AMPs
 		
 		JPanel amps = new JPanel(new FlowLayout());
-		amps.setPreferredSize(new Dimension(225, 100));
+		amps.setPreferredSize(new Dimension(225, 150));
 		
 		JLabel amps1 = new JLabel("Active");
-		amps1.setPreferredSize(new Dimension(35, 20));
+		amps1.setPreferredSize(new Dimension(35, 15));
 		JLabel amps2 = new JLabel("AMPs");
-		amps2.setPreferredSize(new Dimension(190, 20));
+		amps2.setPreferredSize(new Dimension(190, 15));
 		
 		JCheckBox cutthroatbox = new JCheckBox();
-		cutthroatbox.setPreferredSize(new Dimension(35, 20));
+		cutthroatbox.setPreferredSize(new Dimension(35, 15));
 		cutthroatbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -425,11 +495,11 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		cutthroatbox.setSelected(stalker.getCutthroat().isActive());
 		JLabel cutthroat = new JLabel("Cutthroat");
-		cutthroat.setPreferredSize(new Dimension(190, 20));
+		cutthroat.setPreferredSize(new Dimension(190, 15));
 		
 		//#
 		JCheckBox enablerbox = new JCheckBox();
-		enablerbox.setPreferredSize(new Dimension(35, 20));
+		enablerbox.setPreferredSize(new Dimension(35, 15));
 		enablerbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -442,11 +512,11 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		enablerbox.setSelected(stalker.getEnabler().isActive());
 		JLabel enabler = new JLabel("Enabler");
-		enabler.setPreferredSize(new Dimension(190, 20));
+		enabler.setPreferredSize(new Dimension(190, 15));
 		
 		//#
 		JCheckBox devastatebox = new JCheckBox();
-		devastatebox.setPreferredSize(new Dimension(35, 20));
+		devastatebox.setPreferredSize(new Dimension(35, 15));
 		devastatebox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -459,12 +529,12 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		devastatebox.setSelected(stalker.getDevastate().isActive());
 		JLabel devastate = new JLabel("Devastate");
-		devastate.setPreferredSize(new Dimension(190, 20));
+		devastate.setPreferredSize(new Dimension(190, 15));
 		
 		
 		//#
 		JCheckBox stealthmasterbox = new JCheckBox();
-		stealthmasterbox.setPreferredSize(new Dimension(35, 20));
+		stealthmasterbox.setPreferredSize(new Dimension(35, 15));
 		stealthmasterbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -477,11 +547,11 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		stealthmasterbox.setSelected(stalker.getStealthMastery().isActive());
 		JLabel stealthmastery = new JLabel("Stealth Mastery");
-		stealthmastery.setPreferredSize(new Dimension(190, 20));
+		stealthmastery.setPreferredSize(new Dimension(190, 15));
 		
 		//#
 		JCheckBox unfairadvantagebox = new JCheckBox();
-		unfairadvantagebox.setPreferredSize(new Dimension(35, 20));
+		unfairadvantagebox.setPreferredSize(new Dimension(35, 15));
 		unfairadvantagebox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -494,12 +564,12 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		unfairadvantagebox.setSelected(stalker.getUnfairAdvantage().isActive());
 		JLabel unfairadvantage = new JLabel("Unfair Advantage");
-		unfairadvantage.setPreferredSize(new Dimension(190, 20));
+		unfairadvantage.setPreferredSize(new Dimension(190, 15));
 		
 		
 		//#
 		JCheckBox ripostebox = new JCheckBox();
-		ripostebox.setPreferredSize(new Dimension(35, 20));
+		ripostebox.setPreferredSize(new Dimension(35, 15));
 		ripostebox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -512,13 +582,13 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		ripostebox.setSelected(stalker.getRiposte().isActive());
 		JLabel riposte = new JLabel("Riposte");
-		riposte.setPreferredSize(new Dimension(190, 20));
+		riposte.setPreferredSize(new Dimension(190, 15));
 		
 		
 		
 		//#
 		JCheckBox fatalwoundsbox = new JCheckBox();
-		fatalwoundsbox.setPreferredSize(new Dimension(35, 20));
+		fatalwoundsbox.setPreferredSize(new Dimension(35, 15));
 		fatalwoundsbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -531,13 +601,13 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		fatalwoundsbox.setSelected(stalker.getFatalWounds().isActive());
 		JLabel fatalwounds = new JLabel("Fatal Wounds");
-		fatalwounds.setPreferredSize(new Dimension(190, 20));
+		fatalwounds.setPreferredSize(new Dimension(190, 15));
 		
 		
 		
 		//#
 		JCheckBox onslaughtbox = new JCheckBox();
-		onslaughtbox.setPreferredSize(new Dimension(35, 20));
+		onslaughtbox.setPreferredSize(new Dimension(35, 15));
 		onslaughtbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -550,13 +620,13 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		onslaughtbox.setSelected(stalker.getOnslaught().isActive());
 		JLabel onslaught = new JLabel("Onslaught");
-		onslaught.setPreferredSize(new Dimension(190, 20));
+		onslaught.setPreferredSize(new Dimension(190, 15));
 		
 		
 		
 		//#
 		JCheckBox battlemastbox = new JCheckBox();
-		battlemastbox.setPreferredSize(new Dimension(35, 20));
+		battlemastbox.setPreferredSize(new Dimension(35, 15));
 		battlemastbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -569,13 +639,13 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		battlemastbox.setSelected(stalker.getBattleMastery().isActive());
 		JLabel battlemast = new JLabel("Battle Mastery");
-		battlemast.setPreferredSize(new Dimension(190, 20));
+		battlemast.setPreferredSize(new Dimension(190, 15));
 		
 		
 		
 		//#
 		JCheckBox killerinstbox = new JCheckBox();
-		killerinstbox.setPreferredSize(new Dimension(35, 20));
+		killerinstbox.setPreferredSize(new Dimension(35, 15));
 		killerinstbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -588,12 +658,12 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		killerinstbox.setSelected(stalker.getKillerInstinct().isActive());
 		JLabel killerinst = new JLabel("Killer Instinct");
-		killerinst.setPreferredSize(new Dimension(190, 20));
+		killerinst.setPreferredSize(new Dimension(190, 15));
 		
 		
 		
 		JCheckBox critsevbox = new JCheckBox();
-		critsevbox.setPreferredSize(new Dimension(35, 20));
+		critsevbox.setPreferredSize(new Dimension(35, 15));
 		critsevbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -606,9 +676,9 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		critsevbox.setSelected(stalker.getCritSevAMP().isActive());
 		JLabel critsev = new JLabel("Crit Sev: ");
-		critsev.setPreferredSize(new Dimension(95, 20));
+		critsev.setPreferredSize(new Dimension(95, 15));
 		JTextField critsevinsert = new JTextField(Float.toString(stalker.getCritSevAMP().getAmount()));
-		critsevinsert.setPreferredSize(new Dimension(95, 20));
+		critsevinsert.setPreferredSize(new Dimension(95, 15));
 		critsevinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {

@@ -19,6 +19,8 @@ public class ConcussiveKicks implements Ability {
 	int cooldown = 8000;
 	int currentCD = 0;
 	
+	int prio = 1;
+	
 	public ConcussiveKicks(int tier, boolean active) {
 		this.tier = tier;
 		isActive = active;
@@ -212,6 +214,18 @@ public class ConcussiveKicks implements Ability {
 		amountCritDamage = 0;
 	
 		currentCD = 0;
+		
+	}
+	
+	@Override
+	public int getPrio() {
+		return prio;
+	}
+
+
+	@Override
+	public void setPrio(int prio) {
+		this.prio = prio;
 		
 	}
 	

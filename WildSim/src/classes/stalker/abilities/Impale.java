@@ -19,6 +19,7 @@ public class Impale implements Ability {
 	boolean isActive;
 	int tier;
 	int globalCD;
+	int prio = 2;
 	
 	public Impale(int level, boolean active) {
 		this.tier = level;
@@ -277,7 +278,17 @@ public class Impale implements Ability {
 		} else {
 			cost = 30;
 		}
+	}
 	
+	@Override
+	public int getPrio() {
+		return prio;
+	}
+
+
+	@Override
+	public void setPrio(int prio) {
+		this.prio = prio;
 		
 	}
 }

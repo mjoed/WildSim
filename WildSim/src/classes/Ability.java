@@ -116,4 +116,8 @@ public interface Ability extends Comparable<Ability> {
 	
 	public void resetValues();
 	
+	public int getPrio();
+	
+	public void setPrio(int prio);
+	
 }

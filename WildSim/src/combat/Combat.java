@@ -17,10 +17,11 @@ import classes.stalker.Stalker;
  */
 public class Combat implements Runnable {
 	
-	boolean combatlogdmg = false;
+	boolean combatlogdmg = true;
 	
 	int globalcd = 0;
-	int maxtime = 36000000;
+//	int maxtime = 36000000;
+	int maxtime = 120000;
 	int currtime = 0;
 	float dmgoverall;
 	float currdmg;

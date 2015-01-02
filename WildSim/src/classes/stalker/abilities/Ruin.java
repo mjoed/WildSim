@@ -20,6 +20,8 @@ public class Ruin implements Ability {
 	int cooldown = 6000;
 	int currentCD = 0;
 	
+	int prio = 4;
+	
 	public Ruin(int tier, boolean active) {
 		this.tier = tier;
 		isActive = active;
@@ -210,6 +212,18 @@ public class Ruin implements Ability {
 		amountCritDamage = 0;
 	
 		currentCD = 0;
+		
+	}
+	
+	@Override
+	public int getPrio() {
+		return prio;
+	}
+
+
+	@Override
+	public void setPrio(int prio) {
+		this.prio = prio;
 		
 	}
 	

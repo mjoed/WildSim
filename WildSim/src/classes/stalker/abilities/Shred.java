@@ -15,6 +15,8 @@ public class Shred implements Ability {
 	boolean isActive;
 	int tier;
 	int globalCD;
+	int prio = 3;
+	
 	
 	//TODO "currentCD" is misused for timing calculation of 2nd and 3rd shred hit
 	int currentCD;
@@ -195,6 +197,19 @@ public class Shred implements Ability {
 		amountCritDamage = 0;
 	
 		currentCD = 0;
+		
+	}
+	
+	
+	@Override
+	public int getPrio() {
+		return prio;
+	}
+
+
+	@Override
+	public void setPrio(int prio) {
+		this.prio = prio;
 		
 	}
 }

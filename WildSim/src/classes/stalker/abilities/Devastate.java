@@ -196,6 +196,18 @@ public class Devastate implements Ability {
 		amountHitDamage = 0;
 		amountCritDamage = 0;
 	
+	}
+	
+	@Override
+	public int getPrio() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public void setPrio(int prio) {
+		// TODO Auto-generated method stub
 		
 	}
 }
