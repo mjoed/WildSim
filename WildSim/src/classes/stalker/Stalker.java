@@ -13,7 +13,7 @@ import classes.stalker.buffs.*;
 public class Stalker implements WildstarClass {
 	
 	
-	boolean combatlogressource = false;
+	boolean combatlogressource = true;
 	int SuitPower;
 	float ap;
 	float baseap;
@@ -1251,7 +1251,7 @@ public class Stalker implements WildstarClass {
 		checkForAMPsBuffs();
 	}
 	
-	public Ability getPreparation() {
+	public Preparation getPreparation() {
 		return prep;
 	}
 	public void setPreparationTier(int tier) {

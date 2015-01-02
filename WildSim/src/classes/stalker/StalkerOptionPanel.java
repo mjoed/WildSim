@@ -469,6 +469,29 @@ public class StalkerOptionPanel extends JPanel {
 		abilities.add(innate);
 		abilities.add(innateinsert);
 		
+		JLabel additionaloptions = new JLabel("Additional Options");
+		additionaloptions.setPreferredSize(new Dimension(225, 15));
+		
+		abilities.add(additionaloptions);
+		
+		JCheckBox prepchannelbox = new JCheckBox();
+		prepchannelbox.setPreferredSize(new Dimension(35, 15));
+		prepchannelbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (prepchannelbox.isSelected()) {
+					stalker.getPreparation().setCompleteChannel(true);
+				} else {
+					stalker.getPreparation().setCompleteChannel(false);
+				}
+			}
+		});
+		prepchannelbox.setSelected(stalker.getPreparation().completeChannel());
+		JLabel prepchannel = new JLabel("Fully Channel Prep");
+		prepchannel.setPreferredSize(new Dimension(190, 15));
+		
+		abilities.add(prepchannelbox);
+		abilities.add(prepchannel);
 		
 		//########
 		//AMPs
