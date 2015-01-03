@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import classes.Ability;
 import classes.WildstarClass;
 import helpers.*;
 
@@ -31,7 +30,6 @@ public class StalkerOptionPanel extends JPanel {
 		
 		//input verifier
 		InputVerifier tierintverifier = new TierVerifier(this);
-		InputVerifier percentverifier = new PercentageVerifier(this);
 		
 		//########
 		//Abilities
