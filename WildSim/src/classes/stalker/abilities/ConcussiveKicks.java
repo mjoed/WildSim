@@ -19,6 +19,11 @@ public class ConcussiveKicks implements Ability {
 	int cooldown = 8000;
 	int currentCD = 0;
 	
+	boolean useAfterPunish = false;
+	boolean punishUsed = false;
+	
+	int castAtPunishCD = 2000;
+	
 	int prio = 1;
 	
 	public ConcussiveKicks(int tier, boolean active) {
@@ -139,9 +144,18 @@ public class ConcussiveKicks implements Ability {
 		Ability punish = player.getPunish();
 		Buff ckcd = player.getCKCD();
 		
+		if (useAfterPunish) {
+			if (punishUsed && currentCD == 0) {
+				punishUsed = false;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
 		if (tier == 8 && currentCD == 0) {
 			if (ckcd.isActive()) {
-				if (punish.getCurrentCD() > 2000) {
+				if (punish.getCurrentCD() > castAtPunishCD) {
 					return true;
 				}
 			}
@@ -227,6 +241,26 @@ public class ConcussiveKicks implements Ability {
 	public void setPrio(int prio) {
 		this.prio = prio;
 		
+	}
+	
+	public int getCastAtPunishCD() {
+		return castAtPunishCD;
+	}
+	
+	public void setCastAtPunishCD(int castAtPunishCD) {
+		this.castAtPunishCD = castAtPunishCD;
+	}
+	
+	public boolean getUseAfterPunish() {
+		return useAfterPunish;
+	}
+	
+	public void setUseAfterPunish(boolean useAfterPunish) {
+		this.useAfterPunish = useAfterPunish;
+	}
+	
+	public void setPunishUsed(boolean punishUsed) {
+		this.punishUsed = punishUsed;
 	}
 	
 }

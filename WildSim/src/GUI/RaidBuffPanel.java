@@ -1,5 +1,8 @@
 package GUI;
 
+import helpers.FloatVerifier;
+import helpers.PercentageVerifier;
+
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -8,6 +11,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.InputVerifier;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,6 +25,9 @@ public class RaidBuffPanel extends JPanel {
 	public RaidBuffPanel(Combat combat) {
 		JPanel raidbuff = new JPanel(new GridLayout(21, 4));
 		
+		
+		InputVerifier percentverifier = new PercentageVerifier(this);
+		InputVerifier floatverifier = new FloatVerifier(this);
 				
 		JLabel raidbuff1 = new JLabel("Active");
 		JLabel raidbuff2 = new JLabel("RaidBuff");
@@ -866,6 +873,49 @@ public class RaidBuffPanel extends JPanel {
 		raidbuff.add(bloodthirstamount);
 		raidbuff.add(bloodthirstuptime);
 		
+		
+		
+		//input verifiers
+		armorredamount.setInputVerifier(percentverifier);
+		armorreduptime.setInputVerifier(percentverifier);
+		reduceallresamount.setInputVerifier(percentverifier);
+		reduceallresuptime.setInputVerifier(percentverifier);
+		reducephysresamount.setInputVerifier(percentverifier);
+		reducephysresuptime.setInputVerifier(percentverifier);
+		reducemagresamount.setInputVerifier(percentverifier);
+		reducemagresuptime.setInputVerifier(percentverifier);
+		reducetechresamount.setInputVerifier(percentverifier);
+		reducetechresuptime.setInputVerifier(percentverifier);
+		reducedeflectamount.setInputVerifier(percentverifier);
+		reducedeflectuptime.setInputVerifier(percentverifier);
+		weaponspecdebuffamount.setInputVerifier(floatverifier);
+		weaponspecdebuffuptime.setInputVerifier(percentverifier);
+		technophiledebuffamount.setInputVerifier(floatverifier);
+		technophiledebuffuptime.setInputVerifier(percentverifier);
+		spellweaverdebuffamount.setInputVerifier(floatverifier);
+		spellweaverdebuffuptime.setInputVerifier(percentverifier);
+		punishamount.setInputVerifier(percentverifier);
+		punishuptime.setInputVerifier(percentverifier);
+		powerlinkamount.setInputVerifier(percentverifier);
+		powerlinkuptime.setInputVerifier(percentverifier);
+		powerlinkt4amount.setInputVerifier(percentverifier);
+		powerlinkt4uptime.setInputVerifier(percentverifier);		
+		empoweringamount.setInputVerifier(percentverifier);
+		empoweringuptime.setInputVerifier(percentverifier);		
+		empoweringt4amount.setInputVerifier(percentverifier);
+		empoweringt4uptime.setInputVerifier(percentverifier);
+		empoweringauraamount.setInputVerifier(percentverifier);
+		empoweringaurauptime.setInputVerifier(percentverifier);
+		voidpactamount.setInputVerifier(percentverifier);
+		voidpactuptime.setInputVerifier(percentverifier);
+		surgicalamount.setInputVerifier(percentverifier);
+		surgicaluptime.setInputVerifier(percentverifier);
+		pyrokinetict4amount.setInputVerifier(percentverifier);
+		pyrokinetict4uptime.setInputVerifier(percentverifier);
+		dualfireamount.setInputVerifier(percentverifier);
+		dualfireuptime.setInputVerifier(percentverifier);
+		bloodthirstamount.setInputVerifier(percentverifier);
+		bloodthirstuptime.setInputVerifier(percentverifier);
 		
 		
 		

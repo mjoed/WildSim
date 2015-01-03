@@ -10,18 +10,28 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.InputVerifier;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
+import classes.Ability;
 import classes.WildstarClass;
+import helpers.*;
 
 @SuppressWarnings("serial")
 public class StalkerOptionPanel extends JPanel {
 
 	public StalkerOptionPanel(WildstarClass player) {
 		Stalker stalker = (Stalker)player;
+		
+		//input verifier
+		InputVerifier tierintverifier = new TierVerifier(this);
+		InputVerifier percentverifier = new PercentageVerifier(this);
 		
 		//########
 		//Abilities
@@ -71,20 +81,21 @@ public class StalkerOptionPanel extends JPanel {
 				
 			}
 		});
+		shredinsert.setInputVerifier(tierintverifier);
 		JTextField shredprioinsert = new JTextField(Integer.toString(stalker.getShred().getPrio()));
 		shredprioinsert.setPreferredSize(new Dimension(47, 15));
-		shredprioinsert.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				return;
-			}
-
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				stalker.getShred().setPrio(Integer.parseInt(shredprioinsert.getText()));
-				
-			}
-		});
+//		shredprioinsert.addFocusListener(new FocusListener() {
+//			@Override
+//			public void focusGained(FocusEvent arg0) {
+//				return;
+//			}
+//
+//			@Override
+//			public void focusLost(FocusEvent arg0) {
+//				stalker.getShred().setPrio(Integer.parseInt(shredprioinsert.getText()));
+//				
+//			}
+//		});
 		
 		//#
 		JCheckBox impalebox = new JCheckBox();
@@ -104,6 +115,7 @@ public class StalkerOptionPanel extends JPanel {
 		impale.setPreferredSize(new Dimension(95, 15));
 		JTextField impaleinsert = new JTextField(Integer.toString(stalker.getImpale().getTier()));
 		impaleinsert.setPreferredSize(new Dimension(47, 15));
+		impaleinsert.setInputVerifier(tierintverifier);
 		impaleinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -117,18 +129,18 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		JTextField impaleprioinsert = new JTextField(Integer.toString(stalker.getImpale().getPrio()));
 		impaleprioinsert.setPreferredSize(new Dimension(47, 15));
-		impaleprioinsert.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				return;
-			}
-
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				stalker.getImpale().setPrio(Integer.parseInt(impaleprioinsert.getText()));
-				
-			}
-		});
+//		impaleprioinsert.addFocusListener(new FocusListener() {
+//			@Override
+//			public void focusGained(FocusEvent arg0) {
+//				return;
+//			}
+//
+//			@Override
+//			public void focusLost(FocusEvent arg0) {
+//				stalker.getImpale().setPrio(Integer.parseInt(impaleprioinsert.getText()));
+//				
+//			}
+//		});
 		
 		
 		
@@ -150,6 +162,7 @@ public class StalkerOptionPanel extends JPanel {
 		punish.setPreferredSize(new Dimension(95, 15));
 		JTextField punishinsert = new JTextField(Integer.toString(stalker.getPunish().getTier()));
 		punishinsert.setPreferredSize(new Dimension(95, 15));
+		punishinsert.setInputVerifier(tierintverifier);
 		punishinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -184,6 +197,7 @@ public class StalkerOptionPanel extends JPanel {
 		ck.setPreferredSize(new Dimension(95, 15));
 		JTextField ckinsert = new JTextField(Integer.toString(stalker.getCK().getTier()));
 		ckinsert.setPreferredSize(new Dimension(47, 15));
+		ckinsert.setInputVerifier(tierintverifier);
 		ckinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -199,19 +213,19 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		JTextField ckprioinsert = new JTextField(Integer.toString(stalker.getCK().getPrio()));
 		ckprioinsert.setPreferredSize(new Dimension(47, 15));
-		ckprioinsert.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				return;
-			}
-
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				stalker.getCK().setPrio(Integer.parseInt(ckprioinsert.getText()));
-				stalker.getCKFirst().setPrio(Integer.parseInt(ckprioinsert.getText()));
-				
-			}
-		});
+//		ckprioinsert.addFocusListener(new FocusListener() {
+//			@Override
+//			public void focusGained(FocusEvent arg0) {
+//				return;
+//			}
+//
+//			@Override
+//			public void focusLost(FocusEvent arg0) {
+//				stalker.getCK().setPrio(Integer.parseInt(ckprioinsert.getText()));
+//				stalker.getCKFirst().setPrio(Integer.parseInt(ckprioinsert.getText()));
+//				
+//			}
+//		});
 		
 		
 		
@@ -233,6 +247,7 @@ public class StalkerOptionPanel extends JPanel {
 		AW.setPreferredSize(new Dimension(95, 15));
 		JTextField AWinsert = new JTextField(Integer.toString(stalker.getAW().getTier()));
 		AWinsert.setPreferredSize(new Dimension(95, 15));
+		AWinsert.setInputVerifier(tierintverifier);
 		AWinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -263,6 +278,7 @@ public class StalkerOptionPanel extends JPanel {
 		prep.setPreferredSize(new Dimension(95, 15));
 		JTextField prepinsert = new JTextField(Integer.toString(stalker.getPreparation().getTier()));
 		prepinsert.setPreferredSize(new Dimension(95, 15));
+		prepinsert.setInputVerifier(tierintverifier);
 		prepinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -293,6 +309,7 @@ public class StalkerOptionPanel extends JPanel {
 		collapse.setPreferredSize(new Dimension(95, 15));
 		JTextField collapseinsert = new JTextField(Integer.toString(stalker.getCollapse().getTier()));
 		collapseinsert.setPreferredSize(new Dimension(95, 15));
+		collapseinsert.setInputVerifier(tierintverifier);
 		collapseinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -323,6 +340,7 @@ public class StalkerOptionPanel extends JPanel {
 		stagger.setPreferredSize(new Dimension(95, 15));
 		JTextField staggerinsert = new JTextField(Integer.toString(stalker.getStagger().getTier()));
 		staggerinsert.setPreferredSize(new Dimension(95, 15));
+		staggerinsert.setInputVerifier(tierintverifier);
 		staggerinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -375,6 +393,7 @@ public class StalkerOptionPanel extends JPanel {
 		ruin.setPreferredSize(new Dimension(95, 15));
 		JTextField ruininsert = new JTextField(Integer.toString(stalker.getRuin().getTier()));
 		ruininsert.setPreferredSize(new Dimension(47, 15));
+		ruininsert.setInputVerifier(tierintverifier);
 		ruininsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -390,18 +409,18 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		JTextField ruinprioinsert = new JTextField(Integer.toString(stalker.getRuin().getPrio()));
 		ruinprioinsert.setPreferredSize(new Dimension(47, 15));
-		ruinprioinsert.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				return;
-			}
-
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				stalker.getRuin().setPrio(Integer.parseInt(ruinprioinsert.getText()));
-				
-			}
-		});
+//		ruinprioinsert.addFocusListener(new FocusListener() {
+//			@Override
+//			public void focusGained(FocusEvent arg0) {
+//				return;
+//			}
+//
+//			@Override
+//			public void focusLost(FocusEvent arg0) {
+//				stalker.getRuin().setPrio(Integer.parseInt(ruinprioinsert.getText()));
+//				
+//			}
+//		});
 		
 		//#
 		JCheckBox innatebox = new JCheckBox();
@@ -425,6 +444,12 @@ public class StalkerOptionPanel extends JPanel {
 				
 		JLabel nongcd = new JLabel("GCD Independent Abilities");
 		nongcd.setPreferredSize(new Dimension(225, 15));
+		
+		shredprioinsert.setInputVerifier(new PrioVerifier(this, shredprioinsert, impaleprioinsert, ckprioinsert, ruinprioinsert, stalker.getShred(), stalker.getImpale(), stalker.getCK(), stalker.getRuin(), 1));
+		impaleprioinsert.setInputVerifier(new PrioVerifier(this, shredprioinsert, impaleprioinsert, ckprioinsert, ruinprioinsert, stalker.getShred(), stalker.getImpale(), stalker.getCK(), stalker.getRuin(), 2));
+		ckprioinsert.setInputVerifier(new PrioVerifier(this, shredprioinsert, impaleprioinsert, ckprioinsert, ruinprioinsert, stalker.getShred(), stalker.getImpale(), stalker.getCK(), stalker.getRuin(), 3));
+		ruinprioinsert.setInputVerifier(new PrioVerifier(this, shredprioinsert, impaleprioinsert, ckprioinsert, ruinprioinsert, stalker.getShred(), stalker.getImpale(), stalker.getCK(), stalker.getRuin(), 4));
+		
 		
 		abilities.add(abilities1);
 		abilities.add(abilities2);
@@ -702,6 +727,41 @@ public class StalkerOptionPanel extends JPanel {
 		critsev.setPreferredSize(new Dimension(95, 15));
 		JTextField critsevinsert = new JTextField(Float.toString(stalker.getCritSevAMP().getAmount()));
 		critsevinsert.setPreferredSize(new Dimension(95, 15));
+		critsevinsert.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent input) {
+				String text = critsevinsert.getText();
+				float  n = 0; 
+		        try {
+		        	n = Float.parseFloat(text); 
+		        } catch (NumberFormatException e) {
+		            Runnable runnable = new Runnable() {
+		                public void run() {
+		                  JOptionPane.showMessageDialog(amps,
+		                      "Not a Number!", "Error",
+		                      JOptionPane.ERROR_MESSAGE);
+		                }
+		            };
+		            SwingUtilities.invokeLater(runnable);
+		        	return false; 
+		        }
+		        
+		        if (n == 0.12f || n == 0.08f || n == 0.04f) {
+
+		        	return true; 
+		        } else {
+		        	Runnable runnable = new Runnable() {
+		                public void run() {
+		                  JOptionPane.showMessageDialog(amps,
+		                      "Must be either 0.12, 0.08 or 0.04!", "Error",
+		                      JOptionPane.ERROR_MESSAGE);
+		                }
+		            };
+		            SwingUtilities.invokeLater(runnable);
+		            return false;
+		        }
+			}
+		});
 		critsevinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {

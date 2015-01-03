@@ -1,5 +1,8 @@
 package GUI;
 
+import helpers.FloatVerifier;
+import helpers.PercentageVerifier;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -7,6 +10,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.InputVerifier;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -17,6 +21,9 @@ import classes.WildstarClass;
 public class StatPanel extends JPanel {
 	
 	public StatPanel(WildstarClass player) {
+		
+		InputVerifier percentverifier = new PercentageVerifier(this);
+		InputVerifier floatverifier = new FloatVerifier(this);
 		
 		this.setLayout(new FlowLayout());
 		this.setPreferredSize(new Dimension(225, 100));
@@ -150,6 +157,14 @@ public class StatPanel extends JPanel {
 			}
 		});
 		
+
+		apinsert.setInputVerifier(floatverifier);
+		spinsert.setInputVerifier(floatverifier);
+		critinsert.setInputVerifier(percentverifier);
+		strikeinsert.setInputVerifier(percentverifier);
+		armorpierceinsert.setInputVerifier(percentverifier);
+		cdrinsert.setInputVerifier(percentverifier);
+		critsevinsert.setInputVerifier(floatverifier);
 		
 		this.add(ap);
 		this.add(apinsert);

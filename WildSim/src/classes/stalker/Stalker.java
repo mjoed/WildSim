@@ -85,8 +85,8 @@ public class Stalker implements WildstarClass {
 	Ability shred;
 	Ability impale;
 	AnalyzeWeakness aw;
-	Ability ck;
-	Ability ckfirst;
+	ConcussiveKicks ck;
+	ConcussiveKicksFirst ckfirst;
 	Ability ckaddhits;
 	Ability ruin;
 	Ability ruindot;
@@ -421,12 +421,7 @@ public class Stalker implements WildstarClass {
 				if (gcdabilities[i].isActive() && gcdabilities[i].isReady(this)) returnAbility = gcdabilities[i];
 			}
 		}
-
-//		if (shred.isActive() && shred.isReady(this)) returnAbility = shred;
-//		if (ruin.isActive() && ruin.isReady(this)) returnAbility = ruin;
-//		if (impale.isActive() && impale.isReady(this)) returnAbility = impale;
-//		if (ck.isActive() && ck.isReady(this)) returnAbility = ck;
-//		if (ckfirst.isActive() && ckfirst.isReady(this)) returnAbility = ckfirst;
+		
 		
 		if (returnAbility != null) {
 			if (enabler.isActive() && SuitPower > 35 && (SuitPower - returnAbility.getCost()) < 35 && enablerbuff.durationLeft() == 0) {
@@ -657,6 +652,12 @@ public class Stalker implements WildstarClass {
 			} else {
 				ckcd.apply();
 			}
+		}
+		
+		//set ck active if only used after punish and ability was punish
+		if (ability.getName() == "Punish" && ck.getUseAfterPunish()) {
+			ck.setPunishUsed(true);
+			ckfirst.setPunishUsed(true);
 		}
 		
 		//prep interrupt logic
@@ -1227,10 +1228,10 @@ public class Stalker implements WildstarClass {
 		checkForAMPsBuffs();
 	}
 	
-	public Ability getCK() {
+	public ConcussiveKicks getCK() {
 		return ck;
 	}
-	public Ability getCKFirst() {
+	public ConcussiveKicksFirst getCKFirst() {
 		return ckfirst;
 	}
 	public Ability getCKadd() {
@@ -1436,19 +1437,12 @@ public class Stalker implements WildstarClass {
 		priofilltemp[0] = shred;
 		priofilltemp[1] = ruin;
 		priofilltemp[2] = impale;
-		priofilltemp[3] = ck;;
+		priofilltemp[3] = ck;
 		
 		for (int i = 0; i<priofilltemp.length; i++) {
 			gcdabilities[priofilltemp[i].getPrio()-1] = priofilltemp[i];
 			
-		}
-		
-//		gcdabilities[0] = shred;
-//		gcdabilities[1] = ruin;
-//		gcdabilities[2] = impale;
-//		gcdabilities[3] = ck;
-		
-		
+		}		
 		
 	}
 

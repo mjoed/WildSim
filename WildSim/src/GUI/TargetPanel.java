@@ -1,5 +1,8 @@
 package GUI;
 
+import helpers.FloatVerifier;
+import helpers.PercentageVerifier;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -7,6 +10,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.InputVerifier;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -17,6 +21,11 @@ import classes.WildstarMob;
 public class TargetPanel extends JPanel {
 	
 	public TargetPanel(WildstarMob target) {
+		
+		InputVerifier percentverifier = new PercentageVerifier(this);
+		InputVerifier floatverifier = new FloatVerifier(this);
+		
+		
 		this.setLayout(new FlowLayout());
 		this.setPreferredSize(new Dimension(240, 100));
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -109,6 +118,12 @@ public class TargetPanel extends JPanel {
 				target.setTechResBase(Float.parseFloat(techresinsert.getText()));
 			}
 		});
+	
+		deflectinsert.setInputVerifier(percentverifier);
+		armorinsert.setInputVerifier(floatverifier);
+		physresinsert.setInputVerifier(floatverifier);
+		magresinsert.setInputVerifier(floatverifier);
+		techresinsert.setInputVerifier(floatverifier);
 	
 		this.add(deflect);
 		this.add(deflectinsert);
