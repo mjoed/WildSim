@@ -144,7 +144,7 @@ public class ConcussiveKicks implements Ability {
 		Ability punish = player.getPunish();
 		Buff ckcd = player.getCKCD();
 		
-		if (useAfterPunish) {
+		if (useAfterPunish && tier == 8) {
 			if (ckcd.isActive()) {
 				if (punishUsed && currentCD == 0) {
 					punishUsed = false;

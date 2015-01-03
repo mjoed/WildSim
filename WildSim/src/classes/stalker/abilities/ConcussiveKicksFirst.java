@@ -152,7 +152,7 @@ public class ConcussiveKicksFirst implements Ability {
 			
 		if (ck.isActive() && ck.getCurrentCD() != 0) return false;
 		
-		if (useAfterPunish) {
+		if (useAfterPunish && tier == 8) {
 			if (punishUsed && currentCD == 0) {
 				punishUsed = false;
 				return true;
