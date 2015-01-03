@@ -30,6 +30,7 @@ public class StalkerOptionPanel extends JPanel {
 		
 		//input verifier
 		InputVerifier tierintverifier = new TierVerifier(this);
+		InputVerifier intverifier = new IntVerifier(this);
 		
 		//########
 		//Abilities
@@ -83,18 +84,6 @@ public class StalkerOptionPanel extends JPanel {
 		shredinsert.setInputVerifier(tierintverifier);
 		JTextField shredprioinsert = new JTextField(Integer.toString(stalker.getShred().getPrio()));
 		shredprioinsert.setPreferredSize(new Dimension(47, 15));
-//		shredprioinsert.addFocusListener(new FocusListener() {
-//			@Override
-//			public void focusGained(FocusEvent arg0) {
-//				return;
-//			}
-//
-//			@Override
-//			public void focusLost(FocusEvent arg0) {
-//				stalker.getShred().setPrio(Integer.parseInt(shredprioinsert.getText()));
-//				
-//			}
-//		});
 		
 		//#
 		JCheckBox impalebox = new JCheckBox();
@@ -128,18 +117,6 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		JTextField impaleprioinsert = new JTextField(Integer.toString(stalker.getImpale().getPrio()));
 		impaleprioinsert.setPreferredSize(new Dimension(47, 15));
-//		impaleprioinsert.addFocusListener(new FocusListener() {
-//			@Override
-//			public void focusGained(FocusEvent arg0) {
-//				return;
-//			}
-//
-//			@Override
-//			public void focusLost(FocusEvent arg0) {
-//				stalker.getImpale().setPrio(Integer.parseInt(impaleprioinsert.getText()));
-//				
-//			}
-//		});
 		
 		
 		
@@ -211,21 +188,7 @@ public class StalkerOptionPanel extends JPanel {
 			}
 		});
 		JTextField ckprioinsert = new JTextField(Integer.toString(stalker.getCK().getPrio()));
-		ckprioinsert.setPreferredSize(new Dimension(47, 15));
-//		ckprioinsert.addFocusListener(new FocusListener() {
-//			@Override
-//			public void focusGained(FocusEvent arg0) {
-//				return;
-//			}
-//
-//			@Override
-//			public void focusLost(FocusEvent arg0) {
-//				stalker.getCK().setPrio(Integer.parseInt(ckprioinsert.getText()));
-//				stalker.getCKFirst().setPrio(Integer.parseInt(ckprioinsert.getText()));
-//				
-//			}
-//		});
-		
+		ckprioinsert.setPreferredSize(new Dimension(47, 15));		
 		
 		
 		//#
@@ -408,18 +371,6 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		JTextField ruinprioinsert = new JTextField(Integer.toString(stalker.getRuin().getPrio()));
 		ruinprioinsert.setPreferredSize(new Dimension(47, 15));
-//		ruinprioinsert.addFocusListener(new FocusListener() {
-//			@Override
-//			public void focusGained(FocusEvent arg0) {
-//				return;
-//			}
-//
-//			@Override
-//			public void focusLost(FocusEvent arg0) {
-//				stalker.getRuin().setPrio(Integer.parseInt(ruinprioinsert.getText()));
-//				
-//			}
-//		});
 		
 		//#
 		JCheckBox innatebox = new JCheckBox();
@@ -493,6 +444,8 @@ public class StalkerOptionPanel extends JPanel {
 		abilities.add(innate);
 		abilities.add(innateinsert);
 		
+		
+		//additional options
 		JLabel additionaloptions = new JLabel("Additional Options");
 		additionaloptions.setPreferredSize(new Dimension(225, 15));
 		
@@ -514,8 +467,55 @@ public class StalkerOptionPanel extends JPanel {
 		JLabel prepchannel = new JLabel("Fully Channel Prep");
 		prepchannel.setPreferredSize(new Dimension(190, 15));
 		
+		
+		
+		JCheckBox CKafterPunishbox = new JCheckBox();
+		CKafterPunishbox.setPreferredSize(new Dimension(35, 15));
+		CKafterPunishbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (CKafterPunishbox.isSelected()) {
+					stalker.getCK().setUseAfterPunish(true);
+					stalker.getCKFirst().setUseAfterPunish(true);
+				} else {
+					stalker.getCK().setUseAfterPunish(false);
+					stalker.getCKFirst().setUseAfterPunish(true);
+				}
+			}
+		});
+		CKafterPunishbox.setSelected(stalker.getCK().getUseAfterPunish());
+		JLabel CKafterPunish = new JLabel("Always use 2xCK after Punish");
+		CKafterPunish.setPreferredSize(new Dimension(190, 15));
+		
+		
+		
+		
+
+		JLabel ckatpunishcd = new JLabel("CK at PunishCD:");
+		ckatpunishcd.setPreferredSize(new Dimension(130, 15));
+		JTextField ckatpunishcdinsert = new JTextField(Integer.toString(stalker.getCK().getCastAtPunishCD()));
+		ckatpunishcdinsert.setPreferredSize(new Dimension(95, 15));
+		ckatpunishcdinsert.setInputVerifier(intverifier);
+		ckatpunishcdinsert.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				stalker.getCK().setCastAtPunishCD(Integer.parseInt(ckatpunishcdinsert.getText()));
+				stalker.getCKFirst().setCastAtPunishCD(Integer.parseInt(ckatpunishcdinsert.getText()));
+			}
+		});
+		
+		
 		abilities.add(prepchannelbox);
 		abilities.add(prepchannel);
+		abilities.add(CKafterPunishbox);
+		abilities.add(CKafterPunish);
+		abilities.add(ckatpunishcd);
+		abilities.add(ckatpunishcdinsert);
 		
 		//########
 		//AMPs
