@@ -228,6 +228,8 @@ public class ConcussiveKicksFirst implements Ability {
 	
 		currentCD = 0;
 		
+		punishUsed = false;
+		
 	}
 	
 	@Override

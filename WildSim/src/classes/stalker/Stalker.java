@@ -13,7 +13,7 @@ import classes.stalker.buffs.*;
 public class Stalker implements WildstarClass {
 	
 	
-	boolean combatlogressource = true;
+	boolean combatlogressource = false;
 	int SuitPower;
 	float ap;
 	float baseap;
@@ -655,7 +655,7 @@ public class Stalker implements WildstarClass {
 		}
 		
 		//set ck active if only used after punish and ability was punish
-		if (ability.getName() == "Punish" && ck.getUseAfterPunish()) {
+		if (ability.getName() == "Punish" && ck.getUseAfterPunish() && ck.getCurrentCD() == 0) {
 			ck.setPunishUsed(true);
 			ckfirst.setPunishUsed(true);
 		}
