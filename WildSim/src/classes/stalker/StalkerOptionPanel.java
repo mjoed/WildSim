@@ -46,6 +46,7 @@ public class StalkerOptionPanel extends JPanel {
 		JLabel abilities4 = new JLabel("Prio");
 		abilities4.setPreferredSize(new Dimension(47, 15));
 		
+		
 		//#
 		JCheckBox shredbox = new JCheckBox();
 		shredbox.setPreferredSize(new Dimension(35, 15));
