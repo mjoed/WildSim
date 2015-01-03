@@ -227,4 +227,12 @@ public class Ruin implements Ability {
 		
 	}
 	
+	public boolean getWaitForDot() {
+		return waitfordot;
+	}
+	
+	public void setWaitForDot(boolean waitfordot) {
+		this.waitfordot = waitfordot;
+	}
+	
 }

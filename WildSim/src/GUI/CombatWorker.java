@@ -41,6 +41,14 @@ public class CombatWorker extends SwingWorker<Object, Object> {
 		this.statweightlistener = statweightlistener;
 		this.mainFrame = mainFrame;
 		this.logPanel = logPanel;
+		
+		
+		blockingDispatcher = new KeyEventDispatcher() {
+			@Override
+			public boolean dispatchKeyEvent(KeyEvent arg0) {
+				return true;
+			}
+        };
 	}
 
 	@Override

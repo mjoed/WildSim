@@ -15,6 +15,7 @@ public class Preparation implements Ability {
 	boolean isActive;
 	boolean completechannel = false;
 	boolean channeloncd = false;
+	
 	int tier = 0;
 	int cooldown = 15000;
 	int currentCD = 0;

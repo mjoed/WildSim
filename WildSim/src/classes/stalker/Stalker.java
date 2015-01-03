@@ -88,7 +88,7 @@ public class Stalker implements WildstarClass {
 	ConcussiveKicks ck;
 	ConcussiveKicksFirst ckfirst;
 	Ability ckaddhits;
-	Ability ruin;
+	Ruin ruin;
 	Ability ruindot;
 	Ability collapse;
 	Ability stagger;
@@ -414,7 +414,7 @@ public class Stalker implements WildstarClass {
 		
 				
 		for (int i = gcdabilities.length-1; i >= 0; i--) {
-			if (gcdabilities[i].getName() == "CK") {
+			if (gcdabilities[i].getName() == "CK" && gcdabilities[i].getTier() == 8) {
 				if (gcdabilities[i].isActive() && gcdabilities[i].isReady(this)) returnAbility = gcdabilities[i];
 				if (ckfirst.isActive() && ckfirst.isReady(this)) returnAbility = ckfirst;
 			} else {
@@ -646,7 +646,7 @@ public class Stalker implements WildstarClass {
 		}
 		
 		//ck cooldown buff handling
-		if ((ability.getName() == "CK" || ability.getName() == "CK(first)") && ability.getCurrentCD() > 0) {
+		if ((ability.getName() == "CK" || ability.getName() == "CK(first)") && ability.getCurrentCD() > 0 && ability.getTier() == 8) {
 			if (ckcd.isActive()) {
 				ckcd.remove();
 			} else {
@@ -1276,7 +1276,7 @@ public class Stalker implements WildstarClass {
 		checkForAMPsBuffs();
 	}
 	
-	public Ability getRuin() {
+	public Ruin getRuin() {
 		return ruin;
 	}
 	public Ability getRuinDot() {

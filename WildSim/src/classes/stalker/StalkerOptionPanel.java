@@ -186,6 +186,7 @@ public class StalkerOptionPanel extends JPanel {
 				stalker.getCKadd().setTier(Integer.parseInt(ckinsert.getText()));
 				stalker.getCKFirst().setTier(Integer.parseInt(ckinsert.getText()));
 			}
+			
 		});
 		JTextField ckprioinsert = new JTextField(Integer.toString(stalker.getCK().getPrio()));
 		ckprioinsert.setPreferredSize(new Dimension(47, 15));		
@@ -447,7 +448,7 @@ public class StalkerOptionPanel extends JPanel {
 		
 		//additional options
 		JLabel additionaloptions = new JLabel("Additional Options");
-		additionaloptions.setPreferredSize(new Dimension(225, 15));
+		additionaloptions.setPreferredSize(new Dimension(225, 30));
 		
 		abilities.add(additionaloptions);
 		
@@ -469,6 +470,28 @@ public class StalkerOptionPanel extends JPanel {
 		
 		
 		
+		
+		
+		
+		
+		JCheckBox preponcdbox = new JCheckBox();
+		preponcdbox.setPreferredSize(new Dimension(35, 15));
+		preponcdbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (preponcdbox.isSelected()) {
+					stalker.getPreparation().setChannelOnCD(true);
+				} else {
+					stalker.getPreparation().setChannelOnCD(false);
+				}
+			}
+		});
+		preponcdbox.setSelected(stalker.getPreparation().channelOnCD());
+		JLabel preponcd = new JLabel("Channel Prep instantly");
+		preponcd.setPreferredSize(new Dimension(190, 15));
+		
+		
+		
 		JCheckBox CKafterPunishbox = new JCheckBox();
 		CKafterPunishbox.setPreferredSize(new Dimension(35, 15));
 		CKafterPunishbox.addActionListener(new ActionListener() {
@@ -484,14 +507,16 @@ public class StalkerOptionPanel extends JPanel {
 			}
 		});
 		CKafterPunishbox.setSelected(stalker.getCK().getUseAfterPunish());
-		JLabel CKafterPunish = new JLabel("Always use 2xCK after Punish");
+		JLabel CKafterPunish = new JLabel("Always use 2xCKt8 after Punish");
 		CKafterPunish.setPreferredSize(new Dimension(190, 15));
 		
 		
 		
 		
+		
+		
 
-		JLabel ckatpunishcd = new JLabel("CK at PunishCD:");
+		JLabel ckatpunishcd = new JLabel("CKt8 at PunishCD:");
 		ckatpunishcd.setPreferredSize(new Dimension(130, 15));
 		JTextField ckatpunishcdinsert = new JTextField(Integer.toString(stalker.getCK().getCastAtPunishCD()));
 		ckatpunishcdinsert.setPreferredSize(new Dimension(95, 15));
@@ -510,12 +535,37 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		
 		
-		abilities.add(prepchannelbox);
-		abilities.add(prepchannel);
-		abilities.add(CKafterPunishbox);
-		abilities.add(CKafterPunish);
+		
+		
+		JCheckBox waitforruindotbox = new JCheckBox();
+		waitforruindotbox.setPreferredSize(new Dimension(35, 15));
+		waitforruindotbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (waitforruindotbox.isSelected()) {
+					stalker.getRuin().setWaitForDot(false);
+				} else {
+					stalker.getRuin().setWaitForDot(true);
+				}
+			}
+		});
+		waitforruindotbox.setSelected(!stalker.getRuin().getWaitForDot());
+		JLabel waitforruindot = new JLabel("Cast Ruin on CD");
+		waitforruindot.setPreferredSize(new Dimension(190, 15));
+		
+		
+		
+
 		abilities.add(ckatpunishcd);
 		abilities.add(ckatpunishcdinsert);
+		abilities.add(CKafterPunishbox);
+		abilities.add(CKafterPunish);
+		abilities.add(prepchannelbox);
+		abilities.add(prepchannel);
+		abilities.add(preponcdbox);
+		abilities.add(preponcd);
+		abilities.add(waitforruindotbox);
+		abilities.add(waitforruindot);
 		
 		//########
 		//AMPs
