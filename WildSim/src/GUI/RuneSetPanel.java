@@ -20,8 +20,23 @@ import combat.Combat;
 @SuppressWarnings("serial")
 public class RuneSetPanel extends JPanel {
 	
+	JCheckBox assassinbox;
+	JCheckBox weaponspecbox;
+	JCheckBox specterbox;
+	JCheckBox uabox;
+	JCheckBox suckerpbox;
+	
+	JTextField assassininsert;
+	JTextField weaponspecinsert;
+	JTextField specterinsert;
+	JTextField uainsert;
+	JTextField suckerpinsert;
+	
+	Combat combat;
+	
 	public RuneSetPanel(Combat combat) {
 			
+		this.combat = combat;
 
 		JPanel runesets = new JPanel(new FlowLayout());
 		runesets.setPreferredSize(new Dimension(450, 100));
@@ -36,7 +51,7 @@ public class RuneSetPanel extends JPanel {
 		
 		
 		//#
-		JCheckBox assassinbox = new JCheckBox();
+		assassinbox = new JCheckBox();
 		assassinbox.setPreferredSize(new Dimension(70, 20));
 		assassinbox.addActionListener(new ActionListener() {
 			@Override
@@ -51,7 +66,7 @@ public class RuneSetPanel extends JPanel {
 		assassinbox.setSelected(combat.getAssassin().isActive());
 		JLabel assassin = new JLabel("Assassin/FusionBlast: ");
 		assassin.setPreferredSize(new Dimension(190, 20));
-		JTextField assassininsert = new JTextField(Integer.toString(combat.getAssassin().getAmount()));
+		assassininsert = new JTextField(Integer.toString(combat.getAssassin().getAmount()));
 		assassininsert.setPreferredSize(new Dimension(190, 20));
 		assassininsert.addFocusListener(new FocusListener() {
 			@Override
@@ -68,7 +83,7 @@ public class RuneSetPanel extends JPanel {
 		
 		
 		//#
-		JCheckBox weaponspecbox = new JCheckBox();
+		weaponspecbox = new JCheckBox();
 		weaponspecbox.setPreferredSize(new Dimension(70, 20));
 		weaponspecbox.addActionListener(new ActionListener() {
 			@Override
@@ -83,7 +98,7 @@ public class RuneSetPanel extends JPanel {
 		weaponspecbox.setSelected(combat.getWeaponSpec().isActive());
 		JLabel weaponspec = new JLabel("Weapon Specialist: ");
 		weaponspec.setPreferredSize(new Dimension(190, 20));
-		JTextField weaponspecinsert = new JTextField(Integer.toString(combat.getWeaponSpec().getAmount()));
+		weaponspecinsert = new JTextField(Integer.toString(combat.getWeaponSpec().getAmount()));
 		weaponspecinsert.setPreferredSize(new Dimension(190, 20));
 		weaponspecinsert.addFocusListener(new FocusListener() {
 			@Override
@@ -100,7 +115,7 @@ public class RuneSetPanel extends JPanel {
 		
 		
 		//#
-		JCheckBox specterbox = new JCheckBox();
+		specterbox = new JCheckBox();
 		specterbox.setPreferredSize(new Dimension(70, 20));
 		specterbox.addActionListener(new ActionListener() {
 			@Override
@@ -115,7 +130,7 @@ public class RuneSetPanel extends JPanel {
 		specterbox.setSelected(combat.getSpecter().isActive());
 		JLabel specter = new JLabel("Specter: ");
 		specter.setPreferredSize(new Dimension(190, 20));
-		JTextField specterinsert = new JTextField(Integer.toString(combat.getSpecter().getAmount()));
+		specterinsert = new JTextField(Integer.toString(combat.getSpecter().getAmount()));
 		specterinsert.setPreferredSize(new Dimension(190, 20));
 		specterinsert.addFocusListener(new FocusListener() {
 			@Override
@@ -132,7 +147,7 @@ public class RuneSetPanel extends JPanel {
 		
 		
 		//#
-		JCheckBox uabox = new JCheckBox();
+		uabox = new JCheckBox();
 		uabox.setPreferredSize(new Dimension(70, 20));
 		uabox.addActionListener(new ActionListener() {
 			@Override
@@ -147,7 +162,7 @@ public class RuneSetPanel extends JPanel {
 		uabox.setSelected(combat.getUnfairAdvantage().isActive());
 		JLabel ua = new JLabel("Unfair Advantage: ");
 		ua.setPreferredSize(new Dimension(190, 20));
-		JTextField uainsert = new JTextField(Integer.toString(combat.getUnfairAdvantage().getAmount()));
+		uainsert = new JTextField(Integer.toString(combat.getUnfairAdvantage().getAmount()));
 		uainsert.setPreferredSize(new Dimension(190, 20));
 		uainsert.addFocusListener(new FocusListener() {
 			@Override
@@ -164,7 +179,7 @@ public class RuneSetPanel extends JPanel {
 		
 		
 		//#
-		JCheckBox suckerpbox = new JCheckBox();
+		suckerpbox = new JCheckBox();
 		suckerpbox.setPreferredSize(new Dimension(70, 20));
 		suckerpbox.addActionListener(new ActionListener() {
 			@Override
@@ -179,7 +194,7 @@ public class RuneSetPanel extends JPanel {
 		suckerpbox.setSelected(combat.getSuckerPunch().isActive());
 		JLabel suckerp = new JLabel("Sucker Punch: ");
 		suckerp.setPreferredSize(new Dimension(190, 20));
-		JTextField suckerpinsert = new JTextField(Integer.toString(combat.getSuckerPunch().getAmount()));
+		suckerpinsert = new JTextField(Integer.toString(combat.getSuckerPunch().getAmount()));
 		suckerpinsert.setPreferredSize(new Dimension(190, 20));
 		suckerpinsert.addFocusListener(new FocusListener() {
 			@Override
@@ -217,6 +232,50 @@ public class RuneSetPanel extends JPanel {
 		runesets.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.add(runesets);
 		
+		
+	}
+	
+	public String getCurrentValues() {
+		StringBuilder valuestring = new StringBuilder();
+
+		valuestring.append(assassinbox.isSelected() + ";" + assassininsert.getText() + ";");
+		valuestring.append(weaponspecbox.isSelected() + ";" + weaponspecinsert.getText() + ";");
+		valuestring.append(specterbox.isSelected() + ";" + specterinsert.getText() + ";");
+		valuestring.append(uabox.isSelected() + ";" + uainsert.getText() + ";");
+		valuestring.append(suckerpbox.isSelected() + ";" + suckerpinsert.getText() + ";");
+						
+		valuestring.append(System.lineSeparator());
+		return valuestring.toString();
+	}
+	
+	public void setCurrentValues(String currVal) {
+		String[] values = currVal.split(";");
+
+		combat.getAssassin().setActive(Boolean.parseBoolean(values[0]));
+		assassinbox.setSelected(Boolean.parseBoolean(values[0]));
+		combat.getAssassin().setAmount(Integer.parseInt(values[1]));
+		assassininsert.setText(values[1]);
+		
+		combat.getWeaponSpec().setActive(Boolean.parseBoolean(values[2]));
+		weaponspecbox.setSelected(Boolean.parseBoolean(values[2]));
+		combat.getWeaponSpec().setAmount(Integer.parseInt(values[3]));
+		weaponspecinsert.setText(values[3]);
+		
+		combat.getSpecter().setActive(Boolean.parseBoolean(values[4]));
+		specterbox.setSelected(Boolean.parseBoolean(values[4]));
+		combat.getSpecter().setAmount(Integer.parseInt(values[5]));
+		specterinsert.setText(values[5]);
+		
+		combat.getUnfairAdvantage().setActive(Boolean.parseBoolean(values[6]));
+		uabox.setSelected(Boolean.parseBoolean(values[6]));
+		combat.getUnfairAdvantage().setAmount(Integer.parseInt(values[7]));
+		uainsert.setText(values[7]);
+		
+		combat.getSuckerPunch().setActive(Boolean.parseBoolean(values[8]));
+		suckerpbox.setSelected(Boolean.parseBoolean(values[8]));
+		combat.getSuckerPunch().setAmount(Integer.parseInt(values[9]));
+		suckerpinsert.setText(values[9]);
+	
 		
 	}
 

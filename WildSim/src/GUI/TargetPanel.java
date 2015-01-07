@@ -19,12 +19,22 @@ import classes.WildstarMob;
 
 @SuppressWarnings("serial")
 public class TargetPanel extends JPanel {
+		
+	JTextField deflectinsert;
+	JTextField armorinsert;
+	JTextField physresinsert;
+	JTextField magresinsert;
+	JTextField techresinsert;
+	
+	WildstarMob target;
+	
 	
 	public TargetPanel(WildstarMob target) {
 		
+		this.target = target;
+		
 		InputVerifier percentverifier = new PercentageVerifier(this);
 		InputVerifier floatverifier = new FloatVerifier(this);
-		
 		
 		this.setLayout(new FlowLayout());
 		this.setPreferredSize(new Dimension(240, 100));
@@ -41,7 +51,7 @@ public class TargetPanel extends JPanel {
 		
 		JLabel deflect = new JLabel("Deflect: ");
 		deflect.setPreferredSize(new Dimension(120, 20));
-		JTextField deflectinsert = new JTextField(Float.toString(target.getDeflectchance()));
+		deflectinsert = new JTextField(Float.toString(target.getDeflectchance()));
 		deflectinsert.setPreferredSize(new Dimension(120, 20));
 		deflectinsert.addFocusListener(new FocusListener() {
 			@Override
@@ -57,7 +67,7 @@ public class TargetPanel extends JPanel {
 		
 		JLabel armor = new JLabel("Armor: ");
 		armor.setPreferredSize(new Dimension(120, 20));
-		JTextField armorinsert = new JTextField(Float.toString(target.getArmor()));
+		armorinsert = new JTextField(Float.toString(target.getArmor()));
 		armorinsert.setPreferredSize(new Dimension(120, 20));
 		armorinsert.addFocusListener(new FocusListener() {
 			@Override
@@ -73,7 +83,7 @@ public class TargetPanel extends JPanel {
 		
 		JLabel physres = new JLabel("Phys. Res.: ");
 		physres.setPreferredSize(new Dimension(120, 20));
-		JTextField physresinsert = new JTextField(Float.toString(target.getPhysRes()));
+		physresinsert = new JTextField(Float.toString(target.getPhysRes()));
 		physresinsert.setPreferredSize(new Dimension(120, 20));
 		physresinsert.addFocusListener(new FocusListener() {
 			@Override
@@ -89,7 +99,7 @@ public class TargetPanel extends JPanel {
 	
 		JLabel magres = new JLabel("Mag. Res.: ");
 		magres.setPreferredSize(new Dimension(120, 20));
-		JTextField magresinsert = new JTextField(Float.toString(target.getMagRes()));
+		magresinsert = new JTextField(Float.toString(target.getMagRes()));
 		magresinsert.setPreferredSize(new Dimension(120, 20));
 		magresinsert.addFocusListener(new FocusListener() {
 			@Override
@@ -105,7 +115,7 @@ public class TargetPanel extends JPanel {
 	
 		JLabel techres = new JLabel("Tech Res.: ");
 		techres.setPreferredSize(new Dimension(120, 20));
-		JTextField techresinsert = new JTextField(Float.toString(target.getTechRes()));
+		techresinsert = new JTextField(Float.toString(target.getTechRes()));
 		techresinsert.setPreferredSize(new Dimension(120, 20));
 		techresinsert.addFocusListener(new FocusListener() {
 			@Override
@@ -136,6 +146,32 @@ public class TargetPanel extends JPanel {
 		this.add(techres);
 		this.add(techresinsert);
 
+	}
+	
+	public String getCurrentValues() {
+		StringBuilder valuestring = new StringBuilder();
+		valuestring.append(deflectinsert.getText() + ";");
+		valuestring.append(armorinsert.getText() + ";");
+		valuestring.append(physresinsert.getText() + ";");
+		valuestring.append(magresinsert.getText() + ";");
+		valuestring.append(techresinsert.getText() + ";");
+		valuestring.append(System.lineSeparator());
+		return valuestring.toString();
+	}
+	
+	public void setCurrentValues(String currVal) {
+		String[] values = currVal.split(";");
+		
+		deflectinsert.setText(values[0]);
+		target.setDeflectchanceBase(Float.parseFloat(values[0]));
+		armorinsert.setText(values[1]);
+		target.setArmorBase(Float.parseFloat(values[1]));
+		physresinsert.setText(values[2]);
+		target.setPhysResBase(Float.parseFloat(values[2]));
+		magresinsert.setText(values[3]);
+		target.setMagResBase(Float.parseFloat(values[3]));
+		techresinsert.setText(values[4]);
+		target.setTechResBase(Float.parseFloat(values[4]));
 	}
 
 }

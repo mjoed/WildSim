@@ -62,7 +62,6 @@ public class StalkerLogPanel extends JPanel {
 					dps = (abilities[i].amountCritDamage() + abilities[i].amountHitDamage())/(maxtime/1000);
 					
 					logstring.append(abilities[i].getName() + "\t" + String.format("%.2f", dps) + "\t" + String.format("%.2f", (float)((float)abilities[i].amountHits() * 100 / totalAbilityHits)) + "\t" + String.format("%.2f", (float)((float)abilities[i].amountCrits() * 100 / totalAbilityHits)) + "\t" + String.format("%.2f", (float)((float)abilities[i].amountDeflects() * 100 / totalAbilityHits)) + "\t" + String.format("%.0f", (float)(totalAbilityHits / twomindiff)) + "\n");
-					
 				}
 			}
 			

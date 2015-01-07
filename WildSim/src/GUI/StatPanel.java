@@ -19,8 +19,19 @@ import classes.WildstarClass;
 
 @SuppressWarnings("serial")
 public class StatPanel extends JPanel {
+		
+	JTextField apinsert;
+	JTextField spinsert;
+	JTextField critinsert;
+	JTextField critsevinsert;
+	JTextField strikeinsert;
+	JTextField armorpierceinsert;
+	JTextField cdrinsert;
+	
+	WildstarClass player;
 	
 	public StatPanel(WildstarClass player) {
+		this.player = player;
 		
 		InputVerifier percentverifier = new PercentageVerifier(this);
 		InputVerifier floatverifier = new FloatVerifier(this);
@@ -39,12 +50,8 @@ public class StatPanel extends JPanel {
 		
 		JLabel ap = new JLabel("AP: ");
 		ap.setPreferredSize(new Dimension(120, 20));
-		JTextField apinsert = new JTextField(Float.toString(player.getAP()));
+		apinsert = new JTextField(Float.toString(player.getAP()));
 		apinsert.setPreferredSize(new Dimension(120, 20));
-		apinsert.addActionListener(e -> {
-			player.setAP(Float.parseFloat(e.getActionCommand()));
-			apinsert.setText(Float.toString(player.getAP()));
-		});
 		apinsert.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -59,7 +66,7 @@ public class StatPanel extends JPanel {
 		
 		JLabel sp = new JLabel("SP: ");
 		sp.setPreferredSize(new Dimension(120, 20));
-		JTextField spinsert = new JTextField(Float.toString(player.getSP()));
+		spinsert = new JTextField(Float.toString(player.getSP()));
 		spinsert.setPreferredSize(new Dimension(120, 20));
 		spinsert.addFocusListener(new FocusListener() {
 			@Override
@@ -75,7 +82,7 @@ public class StatPanel extends JPanel {
 		
 		JLabel crit = new JLabel("Crit: ");
 		crit.setPreferredSize(new Dimension(120, 20));
-		JTextField critinsert = new JTextField(Float.toString(player.getCrit()));
+		critinsert = new JTextField(Float.toString(player.getCrit()));
 		critinsert.setPreferredSize(new Dimension(120, 20));
 		critinsert.addFocusListener(new FocusListener() {
 			@Override
@@ -92,7 +99,7 @@ public class StatPanel extends JPanel {
 		
 		JLabel critsev = new JLabel("CritSev: ");
 		critsev.setPreferredSize(new Dimension(120, 20));
-		JTextField critsevinsert = new JTextField(Float.toString(player.getCritSev()));
+		critsevinsert = new JTextField(Float.toString(player.getCritSev()));
 		critsevinsert.setPreferredSize(new Dimension(120, 20));
 		critsevinsert.addFocusListener(new FocusListener() {
 			@Override
@@ -109,7 +116,7 @@ public class StatPanel extends JPanel {
 		
 		JLabel strike = new JLabel("Strikethrough: ");
 		strike.setPreferredSize(new Dimension(120, 20));
-		JTextField strikeinsert = new JTextField(Float.toString(player.getStrikethrough()));
+		strikeinsert = new JTextField(Float.toString(player.getStrikethrough()));
 		strikeinsert.setPreferredSize(new Dimension(120, 20));
 		strikeinsert.addFocusListener(new FocusListener() {
 			@Override
@@ -126,7 +133,7 @@ public class StatPanel extends JPanel {
 		
 		JLabel armorpierce = new JLabel("ArmorPierce: ");
 		armorpierce.setPreferredSize(new Dimension(120, 20));
-		JTextField armorpierceinsert = new JTextField(Float.toString(player.getArmorPierce()));
+		armorpierceinsert = new JTextField(Float.toString(player.getArmorPierce()));
 		armorpierceinsert.setPreferredSize(new Dimension(120, 20));
 		armorpierceinsert.addFocusListener(new FocusListener() {
 			@Override
@@ -143,7 +150,7 @@ public class StatPanel extends JPanel {
 		
 		JLabel cdr = new JLabel("CDR: ");
 		cdr.setPreferredSize(new Dimension(120, 20));
-		JTextField cdrinsert = new JTextField(Float.toString(player.getCDReduction()));
+		cdrinsert = new JTextField(Float.toString(player.getCDReduction()));
 		cdrinsert.setPreferredSize(new Dimension(120, 20));
 		cdrinsert.addFocusListener(new FocusListener() {
 			@Override
@@ -180,6 +187,38 @@ public class StatPanel extends JPanel {
 		this.add(armorpierceinsert);
 		this.add(cdr);
 		this.add(cdrinsert);
+	}
+	
+	public String getCurrentValues() {
+		StringBuilder valuestring = new StringBuilder();
+		valuestring.append(apinsert.getText() + ";");
+		valuestring.append(spinsert.getText() + ";");
+		valuestring.append(critinsert.getText() + ";");
+		valuestring.append(critsevinsert.getText() + ";");
+		valuestring.append(strikeinsert.getText() + ";");
+		valuestring.append(armorpierceinsert.getText() + ";");
+		valuestring.append(cdrinsert.getText() + ";");
+		valuestring.append(System.lineSeparator());
+		return valuestring.toString();
+	}
+	
+	public void setCurrentValues(String currVal) {
+		String[] values = currVal.split(";");
+		
+		apinsert.setText(values[0]);
+		player.setAP(Float.parseFloat(values[0]));
+		spinsert.setText(values[1]);
+		player.setSP(Float.parseFloat(values[1]));
+		critinsert.setText(values[2]);
+		player.setCrit(Float.parseFloat(values[2]));
+		critsevinsert.setText(values[3]);
+		player.setCritSev(Float.parseFloat(values[3]));
+		strikeinsert.setText(values[4]);
+		player.setStrikethrough(Float.parseFloat(values[4]));
+		armorpierceinsert.setText(values[5]);
+		player.setArmorPierce(Float.parseFloat(values[5]));
+		cdrinsert.setText(values[6]);
+		player.setCDReduction(Float.parseFloat(values[6]));
 	}
 
 }
