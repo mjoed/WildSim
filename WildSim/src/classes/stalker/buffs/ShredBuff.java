@@ -1,5 +1,7 @@
 package classes.stalker.buffs;
 
+import combat.CombatLog;
+
 import classes.Buff;
 
 public class ShredBuff implements Buff {
@@ -8,11 +10,17 @@ public class ShredBuff implements Buff {
 	int duration = 5000;
 	int currDuration = 0;
 	int stacks;
+	int uptime = 0;
+	CombatLog combatlog;
+	
+	public ShredBuff(CombatLog combatlog) {
+		this.combatlog = combatlog;
+	}
 	
 
 	@Override
 	public String getName() {
-		return "ShredBuff";
+		return "ShredBuff/Invigorate";
 	}
 
 	@Override
@@ -27,6 +35,7 @@ public class ShredBuff implements Buff {
 		
 		isActive = true;
 		currDuration = duration;
+		combatlog.addBuffEvent(this, true);
 	}
 
 	@Override
@@ -34,6 +43,7 @@ public class ShredBuff implements Buff {
 		isActive = false;
 		currDuration = 0;
 		stacks = 0;
+		combatlog.addBuffEvent(this, false);
 	}
 
 	@Override
@@ -53,6 +63,7 @@ public class ShredBuff implements Buff {
 
 	@Override
 	public void reduceCurrDuration() {
+		if (currDuration > 0) uptime++;
 		currDuration--;
 		if (currDuration <= 0)  {
 			currDuration = 0;
@@ -63,6 +74,12 @@ public class ShredBuff implements Buff {
 	@Override
 	public int getStacks() {
 		return stacks;
+	}
+
+
+	@Override
+	public int getUptime() {
+		return uptime;
 	}
 	
 

@@ -1,5 +1,7 @@
 package classes.stalker.buffs;
 
+import combat.CombatLog;
+
 import classes.Buff;
 
 public class OnslaughtBuff implements Buff {
@@ -7,6 +9,11 @@ public class OnslaughtBuff implements Buff {
 	boolean isActive;
 	int duration = 8000;
 	int currDuration = 0;
+	CombatLog combatlog;
+	
+	public OnslaughtBuff(CombatLog combatlog) {
+		this.combatlog = combatlog;
+	}
 
 	@Override
 	public String getName() {
@@ -56,7 +63,11 @@ public class OnslaughtBuff implements Buff {
 
 	@Override
 	public int getStacks() {
-		// TODO Auto-generated method stub
+		return 1;
+	}
+
+	@Override
+	public int getUptime() {
 		return 0;
 	}
 	

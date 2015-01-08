@@ -1,6 +1,6 @@
 package classes.stalker;
 
-import helpers.helpers;
+import combat.Combat;
 import classes.*;
 import classes.general.runesets.AssassinHit;
 import classes.general.runesets.SpecterBuff;
@@ -13,7 +13,8 @@ import classes.stalker.buffs.*;
 public class Stalker implements WildstarClass {
 	
 	
-	boolean combatlogressource = false;
+	int combatlogresource = 0;
+	Combat combat;
 	int SuitPower;
 	float ap;
 	float baseap;
@@ -122,7 +123,7 @@ public class Stalker implements WildstarClass {
 	int fatalwoundhitsleft = 0;
 	
 	
-	public Stalker(float ap, float sp, float crit, float critsev, float strikethrough, float cdr, float armorPierce) {
+	public Stalker(float ap, float sp, float crit, float critsev, float strikethrough, float cdr, float armorPierce, Combat combat) {
 		this.ap = ap;
 		baseap = ap;
 		this.sp = sp;
@@ -136,6 +137,8 @@ public class Stalker implements WildstarClass {
 		this.cdr = cdr;
 		this.armorPierce = armorPierce;
 		basearmorPierce = armorPierce;
+		
+		this.combat = combat;
 		
 		SuitPower = 100;
 
@@ -281,35 +284,35 @@ public class Stalker implements WildstarClass {
 			
 		}
 		//buffs/debuffs
-		enablerbuff = enabler.isActive() ? new EnablerBuff() : null;
-		ripostebuff = riposte.isActive() ? new RiposteBuff() : null;
+		enablerbuff = enabler.isActive() ? new EnablerBuff(combat.getCombatLog()) : null;
+		ripostebuff = riposte.isActive() ? new RiposteBuff(combat.getCombatLog()) : null;
 		if (ck.isActive() && ck.getTier() == 8) {
 			ckcd = new ConcussiveKicksCooldown();
 		} else {
 			ckcd = null;
 		}
 		punishproc = punish.isActive() ? new PunishProc() : null;
-		guarantcrit = new GuaranteedCrit();
+		guarantcrit = new GuaranteedCrit(combat.getCombatLog());
 		if (shred.isActive() && shred.getTier() == 8) {
-			shredbuff = new ShredBuff();
+			shredbuff = new ShredBuff(combat.getCombatLog());
 		} else {
 			shredbuff = null;
 		}
 		if (aw.isActive() && aw.getTier() >= 4){
-			awbuff = new AWBuff();
+			awbuff = new AWBuff(combat.getCombatLog());
 		} else {
 			awbuff = null;
 		}
 		if (ruin.isActive() && ruin.getTier() >= 4) {
-			ruinbuff = new RuinBuff();
+			ruinbuff = new RuinBuff(combat.getCombatLog());
 		} else {
 			ruinbuff = null;
 		}
-		prepbuff = prep.isActive() ? new PreparationBuff() : null;
+		prepbuff = prep.isActive() ? new PreparationBuff(combat.getCombatLog()) : null;
 		fatalwoundsdot = fatalwounds.isActive() ? new FatalWoundsDot() : null;
-		onslaughtbuff = onslaught.isActive() ? new OnslaughtBuff() : null;
-		battlemasterybuff = battlemastery.isActive() ? new BattleMasteryBuff() : null;
-		killerinstinctbuff = killerinstinct.isActive() ? new KillerInstinctBuff() : null;
+		onslaughtbuff = onslaught.isActive() ? new OnslaughtBuff(combat.getCombatLog()) : null;
+		battlemasterybuff = battlemastery.isActive() ? new BattleMasteryBuff(combat.getCombatLog()) : null;
+		killerinstinctbuff = killerinstinct.isActive() ? new KillerInstinctBuff(combat.getCombatLog()) : null;
 	}
 
 
@@ -457,22 +460,17 @@ public class Stalker implements WildstarClass {
 		//7sp/sec = every 142,8571 ms 1sp. taking 143ms, 0,14285ms difference, 1ms every second. compensating every 143 seconds by giving 1 additional sp.
 		if (currtime%143 == 0) {
 			if (currtime%143000 == 0) {
-//				if (combatlogressource) {
-//					System.out.println("[" + currtime + "] " + "added additional 1 SP gain to compensate");
-//				}
+				if (combatlogresource>1) combat.getCombatLog().addResourceEvent("Innate", 1);
 				addSuitPower(1);
 			}
-			
-			addSuitPower(1);
-//			if (combatlogressource) {
-//				System.out.println("[" + currtime + "] " + "gained 1 SP. Total SP gain: " + totalSPgain);
-//			}
+			if (combatlogresource>1) combat.getCombatLog().addResourceEvent("Innate", 1);
+			addSuitPower(1);			
 		}
 		
 		//enabler suitpower regen handling
 		if (enablerbuff != null && enablerbuff.isActive()) {
 			if (enablerbuff.durationLeft() % 333 == 0 && enablerbuff.durationLeft() != 3000) {
-				if (combatlogressource) System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + getRessource() + "] " + "Enabler tick - +1 SP!");
+				if (combatlogresource>0) combat.getCombatLog().addResourceEvent("Enabler", 1);
 				addSuitPower(1);
 			}
 		}
@@ -488,10 +486,10 @@ public class Stalker implements WildstarClass {
 			
 			if (shreduptime == 1000) {
 				if (shredbuff.getStacks() == 2) {
-					if (combatlogressource) System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + getRessource() + "] " + "ShredBuff (Invigorate) tick - +1 SP!");
+					if (combatlogresource>0) combat.getCombatLog().addResourceEvent("Shred/Invigorate", 1);
 					addSuitPower(1);
 				}
-				if (combatlogressource) System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + getRessource() + "] " + "ShredBuff (Invigorate) tick - +1 SP!");
+				if (combatlogresource>0) combat.getCombatLog().addResourceEvent("Shred/Invigorate", 1);
 				addSuitPower(1);
 				shreduptime = 0;
 			}
@@ -506,7 +504,7 @@ public class Stalker implements WildstarClass {
 			if (!awbuff.isActive()) awbuffuptime = 0;
 			
 			if (awbuffuptime == 500) {
-				if (combatlogressource) System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + getRessource() + "] " + "AW Buff tick - +1 SP!");
+				if (combatlogresource>0) combat.getCombatLog().addResourceEvent("AW Buff", 1);
 				addSuitPower(1);
 				awbuffuptime = 0;
 			}
@@ -521,7 +519,7 @@ public class Stalker implements WildstarClass {
 			if (!ruinbuff.isActive()) ruinbuffuptime = 0;
 			
 			if (ruinbuffuptime == 500) {
-				if (combatlogressource) System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + getRessource() + "] " + "Ruin Buff tick - +1 SP!");
+				if (combatlogresource>0) combat.getCombatLog().addResourceEvent("RuinBuff", 1);
 				addSuitPower(1);
 				ruinbuffuptime = 0;
 			}
@@ -530,7 +528,7 @@ public class Stalker implements WildstarClass {
 		//prep suitpower regen handling
 		if (prep.isActive() && prep.isChanneling() && prep.getChannelTime() % 500 == 0) {
 			prepbuff.apply();
-			if (combatlogressource) System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + getRessource() + "] " + "Prep Buff tick - +7 SP!");
+			if (combatlogresource>0) combat.getCombatLog().addResourceEvent("Prep Tick", 7);
 			addSuitPower(7);
 		}
 		
@@ -543,10 +541,14 @@ public class Stalker implements WildstarClass {
 		
 		//battlemastery handling
 		if (battlemastery.isActive()) {
-			if (SuitPower < 30) {
-				battlemasterybuff.apply();
+			if (battlemasterybuff.isActive()) {
+				if (SuitPower > 30) {
+					battlemasterybuff.remove();
+				}
 			} else {
-				battlemasterybuff.remove();
+				if (SuitPower < 30) {
+					battlemasterybuff.apply();
+				}
 			}
 		}
 		
@@ -707,7 +709,7 @@ public class Stalker implements WildstarClass {
 			
 			//apply killerinstinct buff at all first hits
 			if (killerinstinct.isActive()) {
-				if (ability.getName() != "Shred(add)" || ability.getName() != "CK(add)" || ability.getName() != "AW") {
+				if (!crit && !deflect && ability.getName() != "Shred(add)" && ability.getName() != "CK(add)" && ability.getName() != "AW") {
 					killerinstinctbuff.apply();
 				}
 			}
@@ -730,8 +732,10 @@ public class Stalker implements WildstarClass {
 			if (ability.getName() == "Punish") {
 				punishproc.remove();
 				if (ability.getTier() == 8) {
+					if (combatlogresource>0) combat.getCombatLog().addResourceEvent("Punish T8", 45);
 					addSuitPower(45);
 				} else {
+					if (combatlogresource>0) combat.getCombatLog().addResourceEvent("Punish", 30);
 					addSuitPower(30);
 				}
 				return;
@@ -1126,7 +1130,7 @@ public class Stalker implements WildstarClass {
 	}
 	
 	@Override
-	public int getRessource() {
+	public int getResource() {
 		return SuitPower;
 	}
 	
@@ -1426,9 +1430,9 @@ public class Stalker implements WildstarClass {
 		for (int i = 0; i < abilities.length; i++) {
 			abilities[i].resetValues();
 		}
-		for (int i = 0; i < buffs.length; i++) {
-			buffs[i].remove();
-		}
+//		for (int i = 0; i < buffs.length; i++) {
+//			buffs[i].remove();
+//		}
 		if (stealthmastery.isActive()) {
 			innate.setCooldown(innate.getCooldown() - 3000);
 		}
@@ -1464,6 +1468,18 @@ public class Stalker implements WildstarClass {
 	
 	public Buff getUABuff() {
 		return uabuff;
+	}
+	
+	public AWBuff getAWBuff() {
+		return (AWBuff) awbuff;
+	}
+	
+	public void setResourceCombatLog(int resourcelog) {
+		combatlogresource = resourcelog;
+	}
+	
+	public int getResourceCombatLog() {
+		return combatlogresource;
 	}
 	
 		

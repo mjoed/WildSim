@@ -7,6 +7,7 @@ public class ConcussiveKicksCooldown implements Buff {
 	boolean isActive = false;
 	int duration = 8000;
 	int currDuration = 0;
+	
 
 	@Override
 	public String getName() {
@@ -56,6 +57,12 @@ public class ConcussiveKicksCooldown implements Buff {
 
 	@Override
 	public int getStacks() {
+		return 0;
+	}
+
+	@Override
+	public int getUptime() {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 	

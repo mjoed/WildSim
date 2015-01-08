@@ -1,5 +1,7 @@
 package classes.stalker.buffs;
 
+import combat.CombatLog;
+
 import classes.Buff;
 
 public class GuaranteedCrit implements Buff {
@@ -7,6 +9,11 @@ public class GuaranteedCrit implements Buff {
 	boolean isActive;
 	int duration = 0;
 	int currDuration = 0;
+	CombatLog combatlog;
+	
+	public GuaranteedCrit(CombatLog combatlog) {
+		this.combatlog = combatlog;
+	}
 	
 	@Override
 	public String getName() {
@@ -20,11 +27,13 @@ public class GuaranteedCrit implements Buff {
 
 	@Override
 	public void apply() {
+		combatlog.addBuffEvent(this, true);
 		isActive = true;
 	}
 
 	@Override
 	public void remove() {
+		combatlog.addBuffEvent(this, false);
 		isActive = false;
 	}
 
@@ -51,6 +60,12 @@ public class GuaranteedCrit implements Buff {
 
 	@Override
 	public int getStacks() {
+		// TODO Auto-generated method stub
+		return 1;
+	}
+
+	@Override
+	public int getUptime() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

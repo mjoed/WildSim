@@ -47,7 +47,7 @@ public interface WildstarClass {
 	public void setCDReduction(float cdr);
 	public float getCDReduction();
 	
-	public int getRessource();
+	public int getResource();
 	
 	public float getFlatDamageBuff();
 	
@@ -55,5 +55,8 @@ public interface WildstarClass {
 	public void setRuneSets(RuneSet[] runesets);
 	
 	public CritSevAMP getCritSevAMP();
+	
+	public void setResourceCombatLog(int resourcelog);
+	public int getResourceCombatLog();
 	
 }

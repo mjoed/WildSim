@@ -8,6 +8,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -20,6 +22,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -135,13 +138,87 @@ public class WildSimGUI {
 				testCombat.setMaxtime(Integer.parseInt(maxTimeinsert.getText()) * 3600000);
 			}
 		});
-
+		
+		JCheckBox resregbox = new JCheckBox();
+		resregbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (resregbox.isSelected()) {
+					testCombat.getPlayer().setResourceCombatLog(1);
+				} else {
+					testCombat.getPlayer().setResourceCombatLog(0);
+				}
+			}
+		});
+		if (testCombat.getPlayer().getResourceCombatLog() > 0) {
+			resregbox.setSelected(true);
+		} else {
+			resregbox.setSelected(false);
+		}
+		JLabel resreg = new JLabel("Include Resource");
+		resregbox.setVisible(testCombat.getCombatlogactive());
+		resreg.setVisible(testCombat.getCombatlogactive());
+		
+		
+		
+		JCheckBox buffbox = new JCheckBox();
+		buffbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (buffbox.isSelected()) {
+					testCombat.getCombatLog().setBufflog(true);
+				} else {
+					testCombat.getCombatLog().setBufflog(false);
+				}
+			}
+		});
+		buffbox.setSelected(testCombat.getCombatLog().getBufflog());
+		JLabel buff = new JLabel("Include Buffs");
+		buffbox.setVisible(testCombat.getCombatlogactive());
+		buff.setVisible(testCombat.getCombatlogactive());
+		
+		
+		
+		
+		JCheckBox combatlogBox = new JCheckBox();
+		combatlogBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (combatlogBox.isSelected()) {
+					testCombat.setCombatlogactive(true);
+					resregbox.setVisible(true);
+					resreg.setVisible(true);
+					buffbox.setVisible(true);
+					buff.setVisible(true);
+					
+				} else {
+					testCombat.setCombatlogactive(false);
+					resregbox.setVisible(false);
+					resreg.setVisible(false);
+					buffbox.setVisible(false);
+					buff.setVisible(false);
+					testCombat.getCombatLog().setBufflog(false);
+					testCombat.getPlayer().setResourceCombatLog(0);
+					buffbox.setSelected(false);
+					resregbox.setSelected(false);
+				}
+			}
+		});
+		combatlogBox.setSelected(testCombat.getCombatlogactive());
+		JLabel createCombatlog = new JLabel("Create Combatlog");
+		
 		toolBar.add(startButton);
 		toolBar.add(maxTime);
 		toolBar.add(maxTimeinsert);
 		toolBar.add(progress);
 		toolBar.add(startStatWeightButton);
 		toolBar.add(statWeightProgress);
+		toolBar.add(combatlogBox);
+		toolBar.add(createCombatlog);
+		toolBar.add(buffbox);
+		toolBar.add(buff);
+		toolBar.add(resregbox);
+		toolBar.add(resreg);
 		
 		mainFrame.add(toolBar, BorderLayout.NORTH);
 				

@@ -1,5 +1,7 @@
 package classes.stalker.buffs;
 
+import combat.CombatLog;
+
 import classes.Buff;
 
 public class RiposteBuff implements Buff {
@@ -7,6 +9,12 @@ public class RiposteBuff implements Buff {
 	boolean isActive;
 	int duration = 5000;
 	int currDuration = 0;
+	int uptime = 0;
+	CombatLog combatlog;
+	
+	public RiposteBuff(CombatLog combatlog) {
+		this.combatlog = combatlog;
+	}
 
 	@Override
 	public String getName() {
@@ -22,12 +30,14 @@ public class RiposteBuff implements Buff {
 	public void apply() {
 		isActive = true;
 		currDuration = duration;
+		combatlog.addBuffEvent(this, true);
 	}
 
 	@Override
 	public void remove() {
 		isActive = false;
 		currDuration = 0;
+		combatlog.addBuffEvent(this, false);
 	}
 
 	@Override
@@ -47,6 +57,7 @@ public class RiposteBuff implements Buff {
 
 	@Override
 	public void reduceCurrDuration() {
+		if (currDuration > 0) uptime++;
 		currDuration--;
 		if (currDuration <= 0)  {
 			currDuration = 0;
@@ -56,8 +67,12 @@ public class RiposteBuff implements Buff {
 
 	@Override
 	public int getStacks() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 1;
+	}
+
+	@Override
+	public int getUptime() {
+		return uptime;
 	}
 	
 

@@ -1,6 +1,5 @@
 package combat;
 
-import helpers.helpers;
 import classes.Ability;
 import classes.RaidBuff;
 import classes.RaidDebuff;
@@ -27,6 +26,7 @@ public class Combat implements Runnable {
 	float currdmg;
 	long startTime;
 	
+	CombatLog combatlog;
 	
 	WildstarMob target;
 	WildstarClass wildclass;
@@ -69,7 +69,9 @@ public class Combat implements Runnable {
 	
 	public Combat() {
 		target = new WildstarMob();
-		wildclass = new Stalker(3930.5f, 862.5f, 0.2018f, 1.8429f, 0.0854f, 0.15f, 0.06f);
+		wildclass = new Stalker(3930.5f, 862.5f, 0.2018f, 1.8429f, 0.0854f, 0.15f, 0.06f, this);
+		
+		combatlog = new CombatLog(this, wildclass);
 		
 		punish = new PhysicalDamageTaken(true, 0.85f);
 		powerlinkt4 = new PowerLinkT4(0.025f, false, 1.0f);
@@ -121,6 +123,7 @@ public class Combat implements Runnable {
 	//starts combat for defined maxtime
 	@Override
 	public void run() {
+		combatlog.resetLog();
 		startTime = System.nanoTime();
 		fillRuneSetArray();
 		fillRaidBuffArray();
@@ -161,22 +164,12 @@ public class Combat implements Runnable {
 			nextTick();
 			
 		}
-		
-		System.out.println("[" + helpers.msToString(currtime) + "] " + "Overall dmg: " + dmgoverall);
-		System.out.println("[" + helpers.msToString(currtime) + "] " + "DPS: " + dmgoverall/(maxtime/1000));
-		
-		Ability[] abilities = wildclass.getAbilities();
-		float totalcount;
-		
-		for (int i=0; i<abilities.length; i++) {
-			if (abilities[i] != null) {
-				totalcount = abilities[i].amountCrits() + abilities[i].amountHits() + abilities[i].amountDeflects();
-				System.out.println("[" + helpers.msToString(currtime) + "] " + abilities[i].getName() + " dps: " + (abilities[i].amountCritDamage() + abilities[i].amountHitDamage())/(maxtime/1000) + ", hits: " + abilities[i].amountHits() + " (" + (float)((float)abilities[i].amountHits() * 100 / totalcount) + ") " + ", crits: " + abilities[i].amountCrits() + " (" + (float)((float)abilities[i].amountCrits() * 100 / totalcount) + ") " + ", deflects: " + abilities[i].amountDeflects() + " (" + (float)((float)abilities[i].amountDeflects() * 100 / totalcount) + ") ");	
-			}
-		}
-		
-		long endTime = System.nanoTime();
-		System.out.println("Took "+(endTime - startTime) + " ns"); 
+				
+		if (combatlogdmg) {
+			long endTime = System.nanoTime();
+			combatlog.addRunTime(Double.toString((endTime - startTime)/1000));
+			combatlog.saveLog();
+		}		
 		
 		currtime = 0;
 
@@ -239,7 +232,7 @@ public class Combat implements Runnable {
 		if (target.getDeflectchance() - wildclass.getStrikethrough() > 0) {
 			if (ability.canDeflect() && roll < (double)(target.getDeflectchance() - wildclass.getStrikethrough())) {
 				if (combatlogdmg) {
-					System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + wildclass.getRessource() + "] " + ability.getName() + " deflected");
+					combatlog.addAbilityHit(ability, actualdmg, false, true);
 				}
 				wildclass.afterHit(ability, false, true, 0);
 				return 0;
@@ -247,13 +240,13 @@ public class Combat implements Runnable {
 			if (ability.canCrit() && (target.getDeflectchance() - wildclass.getStrikethrough()) < roll && roll < ((target.getDeflectchance() - wildclass.getStrikethrough()) + wildclass.getCrit())) {
 				actualdmg *= wildclass.getCritSev();
 				if (combatlogdmg) {
-					System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + wildclass.getRessource() + "] " + ability.getName() + " crits for: " + actualdmg);
+					combatlog.addAbilityHit(ability, actualdmg, true, false);
 				}
 				wildclass.afterHit(ability, true, false, actualdmg);
 				return actualdmg;
 			} else {
 				if (combatlogdmg) {
-					System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + wildclass.getRessource() + "] " + ability.getName() + " hits for: " + actualdmg);
+					combatlog.addAbilityHit(ability, actualdmg, false, false);
 				}
 				wildclass.afterHit(ability, false, false, actualdmg);
 				return actualdmg;
@@ -262,13 +255,13 @@ public class Combat implements Runnable {
 			if (ability.canCrit() && roll < wildclass.getCrit()) {
 				actualdmg *= wildclass.getCritSev();
 				if (combatlogdmg) {
-					System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + wildclass.getRessource() + "] " + ability.getName() + " crits for: " + actualdmg);
+					combatlog.addAbilityHit(ability, actualdmg, true, false);
 				}
 				wildclass.afterHit(ability, true, false, actualdmg);
 				return actualdmg;
 			} else {
 				if (combatlogdmg) {
-					System.out.println("[" + helpers.msToString(currtime) + "] " + "[Ressource: " + wildclass.getRessource() + "] " + ability.getName() + " hits for: " + actualdmg);
+					combatlog.addAbilityHit(ability, actualdmg, false, false);
 				}
 				wildclass.afterHit(ability, false, false, actualdmg);
 				return actualdmg;
@@ -589,6 +582,18 @@ public class Combat implements Runnable {
 	public RuneSet[] getRuneSets() {
 		return runesets;
 	}
+	
+	public CombatLog getCombatLog() {
+		return combatlog;
+	}
 
+	public void setCombatlogactive(boolean combatlog) {
+		combatlogdmg = combatlog;
+	}
+	
+	public boolean getCombatlogactive() {
+		return combatlogdmg;
+	}
+	
 }
 

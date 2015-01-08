@@ -1,5 +1,7 @@
 package classes.stalker.buffs;
 
+import combat.CombatLog;
+
 import classes.Buff;
 
 public class PreparationBuff implements Buff {
@@ -8,10 +10,16 @@ public class PreparationBuff implements Buff {
 	int duration = 3000;
 	int currDuration = 0;
 	int stacks;
-
+	int uptime = 0;
+	CombatLog combatlog;
+	
+	public PreparationBuff(CombatLog combatlog) {
+		this.combatlog = combatlog;
+	}
+	
 	@Override
 	public String getName() {
-		return "Enabler";
+		return "PreparationBuff";
 	}
 
 	@Override
@@ -26,6 +34,7 @@ public class PreparationBuff implements Buff {
 		
 		isActive = true;
 		currDuration = duration;
+		combatlog.addBuffEvent(this, true);
 	}
 
 	@Override
@@ -33,6 +42,7 @@ public class PreparationBuff implements Buff {
 		isActive = false;
 		currDuration = 0;
 		stacks = 0;
+		combatlog.addBuffEvent(this, false);
 	}
 
 	@Override
@@ -52,6 +62,7 @@ public class PreparationBuff implements Buff {
 
 	@Override
 	public void reduceCurrDuration() {
+		if (currDuration > 0) uptime++;
 		currDuration--;
 		if (currDuration <= 0)  {
 			currDuration = 0;
@@ -62,6 +73,11 @@ public class PreparationBuff implements Buff {
 	@Override
 	public int getStacks() {
 		return stacks;
+	}
+
+	@Override
+	public int getUptime() {
+		return uptime;
 	}
 	
 

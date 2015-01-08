@@ -68,6 +68,12 @@ public class UnfairAdvantageBuff implements Buff {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public int getUptime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 
 

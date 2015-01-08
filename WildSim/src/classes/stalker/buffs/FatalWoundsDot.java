@@ -63,6 +63,12 @@ public class FatalWoundsDot implements Buff {
 	public int getStacks() {
 		return stacks;
 	}
+
+	@Override
+	public int getUptime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 
 

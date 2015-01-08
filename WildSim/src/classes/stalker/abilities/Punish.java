@@ -143,7 +143,7 @@ public class Punish implements Ability {
 		Buff punishproc = player.getPunishProc();
 		
 	
-		if (punishproc.isActive() && currentCD == 0 && actor.getRessource() < 35) {
+		if (punishproc.isActive() && currentCD == 0 && actor.getResource() < 35) {
 			return true;
 		}
 		

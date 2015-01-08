@@ -1,11 +1,21 @@
 package classes.stalker.buffs;
 
+import combat.CombatLog;
+
 import classes.Buff;
 
 public class BattleMasteryBuff implements Buff {
 	
 	boolean isActive;
-
+	int uptime = 0;
+	CombatLog combatlog;
+	int durationLeft = 0;
+	
+	public BattleMasteryBuff(CombatLog combatlog) {
+		this.combatlog = combatlog;
+	}
+	
+	
 	@Override
 	public String getName() {
 		return "BattleMasteryBuff";
@@ -18,12 +28,16 @@ public class BattleMasteryBuff implements Buff {
 
 	@Override
 	public void apply() {
+		combatlog.addBuffEvent(this, true);
 		isActive = true;
+		durationLeft = 1;
 	}
 
 	@Override
 	public void remove() {
+		combatlog.addBuffEvent(this, false);
 		isActive = false;
+		durationLeft = 0;
 	}
 
 	@Override
@@ -38,18 +52,23 @@ public class BattleMasteryBuff implements Buff {
 
 	@Override
 	public int durationLeft() {
-		return 0;
+		return durationLeft;
 	}
 
 	@Override
 	public void reduceCurrDuration() {
+		if (isActive) uptime++;
 		return;
 	}
 
 	@Override
 	public int getStacks() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 1;
+	}
+
+	@Override
+	public int getUptime() {
+		return uptime;
 	}
 	
 	

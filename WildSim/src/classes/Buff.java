@@ -17,4 +17,6 @@ public interface Buff {
 	
 	public int getStacks();
 	
+	public int getUptime();
+	
 }

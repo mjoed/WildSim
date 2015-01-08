@@ -146,7 +146,7 @@ public class Impale implements Ability {
 	}
 	
 	public boolean isReady(WildstarClass actor) {
-		if (actor.getRessource() > getCost()) {
+		if (actor.getResource() > getCost()) {
 			return true;
 		}
 		
