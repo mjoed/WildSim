@@ -576,7 +576,7 @@ public class StalkerOptionPanel extends JPanel {
 					stalker.getCKFirst().setUseAfterPunish(true);
 				} else {
 					stalker.getCK().setUseAfterPunish(false);
-					stalker.getCKFirst().setUseAfterPunish(true);
+					stalker.getCKFirst().setUseAfterPunish(false);
 				}
 			}
 		});
@@ -603,6 +603,8 @@ public class StalkerOptionPanel extends JPanel {
 						Integer.parseInt(ckatpunishcdinsert.getText()));
 			}
 		});
+		
+		
 
 		waitforruindotbox = new JCheckBox();
 		waitforruindotbox.setPreferredSize(new Dimension(35, 15));
