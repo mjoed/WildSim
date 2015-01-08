@@ -1031,8 +1031,10 @@ public class StalkerOptionPanel extends JPanel {
 		innatebox.setSelected(Boolean.parseBoolean(values[23]));
 
 		stalker.getCK().setCastAtPunishCD(Integer.parseInt(values[24]));
+		stalker.getCKFirst().setCastAtPunishCD(Integer.parseInt(values[24]));
 		ckatpunishcdinsert.setText(values[24]);
 		stalker.getCK().setUseAfterPunish(Boolean.parseBoolean(values[25]));
+		stalker.getCKFirst().setUseAfterPunish(Boolean.parseBoolean(values[25]));
 		CKafterPunishbox.setSelected(Boolean.parseBoolean(values[25]));
 		stalker.getPreparation().setCompleteChannel(Boolean.parseBoolean(values[26]));
 		prepchannelbox.setSelected(Boolean.parseBoolean(values[26]));
