@@ -22,6 +22,8 @@ public class StartStatWeightActionListener implements ActionListener {
 	JLabel statWeightProgress;
 	JFrame mainFrame;
 	
+	int oldMaxTime;
+	
 	float baselinedps;
 	float baselinedps1;
 	float baselinedps2;
@@ -56,6 +58,7 @@ public class StartStatWeightActionListener implements ActionListener {
 		this.logPanel = logPanel;
 		this.statWeightProgress = statWeightProgress;
 		this.mainFrame = mainFrame;
+		
 	}
 	
 	@Override
@@ -63,6 +66,7 @@ public class StartStatWeightActionListener implements ActionListener {
 		
 		//start
 		logPanel.setStatWeight(true);
+		oldMaxTime = testCombat.getMaxtime();
 		testCombat.setMaxtime(108000000);
 //		testCombat.setMaxtime(3600000);
 		critsevampamount = testCombat.getPlayer().getCritSevAMP().getAmount();
@@ -172,6 +176,7 @@ public class StartStatWeightActionListener implements ActionListener {
 				logPanel.setValues();
 				step = 0;
 				internalstep = 0;
+				testCombat.setMaxtime(oldMaxTime);
 				
 				return;
 			}
