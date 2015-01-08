@@ -196,6 +196,16 @@ public class Stalker implements WildstarClass {
 	
 
 	private void checkCDReduction() {
+		punish.setCooldown(8000);
+		ck.setCooldown(8000);
+		aw.setCooldown(8000);
+		tretreat.setCooldown(30000);
+		ruin.setCooldown(6000);
+		collapse.setCooldown(25000);
+		stagger.setCooldown(25000);		
+		prep.setCooldown(15000);
+		
+		
 		if (cdr > 0) {
 			punish.setCooldown((int)(punish.getCooldown() * (1-cdr)));
 			ck.setCooldown((int)(ck.getCooldown() * (1-cdr)));
