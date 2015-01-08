@@ -168,7 +168,6 @@ public class Combat implements Runnable {
 		if (combatlogdmg) {
 			long endTime = System.nanoTime();
 			combatlog.addRunTime(Double.toString((endTime - startTime)/1000));
-			combatlog.saveLog();
 		}		
 		
 		currtime = 0;

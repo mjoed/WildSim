@@ -116,7 +116,7 @@ public class WildSimGUI {
 		
 		JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		
-		logPanel = new StalkerLogPanel(testCombat);
+		logPanel = new StalkerLogPanel(testCombat, testCombat.getCombatLog());
 		statWeightProgress = new JLabel("");
 		
 		startButton = new JButton("Start");

@@ -77,6 +77,12 @@ public class CombatLog {
 		}
 	}
 	
+	public void addResult(String result) {
+		combatlog.append(System.lineSeparator());
+		combatlog.append(System.lineSeparator());
+		combatlog.append(result);
+	}
+	
 	
 	public void saveLog() {
 		addBuffUptimes();
