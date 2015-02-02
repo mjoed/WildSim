@@ -7,7 +7,7 @@ import classes.Buff;
 public class KillerInstinctBuff implements Buff {
 	
 	boolean isActive;
-	int duration = 3000;
+	int duration = 8000;
 	int currDuration = 0;
 	int stacks;
 	int uptime = 0;

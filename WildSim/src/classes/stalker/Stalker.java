@@ -109,6 +109,7 @@ public class Stalker implements WildstarClass {
 	Buff onslaughtbuff;
 	Buff battlemasterybuff;
 	Buff killerinstinctbuff;
+	Buff killerinstinctempower;
 	
 	//innate/gadget ability
 	Buff guarantcrit;
@@ -313,6 +314,7 @@ public class Stalker implements WildstarClass {
 		onslaughtbuff = onslaught.isActive() ? new OnslaughtBuff(combat.getCombatLog()) : null;
 		battlemasterybuff = battlemastery.isActive() ? new BattleMasteryBuff(combat.getCombatLog()) : null;
 		killerinstinctbuff = killerinstinct.isActive() ? new KillerInstinctBuff(combat.getCombatLog()) : null;
+		killerinstinctempower = killerinstinct.isActive() ? new KillerInstinctEmpower(combat.getCombatLog()) : null;
 	}
 
 
@@ -437,8 +439,12 @@ public class Stalker implements WildstarClass {
 		
 		
 		if (returnAbility != null) {
-			if (enabler.isActive() && SuitPower > 35 && (SuitPower - returnAbility.getCost()) < 35 && enablerbuff.durationLeft() == 0) {
+			if (enabler.isActive() && SuitPower >= 25 && (SuitPower - returnAbility.getCost()) < 25 && enablerbuff.durationLeft() == 0) {
 				enablerbuff.apply();
+			}
+			if (battlemastery.isActive() && SuitPower >= 30 && (SuitPower - returnAbility.getCost()) < 30) {
+				battlemasterybuff.apply();
+				
 			}
 			returnAbility.beforeHit(this);
 			checkBuffs();
@@ -539,19 +545,6 @@ public class Stalker implements WildstarClass {
 			}
 		}
 		
-		//battlemastery handling
-		if (battlemastery.isActive()) {
-			if (battlemasterybuff.isActive()) {
-				if (SuitPower > 30) {
-					battlemasterybuff.remove();
-				}
-			} else {
-				if (SuitPower < 30) {
-					battlemasterybuff.apply();
-				}
-			}
-		}
-		
 		//handling buffs/debuffs
 		checkBuffs();
 		
@@ -566,6 +559,10 @@ public class Stalker implements WildstarClass {
 		//reducing buff durations
 		for (int i = 0; i < buffs.length; i++) {
 			if (buffs[i] != null && buffs[i].durationLeft() > 0) buffs[i].reduceCurrDuration();
+			//reduce CDS of buffs if needed
+			if (buffs[i] != null && buffs[i].durationLeft() == 0 && buffs[i].getName() == "BattleMasteryBuff") {
+				buffs[i].reduceCurrDuration();
+			}
 		}
 		
 	}
@@ -614,7 +611,10 @@ public class Stalker implements WildstarClass {
 					}
 				}
 				if (fatalwounds.isActive() && ability.getName() != "CutthroatHit") fatalwoundsdot.apply();
-				if (killerinstinct.isActive() && killerinstinctbuff.isActive()) killerinstinctbuff.remove();
+				if (killerinstinct.isActive() && killerinstinctbuff.isActive()) {
+					killerinstinctbuff.remove();
+					killerinstinctempower.apply();
+				}
 			}
 		}
 		if (deflect) {
@@ -625,7 +625,14 @@ public class Stalker implements WildstarClass {
 			} else {
 				ability.addDeflect();
 			}
-			if (riposte.isActive()) ripostebuff.apply();
+			if (riposte.isActive()) {
+				if (ripostebuff.isActive()) {
+					if (combatlogresource>0) combat.getCombatLog().addResourceEvent("RiposteAMP", 10);
+					addSuitPower(10);
+				}
+				ripostebuff.apply();
+				
+			}
 		}
 		
 		//if hit is a dot, do nothing else.
@@ -710,7 +717,9 @@ public class Stalker implements WildstarClass {
 			//apply killerinstinct buff at all first hits
 			if (killerinstinct.isActive()) {
 				if (!crit && !deflect && ability.getName() != "Shred(add)" && ability.getName() != "CK(add)" && ability.getName() != "AW") {
-					killerinstinctbuff.apply();
+					if (!killerinstinctempower.isActive()) {
+						killerinstinctbuff.apply();
+					}
 				}
 			}
 			
@@ -771,6 +780,7 @@ public class Stalker implements WildstarClass {
 	public void checkBuffs() {
 		
 		crit = basecrit;
+		critsev = basecritsev;
 		strikethrough = basestrikethrough;
 		ap = baseap;
 		sp = basesp;
@@ -786,9 +796,15 @@ public class Stalker implements WildstarClass {
 			crit += (prepbuff.getStacks() * 0.03f);
 		}
 		
-		//check for killer instinct
+		//check for killer instinct stacks
 		if (killerinstinctbuff != null && killerinstinctbuff.isActive()) {
 			crit += (killerinstinctbuff.getStacks() * 0.01f);
+		}
+		
+		//check for killer instinct empower
+		if (killerinstinctempower != null && killerinstinctempower.isActive()) {
+			crit += 0.03f;
+			critsev += 0.08f;
 		}
 		
 		//check for riposte
@@ -815,7 +831,7 @@ public class Stalker implements WildstarClass {
 		}
 		
 		if (battlemasterybuff != null && battlemasterybuff.isActive()) {
-			flatdamagebuff += 0.08f;
+			flatdamagebuff += 0.12f;
 		}
 		
 		double chance = Math.random();
@@ -863,6 +879,7 @@ public class Stalker implements WildstarClass {
 		if (onslaughtbuff != null) amount++;
 		if (battlemasterybuff != null) amount++;
 		if (killerinstinctbuff != null) amount++;
+		if (killerinstinctempower != null) amount++;
 		if (specterbuff != null) amount++;
 		if (uabuff != null) amount++;
 		
@@ -919,6 +936,10 @@ public class Stalker implements WildstarClass {
 		}
 		if (killerinstinctbuff != null) {
 			buffs[amount] = killerinstinctbuff;
+			amount++;
+		}
+		if (killerinstinctempower != null) {
+			buffs[amount] = killerinstinctempower;
 			amount++;
 		}
 		if (specterbuff != null) {

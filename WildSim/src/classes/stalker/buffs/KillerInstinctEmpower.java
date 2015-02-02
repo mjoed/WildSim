@@ -4,24 +4,21 @@ import combat.CombatLog;
 
 import classes.Buff;
 
-public class BattleMasteryBuff implements Buff {
+public class KillerInstinctEmpower implements Buff {
 	
 	boolean isActive;
-	int duration = 5000;
+	int duration = 4000;
+	int currDuration = 0;
 	int uptime = 0;
 	CombatLog combatlog;
-	int durationLeft = 0;
-	int cooldown = 15000;
-	int currCooldown = 0;
 	
-	public BattleMasteryBuff(CombatLog combatlog) {
+	public KillerInstinctEmpower(CombatLog combatlog) {
 		this.combatlog = combatlog;
 	}
-	
-	
+
 	@Override
 	public String getName() {
-		return "BattleMasteryBuff";
+		return "KillerInstinctEmpower";
 	}
 
 	@Override
@@ -30,25 +27,22 @@ public class BattleMasteryBuff implements Buff {
 	}
 
 	@Override
-	public void apply() {
-		if (currCooldown <= 0) {
-			combatlog.addBuffEvent(this, true);
-			isActive = true;
-			durationLeft = duration;
-			currCooldown = cooldown;
-		}
+	public void apply() {	
+		combatlog.addBuffEvent(this, true);
+		isActive = true;
+		currDuration = duration;
 	}
 
 	@Override
 	public void remove() {
-		combatlog.addBuffEvent(this, false);
 		isActive = false;
-		durationLeft = 0;
+		currDuration = 0;
+		combatlog.addBuffEvent(this, false);
 	}
 
 	@Override
 	public void setDuration(int time) {
-		durationLeft = time;
+		currDuration = time;
 	}
 
 	@Override
@@ -58,25 +52,17 @@ public class BattleMasteryBuff implements Buff {
 
 	@Override
 	public int durationLeft() {
-		return durationLeft;
+		return currDuration;
 	}
 
 	@Override
 	public void reduceCurrDuration() {
-		if (durationLeft > 0) {
-			uptime++;
-			
-			durationLeft--;
-			if (durationLeft <= 0)  {
-				durationLeft = 0;
-				remove();
-			}
+		if (currDuration > 0) uptime++;
+		currDuration--;
+		if (currDuration <= 0)  {
+			currDuration = 0;
+			remove();
 		}
-		
-		if (currCooldown > 0) currCooldown--;
-		
-		
-
 	}
 
 	@Override
@@ -89,5 +75,6 @@ public class BattleMasteryBuff implements Buff {
 		return uptime;
 	}
 	
-	
+
+
 }
