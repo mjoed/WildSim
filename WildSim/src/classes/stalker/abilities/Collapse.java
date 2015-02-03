@@ -74,7 +74,7 @@ public class Collapse implements Ability {
 
 	@Override
 	public boolean canCrit() {
-		return true;
+		return false;
 	}
 	
 	@Override
