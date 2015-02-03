@@ -73,6 +73,7 @@ public class Stalker implements WildstarClass {
 	AMP onslaught;
 	AMP battlemastery;
 	AMP killerinstinct;
+	AMP followupamp;
 	
 	//amp abilities/dmg sources
 	Ability cutthroathit;
@@ -95,6 +96,7 @@ public class Stalker implements WildstarClass {
 	Ability stagger;
 	Ability shredaddhits;
 	Preparation prep;
+	StanceSwitch stanceswitch;
 	
 	//stalker specific buffs/debuffs/dots
 	Buff enablerbuff;
@@ -110,6 +112,7 @@ public class Stalker implements WildstarClass {
 	Buff battlemasterybuff;
 	Buff killerinstinctbuff;
 	Buff killerinstinctempower;
+	Buff followupbuff;
 	
 	//innate/gadget ability
 	Buff guarantcrit;
@@ -158,6 +161,7 @@ public class Stalker implements WildstarClass {
 		battlemastery = new BattleMastery(false);
 		killerinstinct = new KillerInstinct(false);
 		critsevamp = new CritSevAMP(true, 0.12f);
+		followupamp = new FollowUpAMP(false);
 		
 		//abilities
 		punish = new Punish(8, true);
@@ -173,6 +177,7 @@ public class Stalker implements WildstarClass {
 		collapse = new Collapse(0, false);
 		stagger = new Stagger(0, false);
 		prep = new Preparation(0, true);
+		stanceswitch = new StanceSwitch(true);
 		
 		tretreat = new TacticalRetreat(true);
 		innate = new Innate(true);
@@ -230,6 +235,7 @@ public class Stalker implements WildstarClass {
 		cutthroathit.setActive(cutthroat.isActive());
 		devastate.setActive(devastateamp.isActive());
 		fatalwoundshit.setActive(fatalwounds.isActive());
+		stanceswitch.setActive(followupamp.isActive());
 		
 		assassinHit.setActive(false);
 		suckerpunchHit.setActive(false);
@@ -315,6 +321,7 @@ public class Stalker implements WildstarClass {
 		battlemasterybuff = battlemastery.isActive() ? new BattleMasteryBuff(combat.getCombatLog()) : null;
 		killerinstinctbuff = killerinstinct.isActive() ? new KillerInstinctBuff(combat.getCombatLog()) : null;
 		killerinstinctempower = killerinstinct.isActive() ? new KillerInstinctEmpower(combat.getCombatLog()) : null;
+		followupbuff = followupamp.isActive() ? new FollowUpBuff(combat.getCombatLog()) : null;
 	}
 
 
@@ -368,8 +375,13 @@ public class Stalker implements WildstarClass {
 				return prep;
 			}
 		}
+		
+		//stanceswitch within preperation handling
+		if (stanceswitch.isActive() && stanceswitch.getInsidePrep() && prep.isActive() && prep.isChanneling() && stanceswitch.isReady(this)) {
+			return stanceswitch;
+		}
 			
-		//AW handlichng
+		//AW handling
 		//apply aw if off CD, set cooldown manually
 		if (aw.isActive() && aw.isReady(this)) {
 			aw.applied(true);
@@ -392,6 +404,10 @@ public class Stalker implements WildstarClass {
 				if (prep.completeChannel()) {
 					return prep;
 				}
+			}
+			//stanceswitch on cd weaved into shred
+			if (followupamp.isActive() && !stanceswitch.getInsidePrep() && stanceswitch.isReady(this)) {
+				return stanceswitch;
 			}
 		}
 					
@@ -476,7 +492,15 @@ public class Stalker implements WildstarClass {
 		//enabler suitpower regen handling
 		if (enablerbuff != null && enablerbuff.isActive()) {
 			if (enablerbuff.durationLeft() % 333 == 0 && enablerbuff.durationLeft() != 3000) {
-				if (combatlogresource>0) combat.getCombatLog().addResourceEvent("Enabler", 1);
+				if (combatlogresource>0) combat.getCombatLog().addResourceEvent("EnablerAMP", 1);
+				addSuitPower(1);
+			}
+		}
+		
+		//followup suitpower regen handling
+		if (followupbuff != null && followupbuff.isActive()) {
+			if (followupbuff.durationLeft() % 333 == 0 && followupbuff.durationLeft() != 6000) {
+				if (combatlogresource>0) combat.getCombatLog().addResourceEvent("FollowUpAMP", 1);
 				addSuitPower(1);
 			}
 		}
@@ -532,7 +556,7 @@ public class Stalker implements WildstarClass {
 		}
 		
 		//prep suitpower regen handling
-		if (prep.isActive() && prep.isChanneling() && prep.getChannelTime() % 500 == 0) {
+		if (prep.isActive() && prep.isChanneling() && (prep.getChannelTime() % 500 == 0 || prep.getChannelTime() == 2999)) {
 			prepbuff.apply();
 			if (combatlogresource>0) combat.getCombatLog().addResourceEvent("Prep Tick", 7);
 			addSuitPower(7);
@@ -541,7 +565,7 @@ public class Stalker implements WildstarClass {
 		//fatalwounds handling
 		if (fatalwounds.isActive() && fatalwoundsdot.isActive()) {
 			if (currtime % 1000 == 0) {
-				fatalwoundhitsleft = fatalwoundsdot.getStacks();
+				fatalwoundhitsleft++;
 			}
 		}
 		
@@ -654,9 +678,13 @@ public class Stalker implements WildstarClass {
 		if (guarantcrit.isActive()) {
 			guarantcrit.remove();
 		}
+		
+		//stanceswitch buff apply
+		if (ability.getName() == "StanceSwitch") {
+			followupbuff.apply();
+		}
 
 		//aw tier8 handling (50% chance to reduce cd by 2.25sec)
-		
 		if (ability.getName() == "AW" && ability.getTier() == 8) {
 			double awroll = Math.random();
 			if (awroll <= 0.5) {
@@ -680,7 +708,7 @@ public class Stalker implements WildstarClass {
 		}
 		
 		//prep interrupt logic
-		if (ability.getName() != "CutthroatHit" && ability.getName() != "AW" && ability.getName() != "Shred(add)" && ability.getName() != "Preparation") {
+		if (ability.getName() != "Devastate" && ability.getName() != "CutthroatHit" && ability.getName() != "AW" && ability.getName() != "Shred(add)" && ability.getName() != "Preparation" && ability.getName() != "StanceSwitch") {
 			if (prep != null && prep.isChanneling()) {
 				prep.stopChanneling();
 				prep.setCurrentCD(prep.getCooldown());
@@ -882,6 +910,7 @@ public class Stalker implements WildstarClass {
 		if (killerinstinctempower != null) amount++;
 		if (specterbuff != null) amount++;
 		if (uabuff != null) amount++;
+		if (followupbuff != null) amount++;
 		
 		buffs = new Buff[amount];
 		amount = 0;
@@ -950,6 +979,10 @@ public class Stalker implements WildstarClass {
 			buffs[amount] = uabuff;
 			amount++;
 		}
+		if (followupbuff != null) {
+			buffs[amount] = followupbuff;
+			amount++;
+		}
 		
 	}
 
@@ -979,6 +1012,7 @@ public class Stalker implements WildstarClass {
 		if (fatalwoundshit.isActive()) amount++;
 		if (assassinHit.isActive()) amount++;
 		if (suckerpunchHit.isActive()) amount++;
+		if (stanceswitch.isActive()) amount++;
 		
 		abilities = new Ability[amount];
 		amount = 0;
@@ -1063,6 +1097,10 @@ public class Stalker implements WildstarClass {
 			abilities[amount] = suckerpunchHit;
 			amount++;
 		}
+		if (stanceswitch.isActive()) {
+			abilities[amount] = stanceswitch;
+			amount++;
+		}
 		
 	}
 
@@ -1083,6 +1121,7 @@ public class Stalker implements WildstarClass {
 		if (battlemastery.isActive()) amount++;
 		if (killerinstinct.isActive()) amount++;
 		if (critsevamp.isActive()) amount++;
+		if (followupamp.isActive()) amount++;
 		
 		amps = new AMP[amount];
 		amount = 0;
@@ -1128,6 +1167,10 @@ public class Stalker implements WildstarClass {
 		}
 		if (critsevamp.isActive()) {
 			amps[amount] = critsevamp;
+			amount++;
+		}
+		if (followupamp.isActive()) {
+			amps[amount] = followupamp;
 			amount++;
 		}
 
@@ -1423,6 +1466,19 @@ public class Stalker implements WildstarClass {
 		killerinstinct.setActive(active);
 		checkForAMPsBuffs();
 	}
+	
+	public StanceSwitch getStanceSwitch() {
+		return stanceswitch;
+	}
+	
+	public AMP getFollowUp() {
+		return followupamp;
+	}
+	
+	public void setFollowUp(boolean active) {
+		followupamp.setActive(active);
+	}
+	
 	public CritSevAMP getCritSevAMP() {
 		return critsevamp;
 	}
@@ -1451,9 +1507,6 @@ public class Stalker implements WildstarClass {
 		for (int i = 0; i < abilities.length; i++) {
 			abilities[i].resetValues();
 		}
-//		for (int i = 0; i < buffs.length; i++) {
-//			buffs[i].remove();
-//		}
 		if (stealthmastery.isActive()) {
 			innate.setCooldown(innate.getCooldown() - 3000);
 		}
@@ -1465,6 +1518,7 @@ public class Stalker implements WildstarClass {
 		strikethrough = basestrikethrough;
 		ap = baseap;
 		sp = basesp;
+		critsev = basecritsev;
 		flatdamagebuff = 0;
 		
 		//fill prio array

@@ -3,24 +3,23 @@ package classes.stalker.abilities;
 import classes.Ability;
 import classes.WildstarClass;
 
-public class FatalWounds implements Ability {
+public class StanceSwitch implements Ability {
 	
-	int amountHits = 0;
-	int amountCrits = 0;
-	int amountDeflects = 0;
-	
-	float amountHitDamage = 0;
-	float amountCritDamage = 0;
+	boolean insidePrep = true;
+
+	int cooldown = 12000;
+	int currentCD = 0;
 	
 	boolean isActive;
+	int amountHits;
 
-	public FatalWounds(boolean active) {
+	public StanceSwitch(boolean active) {
 		isActive = active;
 	}
 	
 	@Override
 	public String getName() {
-		return "FatalWounds";
+		return "StanceSwitch";
 	}
 	
 	@Override
@@ -30,7 +29,7 @@ public class FatalWounds implements Ability {
 
 	@Override
 	public int getGCD() {
-		return 0;
+		return 2000;
 	}
 
 	@Override
@@ -40,97 +39,110 @@ public class FatalWounds implements Ability {
 	}
 
 	@Override
+	public int getTier() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean isReady(WildstarClass actor) {
+		// TODO Auto-generated method stub
+		return currentCD == 0;
+	}
+
+	@Override
 	public float calculateTooltipDmg(float ap, float sp) {
-		return (ap * 0.0625f) + 195f;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public int getCurrentCD() {
 		// TODO Auto-generated method stub
-		return 0;
+		return currentCD;
 	}
 
 	@Override
 	public void setCurrentCD(int cd) {
-		// TODO Auto-generated method stub
-		
+		currentCD = cd;
 	}
 
 	@Override
 	public void redCDC() {
-		// TODO Auto-generated method stub
-		
+		currentCD--;
+		if (currentCD < 0) {
+			currentCD = 0;
+		}
 	}
 
 	@Override
 	public void setCooldown(int cd) {
-		
+		cooldown = cd;		
 	}
-	
+
 	@Override
 	public int getCooldown() {
-		return 0;
+		return cooldown;
 	}
 
 	@Override
 	public boolean canCrit() {
+		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	@Override
 	public boolean canDeflect() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void addHit(float dmg) {
 		amountHits++;
-		amountHitDamage += dmg;
+		
 	}
 
 	@Override
 	public void addCrit(float dmg) {
-		amountCrits++;
-		amountCritDamage += dmg;
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void addDeflect() {
-		amountDeflects++;
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public int amountDeflects() {
-		return amountDeflects;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public int amountHits() {
+		// TODO Auto-generated method stub
 		return amountHits;
 	}
 
 	@Override
 	public float amountHitDamage() {
-		return amountHitDamage;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public int amountCrits() {
-		return amountCrits;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public float amountCritDamage() {
-		return amountCritDamage;
-	}
-
-	@Override
-	public int getTier() {
+		// TODO Auto-generated method stub
 		return 0;
-	}
-	
-	public boolean isReady(WildstarClass actor) {
-		return true;
 	}
 
 	@Override
@@ -148,13 +160,13 @@ public class FatalWounds implements Ability {
 	@Override
 	public float getArmorPierce() {
 		// TODO Auto-generated method stub
-		return 1.0f;
+		return 0;
 	}
 
 	@Override
 	public int getType() {
 		// TODO Auto-generated method stub
-		return 1;
+		return 0;
 	}
 	
 	@Override
@@ -170,23 +182,22 @@ public class FatalWounds implements Ability {
 	
 	@Override
 	public int compareTo(Ability arg0) {
-		if (arg0.amountHitDamage() + arg0.amountCritDamage() > amountHitDamage + amountCritDamage) {
-			return -1;
-		} else if (arg0.amountHitDamage() + arg0.amountCritDamage() == amountHitDamage + amountCritDamage){
-			return 0;
-		} else {
-			return 1;
-		}
+		return -1;
 	}
 	
 	public void resetValues() {
 		amountHits = 0;
-		amountCrits = 0;
-		amountDeflects = 0;
-		
-		amountHitDamage = 0;
-		amountCritDamage = 0;
 	
+		currentCD = 0;
+		
+	}
+	
+	public boolean getInsidePrep() {
+		return insidePrep;
+	}
+	
+	public void setInsidePrep(boolean insidePrep) {
+		this.insidePrep = insidePrep;
 	}
 	
 	@Override
@@ -201,5 +212,5 @@ public class FatalWounds implements Ability {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 }

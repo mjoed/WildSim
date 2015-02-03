@@ -75,6 +75,8 @@ public class StalkerOptionPanel extends JPanel {
 	JCheckBox onslaughtbox;
 	JCheckBox battlemastbox;
 	JCheckBox killerinstbox;
+	JCheckBox followupbox;
+	JCheckBox followupinsidebox;
 	JCheckBox critsevbox;
 	JTextField critsevinsert;
 
@@ -813,6 +815,42 @@ public class StalkerOptionPanel extends JPanel {
 		JLabel killerinst = new JLabel("Killer Instinct");
 		killerinst.setPreferredSize(new Dimension(190, 15));
 
+		
+		// #
+		followupbox = new JCheckBox();
+		followupbox.setPreferredSize(new Dimension(35, 15));
+		followupbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (followupbox.isSelected()) {
+					stalker.getFollowUp().setActive(true);
+				} else {
+					stalker.getFollowUp().setActive(false);
+				}
+			}
+		});
+		followupbox.setSelected(stalker.getFollowUp().isActive());
+		JLabel followupinst = new JLabel("Follow Up    (");
+		followupinst.setPreferredSize(new Dimension(72, 15));
+		
+		followupinsidebox = new JCheckBox();
+		followupinsidebox.setPreferredSize(new Dimension(18, 15));
+		followupinsidebox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (followupinsidebox.isSelected()) {
+					stalker.getStanceSwitch().setInsidePrep(true);
+				} else {
+					stalker.getStanceSwitch().setInsidePrep(false);
+				}
+			}
+		});
+		followupinsidebox.setSelected(stalker.getStanceSwitch().getInsidePrep());
+		JLabel followupinsideinst = new JLabel("Inside Prep )");
+		followupinsideinst.setPreferredSize(new Dimension(89, 15));
+		
+		
+		
 		critsevbox = new JCheckBox();
 		critsevbox.setPreferredSize(new Dimension(35, 15));
 		critsevbox.addActionListener(new ActionListener() {
@@ -827,10 +865,10 @@ public class StalkerOptionPanel extends JPanel {
 		});
 		critsevbox.setSelected(stalker.getCritSevAMP().isActive());
 		JLabel critsev = new JLabel("Crit Sev: ");
-		critsev.setPreferredSize(new Dimension(95, 15));
+		critsev.setPreferredSize(new Dimension(92, 15));
 		critsevinsert = new JTextField(Float.toString(stalker.getCritSevAMP()
 				.getAmount()));
-		critsevinsert.setPreferredSize(new Dimension(95, 15));
+		critsevinsert.setPreferredSize(new Dimension(92, 15));
 		critsevinsert.setInputVerifier(new InputVerifier() {
 			@Override
 			public boolean verify(JComponent input) {
@@ -901,6 +939,10 @@ public class StalkerOptionPanel extends JPanel {
 		amps.add(battlemast);
 		amps.add(killerinstbox);
 		amps.add(killerinst);
+		amps.add(followupbox);
+		amps.add(followupinst);
+		amps.add(followupinsidebox);
+		amps.add(followupinsideinst);
 		amps.add(critsevbox);
 		amps.add(critsev);
 		amps.add(critsevinsert);
@@ -952,8 +994,13 @@ public class StalkerOptionPanel extends JPanel {
 		valuestring.append(onslaughtbox.isSelected() + ";");
 		valuestring.append(battlemastbox.isSelected() + ";");
 		valuestring.append(killerinstbox.isSelected() + ";");
+
 		valuestring.append(critsevbox.isSelected() + ";");
 		valuestring.append(critsevinsert.getText() + ";");
+		
+		valuestring.append(followupbox.isSelected() + ";");
+		valuestring.append(followupinsidebox.isSelected() + ";");
+		
 
 		valuestring.append(System.lineSeparator());
 		return valuestring.toString();
@@ -962,7 +1009,6 @@ public class StalkerOptionPanel extends JPanel {
 	public void setCurrentValues(String currVal) {
 		String[] values = currVal.split(";");
 
-		
 		stalker.getShred().setActive(Boolean.parseBoolean(values[0]));
 		stalker.getShredAdd().setActive(Boolean.parseBoolean(values[0]));
 		stalker.getShred().setTier(Integer.parseInt(values[1]));
@@ -1063,10 +1109,20 @@ public class StalkerOptionPanel extends JPanel {
 		battlemastbox.setSelected(Boolean.parseBoolean(values[37]));
 		stalker.getKillerInstinct().setActive(Boolean.parseBoolean(values[38]));
 		killerinstbox.setSelected(Boolean.parseBoolean(values[38]));
+
+		
 		stalker.getCritSevAMP().setActive(Boolean.parseBoolean(values[39]));
 		critsevbox.setSelected(Boolean.parseBoolean(values[39]));
 		stalker.getCritSevAMP().setAmount(Float.parseFloat(values[40]));
 		critsevinsert.setText(values[40]);
+		
+		if (values.length > 41) {
+			stalker.getFollowUp().setActive(Boolean.parseBoolean(values[41]));
+			followupbox.setSelected(Boolean.parseBoolean(values[41]));
+			stalker.getStanceSwitch().setInsidePrep(Boolean.parseBoolean(values[42]));
+			followupinsidebox.setSelected(Boolean.parseBoolean(values[42]));
+		}
+
 	
 	}
 

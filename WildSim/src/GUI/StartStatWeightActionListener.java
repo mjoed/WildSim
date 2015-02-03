@@ -67,8 +67,8 @@ public class StartStatWeightActionListener implements ActionListener {
 		//start
 		logPanel.setStatWeight(true);
 		oldMaxTime = testCombat.getMaxtime();
-//		testCombat.setMaxtime(360000000);
-		testCombat.setMaxtime(3600000);
+		testCombat.setMaxtime(108000000);
+//		testCombat.setMaxtime(3600000);
 		critsevampamount = testCombat.getPlayer().getCritSevAMP().getAmount();
 		
 		
