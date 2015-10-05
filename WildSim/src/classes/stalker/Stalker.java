@@ -30,8 +30,11 @@ public class Stalker implements WildstarClass {
 	float armorPierce;
 	float basearmorPierce;
 	float multihit;
+	float basemultihit;
 	float multihitsev;
+	float basemultihitsev;
 	float vigor;
+	float basevigor;
 	
 	float flatdamagebuff;
 	
@@ -131,7 +134,7 @@ public class Stalker implements WildstarClass {
 	int fatalwoundhitsleft = 0;
 	
 	
-	public Stalker(float ap, float sp, float crit, float critsev, float strikethrough, float cdr, float armorPierce, Combat combat) {
+	public Stalker(float ap, float sp, float crit, float critsev, float multihit, float multihitsev, float vigor, float strikethrough, float cdr, float armorPierce, Combat combat) {
 		this.ap = ap;
 		baseap = ap;
 		this.sp = sp;
@@ -140,6 +143,12 @@ public class Stalker implements WildstarClass {
 		basecrit = crit;
 		this.critsev = critsev;
 		basecritsev = critsev;
+		this.multihit = multihit;
+		basemultihit = multihit;
+		this.multihitsev = multihitsev;
+		basemultihitsev = multihitsev;
+		this.vigor = vigor;
+		basevigor = vigor;
 		this.strikethrough = strikethrough;
 		basestrikethrough = strikethrough;
 		this.cdr = cdr;
@@ -151,20 +160,20 @@ public class Stalker implements WildstarClass {
 		SuitPower = 100;
 
 		//AMP
-		cutthroat = new Cutthroat(true);
-		cutthroathit = new CutthroatHit(true);
+		cutthroat = new Cutthroat(false);
+		cutthroathit = new CutthroatHit(false);
 		enabler = new Enabler(true);
-		devastateamp = new DevastateAMP(true);
-		devastate = new Devastate(true);
+		devastateamp = new DevastateAMP(false);
+		devastate = new Devastate(false);
 		stealthmastery = new StealthMastery(false);
 		unfairadvantage = new UnfairAdvantage(true);
 		riposte = new Riposte(true);
 		fatalwounds = new FatalWoundsAMP(true);
 		fatalwoundshit = new FatalWounds(true);
 		onslaught = new Onslaught(true);
-		battlemastery = new BattleMastery(false);
+		battlemastery = new BattleMastery(true);
 		brutalitymastery = new BrutalityMastery(true);
-		killerinstinct = new KillerInstinct(false);
+		killerinstinct = new KillerInstinct(true);
 		critsevamp = new CritSevAMP(true, 0.12f);
 		followupamp = new FollowUpAMP(false);
 		
@@ -561,7 +570,11 @@ public class Stalker implements WildstarClass {
 		}
 		
 		//prep suitpower regen handling
-		if (prep.isActive() && prep.isChanneling() && (prep.getChannelTime() % 500 == 0 || prep.getChannelTime() == 2999)) {
+		if (prep.isActive() && prep.isChanneling() && (prep.getChannelTime() % 500 == 0)) {
+			if (combatlogresource>0) combat.getCombatLog().addResourceEvent("Prep Tick", 7);
+			addSuitPower(7);
+		}
+		if (prep.isActive() && prep.isChanneling() && prep.getChannelTime() == 2999) {
 			prepbuff.apply();
 			if (combatlogresource>0) combat.getCombatLog().addResourceEvent("Prep Tick", 7);
 			addSuitPower(7);
@@ -606,9 +619,22 @@ public class Stalker implements WildstarClass {
 		
 		if (multihit) {
 			if (crit) {
-				ability.addMultiHitCrit(damage);
+				if (ability.getName() == "CK(first)" || ability.getName() == "CK(add)") {
+					ck.addMultiHitCrit(damage);
+				} else if (ability.getName() == "Shred(add)") {
+					shred.addMultiHitCrit(damage);
+				} else {
+					ability.addMultiHitCrit(damage);
+				}
+				
 			} else {
-				ability.addMultiHit(damage);
+				if (ability.getName() == "CK(first)" || ability.getName() == "CK(add)") {
+					ck.addMultiHit(damage);
+				} else if (ability.getName() == "Shred(add)") {
+					shred.addMultiHit(damage);
+				} else {
+					ability.addMultiHit(damage);
+				}
 			}
 			return;
 			
@@ -836,7 +862,7 @@ public class Stalker implements WildstarClass {
 		
 		//check for prepbuff
 		if (prepbuff != null && prepbuff.isActive()) {
-			crit += (prepbuff.getStacks() * 0.03f);
+			crit += 0.08f + (prep.getTier() * 0.01f);
 		}
 		
 		//check for killer instinct stacks
@@ -870,7 +896,7 @@ public class Stalker implements WildstarClass {
 		}
 		
 		if (onslaughtbuff != null && onslaughtbuff.isActive()) {
-			ap *= 1.12;
+			ap *= 1.08;
 		}
 		
 		if (battlemasterybuff != null && battlemasterybuff.isActive()) {

@@ -239,7 +239,7 @@ public class WildSimGUI {
 		leftTabPane.addTab("RaidBuffs/Debuffs", raidbuffPanel);
 		leftTabPane.addTab("Player/Target Stats", generalPanel);
 		leftTabPane.addTab("Ability/AMP", classPanel);
-		leftTabPane.addTab("Rune Sets", runesetPanel);
+		leftTabPane.addTab("Rune Sets/Fusion", runesetPanel);
 		
 		
 		JPanel rightPanel = new JPanel(new GridLayout(1, 1));

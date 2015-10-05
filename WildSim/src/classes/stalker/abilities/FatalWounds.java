@@ -8,9 +8,13 @@ public class FatalWounds implements Ability {
 	int amountHits = 0;
 	int amountCrits = 0;
 	int amountDeflects = 0;
+	int amountMultiHits = 0;
+	int amountMultiHitCrits = 0;
 	
 	float amountHitDamage = 0;
 	float amountCritDamage = 0;
+	float amountMultiHitDamage = 0;
+	float amountMultiCritDamage = 0;
 	
 	boolean isActive;
 
@@ -20,7 +24,7 @@ public class FatalWounds implements Ability {
 	
 	@Override
 	public String getName() {
-		return "FatalWounds";
+		return "FatalW";
 	}
 	
 	@Override
@@ -204,44 +208,46 @@ public class FatalWounds implements Ability {
 
 	@Override
 	public boolean canMultiHit() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int amountMultiHits() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float amountMultiHitDamage() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int amountMultiHitCrits() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float amountMultiHitCritDamage() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void addMultiHitCrit(float damage) {
-		// TODO Auto-generated method stub
-		
+		return true;
 	}
 
 	@Override
 	public void addMultiHit(float damage) {
-		// TODO Auto-generated method stub
+		amountMultiHits++;
+		amountMultiHitDamage += damage;
+	}
+
+
+	@Override
+	public void addMultiHitCrit(float damage) {
+		amountMultiHitCrits++;
+		amountMultiCritDamage += damage;
 		
 	}
+
+
+	@Override
+	public int amountMultiHits() {
+		return amountMultiHits;
+	}
+
+
+	@Override
+	public float amountMultiHitDamage() {
+		return amountMultiHitDamage;
+	}
+
+
+	@Override
+	public int amountMultiHitCrits() {
+		return amountMultiHitCrits;
+	}
+
+
+	@Override
+	public float amountMultiHitCritDamage() {
+		return amountMultiCritDamage;
+	}
+	
 	
 }

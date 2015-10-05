@@ -7,20 +7,20 @@ public class WildstarMob {
 	//@mitigation = 0.267: armor+res = 12700 * 0,267 / 0,733  ----- armor+res = 4626,05729
 
 	
-	float deflectchance = 0.1120f;
-	float deflectchancebase = 0.1120f;
+	float deflectchance = 0.1824f;
+	float deflectchancebase = 0.1824f;
 	
 	int level = 50;
 	
-	float armor = 2310;
-	float physresistance = 2310;
-	float techresistance = 2310;
-	float magicresistance = 2310;
+	float armor = 6350;
+	float physresistance = 6350;
+	float techresistance = 6350;
+	float magicresistance = 6350;
 	
-	float armorbase = 2310;
-	float physresistancebase = 2310;
-	float techresistancebase = 2310;
-	float magicresistancebase = 2310;
+	float armorbase = 6350;
+	float physresistancebase = 6350;
+	float techresistancebase = 6350;
+	float magicresistancebase = 6350;
 
 	public float getDeflectchance() {
 		return deflectchance;

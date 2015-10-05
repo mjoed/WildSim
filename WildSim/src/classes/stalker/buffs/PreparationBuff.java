@@ -7,9 +7,8 @@ import classes.Buff;
 public class PreparationBuff implements Buff {
 	
 	boolean isActive;
-	int duration = 3000;
+	int duration = 4000;
 	int currDuration = 0;
-	int stacks;
 	int uptime = 0;
 	CombatLog combatlog;
 	
@@ -28,10 +27,7 @@ public class PreparationBuff implements Buff {
 	}
 
 	@Override
-	public void apply() {
-		stacks += 1;
-		if (stacks > 7) stacks = 7;
-		
+	public void apply() {		
 		isActive = true;
 		currDuration = duration;
 		combatlog.addBuffEvent(this, true);
@@ -41,7 +37,6 @@ public class PreparationBuff implements Buff {
 	public void remove() {
 		isActive = false;
 		currDuration = 0;
-		stacks = 0;
 		combatlog.addBuffEvent(this, false);
 	}
 
@@ -72,7 +67,7 @@ public class PreparationBuff implements Buff {
 
 	@Override
 	public int getStacks() {
-		return stacks;
+		return 0;
 	}
 
 	@Override

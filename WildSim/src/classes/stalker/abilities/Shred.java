@@ -223,19 +223,18 @@ public class Shred implements Ability {
 
 	@Override
 	public boolean canMultiHit() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	
 	@Override
-	public void addMultiHitCrit(float damage) {
+	public void addMultiHit(float damage) {
 		amountMultiHits++;
 		amountMultiHitDamage += damage;
 	}
 
 
 	@Override
-	public void addMultiHit(float damage) {
+	public void addMultiHitCrit(float damage) {
 		amountMultiHitCrits++;
 		amountMultiCritDamage += damage;
 		

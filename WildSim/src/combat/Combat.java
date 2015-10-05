@@ -69,7 +69,7 @@ public class Combat implements Runnable {
 	
 	public Combat() {
 		target = new WildstarMob();
-		wildclass = new Stalker(3930.5f, 862.5f, 0.2018f, 1.8429f, 0.0854f, 0.15f, 0.06f, this);
+		wildclass = new Stalker(3929.0f, 1060.5f, 0.2147f, 2.1154f, 0.1710f, 0.3f, 0.0605f, 0.1778f, 0.15f, 0.06f, this);
 		
 		combatlog = new CombatLog(this, wildclass);
 		
@@ -190,38 +190,13 @@ public class Combat implements Runnable {
 
 		checkRaidDebuffs();
 		
-		//ap softcap logic
-		//DROP 6 - NO SOFTCAP
-//		float ap = wildclass.getAP();
-//		
-//		if (ap > 3600) {
-//			ap = (0.9997211f * ((float)Math.pow(0.9997211f, ap-3600)- 1) / (0.9997211f - 1)) + 3600f;
-//		}
-		
 		float tooltipdmg = ability.calculateTooltipDmg(wildclass.getAP(), wildclass.getSP());
 		
-		//DROP 6 - no weaponspec
-//		if (weaponspec.isActive() && ability.getType() == 1) {
-//			float weaponspecamount;
-//			if (weaponspec.getAmount() >= 12) {
-//				weaponspecamount = 1.02f;
-//			} else if (weaponspec.getAmount() >= 8) {
-//				weaponspecamount = 1.015f;
-//			} else if (weaponspec.getAmount() >= 4) {
-//				weaponspecamount = 1.01f;
-//			} else {
-//				weaponspecamount = 1f;
-//			}
-//			tooltipdmg *= weaponspecamount;
-//		}
-		
-		//TODO  calculation correct?
 		float actualdmg = (tooltipdmg - ((tooltipdmg * (target.getMitigation(ability.getType()) * (1-(wildclass.getArmorPierce()+ability.getArmorPierce()))))));
 	
-		
 		actualdmg = checkRaidBuffs(actualdmg, ability);
 		
-		//TODO DROP 6 - vigor?
+		//DROP 6 - vigor
 		actualdmg *= (1 + wildclass.getVigor());
 		
 		//class specific flat dmg buffs (AMPs etc.)
@@ -274,20 +249,21 @@ public class Combat implements Runnable {
 			}
 		}
 		
-		//TODO DROP 6 - check for multihit, own roll. not possible at deflect (?)
+		//TODO DROP 6 - check for multihit, specific roll. not possible at deflect (?)
 		double multiroll = Math.random();
 		
 		if (multiroll < wildclass.getMultiHit() && ability.canMultiHit()) {
-			double multihitdmg;
+			float multihitdmg;
+			double multicritroll = Math.random();
 			//check for crit
-			if (ability.canCrit() && roll < wildclass.getCrit()) {
+			if (ability.canCrit() && multicritroll < wildclass.getCrit()) {
 				multihitdmg = (actualdmg * wildclass.getMultiHitSev());
 				actualdmg += multihitdmg;
 				if (combatlogdmg) {
 					combatlog.addMultiHit(ability, multihitdmg, true);
 				}
 				//TODO multihit doesn't proc anything on it's own (?)
-				//wildclass.afterHit(ability, true, false, actualdmg);
+				wildclass.afterHit(ability, true, false, true, multihitdmg);
 			//otherwise hit
 			} else {
 				multihitdmg = (actualdmg * wildclass.getMultiHitSev());
@@ -296,7 +272,7 @@ public class Combat implements Runnable {
 					combatlog.addMultiHit(ability, multihitdmg, false);
 				}
 				//TODO multihit doesn't proc anything on it's own (?)
-				//wildclass.afterHit(ability, false, false, actualdmg);
+				wildclass.afterHit(ability, false, false, true, multihitdmg);
 			}
 		}
 		

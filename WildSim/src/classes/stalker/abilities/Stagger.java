@@ -223,14 +223,14 @@ public class Stagger implements Ability {
 	}
 	
 	@Override
-	public void addMultiHitCrit(float damage) {
+	public void addMultiHit(float damage) {
 		amountMultiHits++;
 		amountMultiHitDamage += damage;
 	}
 
 
 	@Override
-	public void addMultiHit(float damage) {
+	public void addMultiHitCrit(float damage) {
 		amountMultiHitCrits++;
 		amountMultiCritDamage += damage;
 		
@@ -259,6 +259,7 @@ public class Stagger implements Ability {
 	public float amountMultiHitCritDamage() {
 		return amountMultiCritDamage;
 	}
+	
 	
 
 }

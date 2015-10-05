@@ -1,5 +1,6 @@
 package classes.stalker;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,19 +41,23 @@ public class StalkerLogPanel extends JPanel {
 			//COMBAT PANEL
 			logstring = new StringBuilder();
 			maxtime = combat.getMaxtime();	
-			logstring.append("Ability\tDPS\tHit%\tCrit%\tDeflect%\tSwings(2min)" + System.lineSeparator());
+			logstring.append("Ability\tDPS\tHit%\tCrit%\tMultiH%\tMultiC%\tDeflect%\tSwings(2min)" + System.lineSeparator());
 			Arrays.sort(abilities, Collections.reverseOrder());
 			float totalAbilityHits;
 			float overalltotalHits = 0;
 			float overallHits = 0;
 			float overallCrits = 0;
+			float overallMultiHits = 0;
+			float overallMultiCrits = 0;
 			float overallDeflects = 0;
 			
 			float dps;
 			float twomindiff = maxtime / 120000;
 			
 			for (int i=0; i<abilities.length; i++) {
-				dps = (abilities[i].amountCritDamage() + abilities[i].amountHitDamage())/(maxtime/1000);
+				
+				dps = ((abilities[i].amountCritDamage() + abilities[i].amountHitDamage() + abilities[i].amountMultiHitCritDamage() + abilities[i].amountMultiHitDamage())) / (maxtime/1000.0f);
+				
 				if (abilities[i] != null && dps != 0) {
 					
 					overalltotalHits += abilities[i].amountCrits() + abilities[i].amountHits() + abilities[i].amountDeflects();
@@ -60,14 +65,29 @@ public class StalkerLogPanel extends JPanel {
 					overallCrits += abilities[i].amountCrits();
 					overallDeflects += abilities[i].amountDeflects();
 					totalAbilityHits = abilities[i].amountCrits() + abilities[i].amountHits() + abilities[i].amountDeflects();
+					overallMultiHits += abilities[i].amountMultiHits();
+					overallMultiCrits += abilities[i].amountMultiHitCrits();
 					
-					dps = (abilities[i].amountCritDamage() + abilities[i].amountHitDamage())/(maxtime/1000);
 					
-					logstring.append(abilities[i].getName() + "\t" + String.format("%.2f", dps) + "\t" + String.format("%.2f", (float)((float)abilities[i].amountHits() * 100 / totalAbilityHits)) + "\t" + String.format("%.2f", (float)((float)abilities[i].amountCrits() * 100 / totalAbilityHits)) + "\t" + String.format("%.2f", (float)((float)abilities[i].amountDeflects() * 100 / totalAbilityHits)) + "\t" + String.format("%.0f", (float)(totalAbilityHits / twomindiff)) + System.lineSeparator());
+					
+					logstring.append(abilities[i].getName() + "\t" + String.format("%.2f", dps) 
+								+ "\t" + String.format("%.2f", (float)((float)abilities[i].amountHits() * 100 / totalAbilityHits))
+								+ "\t" + String.format("%.2f", (float)((float)abilities[i].amountCrits() * 100 / totalAbilityHits))
+								+ "\t" + String.format("%.2f", (float)((float)(abilities[i].amountMultiHits() + abilities[i].amountMultiHitCrits()) * 100 / (abilities[i].amountCrits() + abilities[i].amountHits())))
+								+ "\t" + String.format("%.2f", (float)((float)abilities[i].amountMultiHitCrits() * 100 / (float)(abilities[i].amountMultiHits() + abilities[i].amountMultiHitCrits())))
+								+ "\t" + String.format("%.2f", (float)((float)abilities[i].amountDeflects() * 100 / totalAbilityHits))
+								+ "\t" + String.format("%.0f", (float)((abilities[i].amountCrits() + abilities[i].amountHits() + abilities[i].amountDeflects()) / twomindiff)) + System.lineSeparator());
 				}
 			}
 			
-			logstring.append(System.lineSeparator() + "Overall\t" + String.format("%.2f", combat.getDmgOverall()/(maxtime/1000)) + "\t" + String.format("%.2f", (float)((float)overallHits * 100 / overalltotalHits)) + "\t" + String.format("%.2f", (float)((float)overallCrits * 100 / overalltotalHits)) + "\t" + String.format("%.2f", (float)((float)overallDeflects * 100 / overalltotalHits)) + System.lineSeparator());
+			logstring.append(System.lineSeparator() + "Overall\t" + String.format("%.2f", combat.getDmgOverall()/(maxtime/1000))
+					+ "\t" + String.format("%.2f", (float)((float)overallHits * 100 / overalltotalHits))
+					+ "\t" + String.format("%.2f", (float)((float)overallCrits * 100 / overalltotalHits))
+					+ "\t" + String.format("%.2f", (float)(((float)overallMultiHits + (float)overallMultiCrits) * 100 / (overallHits + overallCrits)))
+					+ "\t" + String.format("%.2f", (float)((float)overallMultiCrits * 100 / ((float)overallMultiHits + (float)overallMultiCrits)))
+					+ "\t" + String.format("%.2f", (float)((float)overallDeflects * 100 / overalltotalHits))
+					+ System.lineSeparator());
+			
 
 			if (combat.getCombatlogactive()) {
 				combatlog.addResult(logstring.toString());
@@ -118,7 +138,12 @@ public class StalkerLogPanel extends JPanel {
 		//INPUT
 		logstring.append("\n\nSTATS: ");
 		combat.getPlayer().lastCheck();
-		logstring.append("AP: " + combat.getPlayer().getAP() + ", Crit: " + combat.getPlayer().getCrit() + ", CritSev: " + combat.getPlayer().getCritSev() + ", Strikethrough: " + combat.getPlayer().getStrikethrough());
+		logstring.append("AP: " + combat.getPlayer().getAP() 
+				+ ", Crit: " + combat.getPlayer().getCrit() 
+				+ ", CritSev: " + combat.getPlayer().getCritSev() 
+				+ ", MultiHit: " + combat.getPlayer().getMultiHit() 
+				+ ", MultiHitSev: " + combat.getPlayer().getMultiHitSev() 
+				+ ", Strikethrough: " + combat.getPlayer().getStrikethrough());
 		logstring.append("\n\nACTIVE ABILITIES: ");
 		int count = 0;
 		for (int i = 0; i < abilities.length; i++) {
@@ -184,6 +209,11 @@ public class StalkerLogPanel extends JPanel {
 			}
 		}
 		
+		Font font = new Font("Verdana", Font.PLAIN, 10);
+		
+		log.setLineWrap(true);
+		log.setFont(font);
+		log.setTabSize(5);
 		log.setText(logstring.toString());
 		
 		this.add(log);
