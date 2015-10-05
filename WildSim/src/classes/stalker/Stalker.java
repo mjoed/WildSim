@@ -29,6 +29,9 @@ public class Stalker implements WildstarClass {
 	float cdr;
 	float armorPierce;
 	float basearmorPierce;
+	float multihit;
+	float multihitsev;
+	float vigor;
 	
 	float flatdamagebuff;
 	
@@ -74,6 +77,7 @@ public class Stalker implements WildstarClass {
 	AMP battlemastery;
 	AMP killerinstinct;
 	AMP followupamp;
+	AMP brutalitymastery;
 	
 	//amp abilities/dmg sources
 	Ability cutthroathit;
@@ -159,6 +163,7 @@ public class Stalker implements WildstarClass {
 		fatalwoundshit = new FatalWounds(true);
 		onslaught = new Onslaught(true);
 		battlemastery = new BattleMastery(false);
+		brutalitymastery = new BrutalityMastery(true);
 		killerinstinct = new KillerInstinct(false);
 		critsevamp = new CritSevAMP(true, 0.12f);
 		followupamp = new FollowUpAMP(false);
@@ -597,7 +602,17 @@ public class Stalker implements WildstarClass {
 	
 	
 	@Override
-	public void afterHit(Ability ability, boolean crit, boolean deflect, float damage) {
+	public void afterHit(Ability ability, boolean crit, boolean deflect, boolean multihit, float damage) {
+		
+		if (multihit) {
+			if (crit) {
+				ability.addMultiHitCrit(damage);
+			} else {
+				ability.addMultiHit(damage);
+			}
+			return;
+			
+		}
 		
 		reduceSuitPower(ability.getCost());
 		ability.afterHit(this);
@@ -862,6 +877,10 @@ public class Stalker implements WildstarClass {
 			flatdamagebuff += 0.12f;
 		}
 		
+		if (brutalitymastery != null && brutalitymastery.isActive()) {
+			flatdamagebuff += 0.06f;
+		}
+		
 		double chance = Math.random();
 		
 		for (int i = 0; i < raidbuffs.length; i++) {
@@ -1119,6 +1138,7 @@ public class Stalker implements WildstarClass {
 		if (fatalwounds.isActive()) amount++;
 		if (onslaught.isActive()) amount++;
 		if (battlemastery.isActive()) amount++;
+		if (brutalitymastery.isActive()) amount++;
 		if (killerinstinct.isActive()) amount++;
 		if (critsevamp.isActive()) amount++;
 		if (followupamp.isActive()) amount++;
@@ -1159,6 +1179,10 @@ public class Stalker implements WildstarClass {
 		}
 		if (battlemastery.isActive()) {
 			amps[amount] = battlemastery;
+			amount++;
+		}
+		if (brutalitymastery.isActive()) {
+			amps[amount] = brutalitymastery;
 			amount++;
 		}
 		if (killerinstinct.isActive()) {
@@ -1459,6 +1483,15 @@ public class Stalker implements WildstarClass {
 		checkForAMPsBuffs();
 	}
 	
+	public AMP getBrutalityMastery() {
+		return brutalitymastery;
+	}
+	public void setBrutalityMastery(boolean active) {
+		brutalitymastery.setActive(active);
+		checkForAMPsBuffs();
+	}
+	
+	
 	public AMP getKillerInstinct() {
 		return killerinstinct;
 	}
@@ -1555,6 +1588,36 @@ public class Stalker implements WildstarClass {
 	
 	public int getResourceCombatLog() {
 		return combatlogresource;
+	}
+
+
+	@Override
+	public float getMultiHit() {
+		return multihit;
+	}
+	
+	public void setMultiHit(float multihit) {
+		this.multihit = multihit;
+	}
+
+
+	@Override
+	public float getMultiHitSev() {
+		return multihitsev;
+	}
+	
+	public void setMultiHitSev(float multihitsev) {
+		this.multihitsev = multihitsev;
+	}
+
+
+	@Override
+	public float getVigor() {
+		return vigor;
+	}
+	
+	public void setVigor(float vigor) {
+		this.vigor = vigor;
 	}
 	
 		

@@ -74,6 +74,7 @@ public class StalkerOptionPanel extends JPanel {
 	JCheckBox fatalwoundsbox;
 	JCheckBox onslaughtbox;
 	JCheckBox battlemastbox;
+	JCheckBox brutalitymastbox;
 	JCheckBox killerinstbox;
 	JCheckBox followupbox;
 	JCheckBox followupinsidebox;
@@ -799,6 +800,24 @@ public class StalkerOptionPanel extends JPanel {
 		battlemast.setPreferredSize(new Dimension(190, 15));
 
 		// #
+		brutalitymastbox = new JCheckBox();
+		brutalitymastbox.setPreferredSize(new Dimension(35, 15));
+		brutalitymastbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (brutalitymastbox.isSelected()) {
+					stalker.getBrutalityMastery().setActive(true);
+				} else {
+					stalker.getBrutalityMastery().setActive(false);
+				}
+			}
+		});
+		brutalitymastbox.setSelected(stalker.getBrutalityMastery().isActive());
+		JLabel brutalitymast = new JLabel("Brutality Mastery");
+		brutalitymast.setPreferredSize(new Dimension(190, 15));
+		
+		
+		// #
 		killerinstbox = new JCheckBox();
 		killerinstbox.setPreferredSize(new Dimension(35, 15));
 		killerinstbox.addActionListener(new ActionListener() {
@@ -937,6 +956,8 @@ public class StalkerOptionPanel extends JPanel {
 		amps.add(onslaught);
 		amps.add(battlemastbox);
 		amps.add(battlemast);
+		amps.add(brutalitymastbox);
+		amps.add(brutalitymast);
 		amps.add(killerinstbox);
 		amps.add(killerinst);
 		amps.add(followupbox);
@@ -994,6 +1015,7 @@ public class StalkerOptionPanel extends JPanel {
 		valuestring.append(onslaughtbox.isSelected() + ";");
 		valuestring.append(battlemastbox.isSelected() + ";");
 		valuestring.append(killerinstbox.isSelected() + ";");
+		valuestring.append(brutalitymastbox.isSelected() + ";");
 
 		valuestring.append(critsevbox.isSelected() + ";");
 		valuestring.append(critsevinsert.getText() + ";");
@@ -1109,18 +1131,19 @@ public class StalkerOptionPanel extends JPanel {
 		battlemastbox.setSelected(Boolean.parseBoolean(values[37]));
 		stalker.getKillerInstinct().setActive(Boolean.parseBoolean(values[38]));
 		killerinstbox.setSelected(Boolean.parseBoolean(values[38]));
-
+		stalker.getBrutalityMastery().setActive(Boolean.parseBoolean(values[39]));
+		brutalitymastbox.setSelected(Boolean.parseBoolean(values[39]));
 		
-		stalker.getCritSevAMP().setActive(Boolean.parseBoolean(values[39]));
-		critsevbox.setSelected(Boolean.parseBoolean(values[39]));
-		stalker.getCritSevAMP().setAmount(Float.parseFloat(values[40]));
-		critsevinsert.setText(values[40]);
+		stalker.getCritSevAMP().setActive(Boolean.parseBoolean(values[40]));
+		critsevbox.setSelected(Boolean.parseBoolean(values[40]));
+		stalker.getCritSevAMP().setAmount(Float.parseFloat(values[41]));
+		critsevinsert.setText(values[41]);
 		
 		if (values.length > 41) {
-			stalker.getFollowUp().setActive(Boolean.parseBoolean(values[41]));
-			followupbox.setSelected(Boolean.parseBoolean(values[41]));
-			stalker.getStanceSwitch().setInsidePrep(Boolean.parseBoolean(values[42]));
-			followupinsidebox.setSelected(Boolean.parseBoolean(values[42]));
+			stalker.getFollowUp().setActive(Boolean.parseBoolean(values[42]));
+			followupbox.setSelected(Boolean.parseBoolean(values[42]));
+			stalker.getStanceSwitch().setInsidePrep(Boolean.parseBoolean(values[43]));
+			followupinsidebox.setSelected(Boolean.parseBoolean(values[43]));
 		}
 
 	

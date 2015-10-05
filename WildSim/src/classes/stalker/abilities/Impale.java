@@ -11,9 +11,13 @@ public class Impale implements Ability {
 	int amountHits = 0;
 	int amountCrits = 0;
 	int amountDeflects = 0;
+	int amountMultiHits = 0;
+	int amountMultiHitCrits = 0;
 	
 	float amountHitDamage = 0;
 	float amountCritDamage = 0;
+	float amountMultiHitDamage = 0;
+	float amountMultiCritDamage = 0;
 	
 	int cost;
 	boolean isActive;
@@ -54,7 +58,7 @@ public class Impale implements Ability {
 
 	@Override
 	public float calculateTooltipDmg(float ap, float sp) {
-		return ((ap * (0.845f + (((float)tier/100f) * 4.1f))) + 1985f);
+		return ((ap * (0.759f + (((float)tier/100f) * 4.2f))) + 1652.2f);
 	}
 
 
@@ -232,7 +236,7 @@ public class Impale implements Ability {
 	@Override
 	public float getArmorPierce() {
 		if (tier >= 4) {
-			return 0.50f;
+			return 0.25f;
 		}
 		return 0;
 	}
@@ -269,9 +273,13 @@ public class Impale implements Ability {
 		amountHits = 0;
 		amountCrits = 0;
 		amountDeflects = 0;
+		amountMultiHits = 0;
+		amountMultiHitCrits = 0;
 		
 		amountHitDamage = 0;
 		amountCritDamage = 0;
+		amountMultiHitDamage = 0;
+		amountMultiCritDamage = 0;
 		
 		if (tier < 8) {
 			cost = 35;
@@ -291,4 +299,49 @@ public class Impale implements Ability {
 		this.prio = prio;
 		
 	}
+
+	@Override
+	public boolean canMultiHit() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	@Override
+	public void addMultiHitCrit(float damage) {
+		amountMultiHits++;
+		amountMultiHitDamage += damage;
+	}
+
+
+	@Override
+	public void addMultiHit(float damage) {
+		amountMultiHitCrits++;
+		amountMultiCritDamage += damage;
+		
+	}
+
+
+	@Override
+	public int amountMultiHits() {
+		return amountMultiHits;
+	}
+
+
+	@Override
+	public float amountMultiHitDamage() {
+		return amountMultiHitDamage;
+	}
+
+
+	@Override
+	public int amountMultiHitCrits() {
+		return amountMultiHitCrits;
+	}
+
+
+	@Override
+	public float amountMultiHitCritDamage() {
+		return amountMultiCritDamage;
+	}
+	
 }

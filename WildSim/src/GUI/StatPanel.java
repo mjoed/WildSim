@@ -27,6 +27,9 @@ public class StatPanel extends JPanel {
 	JTextField strikeinsert;
 	JTextField armorpierceinsert;
 	JTextField cdrinsert;
+	JTextField multihitinsert;
+	JTextField multihitsevinsert;
+	JTextField vigorinsert;
 	
 	WildstarClass player;
 	
@@ -113,6 +116,39 @@ public class StatPanel extends JPanel {
 			}
 		});
 		
+		JLabel multihit = new JLabel("MultiHit: ");
+		multihit.setPreferredSize(new Dimension(120, 20));
+		multihitinsert = new JTextField(Float.toString(player.getMultiHit()));
+		multihitinsert.setPreferredSize(new Dimension(120, 20));
+		multihitinsert.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				player.setMultiHit(Float.parseFloat(multihitinsert.getText()));
+			}
+		});
+		
+		JLabel multihitsev = new JLabel("MultiHitSev: ");
+		multihitsev.setPreferredSize(new Dimension(120, 20));
+		multihitsevinsert = new JTextField(Float.toString(player.getMultiHitSev()));
+		multihitsevinsert.setPreferredSize(new Dimension(120, 20));
+		multihitsevinsert.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				player.setMultiHitSev(Float.parseFloat(multihitsevinsert.getText()));
+			}
+		});
+		
+		
 		
 		JLabel strike = new JLabel("Strikethrough: ");
 		strike.setPreferredSize(new Dimension(120, 20));
@@ -129,6 +165,24 @@ public class StatPanel extends JPanel {
 				player.setStrikethrough(Float.parseFloat(strikeinsert.getText()));
 			}
 		});
+		
+		JLabel vigor = new JLabel("Vigor: ");
+		vigor.setPreferredSize(new Dimension(120, 20));
+		vigorinsert = new JTextField(Float.toString(player.getVigor()));
+		vigorinsert.setPreferredSize(new Dimension(120, 20));
+		vigorinsert.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				return;
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				player.setVigor(Float.parseFloat(vigorinsert.getText()));
+			}
+		});
+		
+		
 		
 		
 		JLabel armorpierce = new JLabel("ArmorPierce: ");
@@ -181,6 +235,12 @@ public class StatPanel extends JPanel {
 		this.add(critinsert);
 		this.add(critsev);
 		this.add(critsevinsert);
+		this.add(multihit);
+		this.add(multihitinsert);
+		this.add(multihitsev);
+		this.add(multihitsevinsert);
+		this.add(vigor);
+		this.add(vigorinsert);
 		this.add(strike);
 		this.add(strikeinsert);
 		this.add(armorpierce);
@@ -195,6 +255,9 @@ public class StatPanel extends JPanel {
 		valuestring.append(spinsert.getText() + ";");
 		valuestring.append(critinsert.getText() + ";");
 		valuestring.append(critsevinsert.getText() + ";");
+		valuestring.append(multihitinsert.getText() + ";");
+		valuestring.append(multihitsevinsert.getText() + ";");
+		valuestring.append(vigorinsert.getText() + ";");
 		valuestring.append(strikeinsert.getText() + ";");
 		valuestring.append(armorpierceinsert.getText() + ";");
 		valuestring.append(cdrinsert.getText() + ";");
@@ -213,12 +276,18 @@ public class StatPanel extends JPanel {
 		player.setCrit(Float.parseFloat(values[2]));
 		critsevinsert.setText(values[3]);
 		player.setCritSev(Float.parseFloat(values[3]));
-		strikeinsert.setText(values[4]);
-		player.setStrikethrough(Float.parseFloat(values[4]));
-		armorpierceinsert.setText(values[5]);
-		player.setArmorPierce(Float.parseFloat(values[5]));
-		cdrinsert.setText(values[6]);
-		player.setCDReduction(Float.parseFloat(values[6]));
+		multihitinsert.setText(values[4]);
+		player.setMultiHit(Float.parseFloat(values[4]));
+		multihitsevinsert.setText(values[5]);
+		player.setMultiHitSev(Float.parseFloat(values[5]));
+		vigorinsert.setText(values[6]);
+		player.setVigor(Float.parseFloat(values[6]));
+		strikeinsert.setText(values[7]);
+		player.setStrikethrough(Float.parseFloat(values[7]));
+		armorpierceinsert.setText(values[8]);
+		player.setArmorPierce(Float.parseFloat(values[8]));
+		cdrinsert.setText(values[9]);
+		player.setCDReduction(Float.parseFloat(values[9]));
 	}
 
 }

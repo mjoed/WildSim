@@ -114,10 +114,28 @@ public interface Ability extends Comparable<Ability> {
 	//get critdmg
 	public float amountCritDamage();
 	
+	//get multihits
+	public int amountMultiHits();
+	
+	//get multihitdmg
+	public float amountMultiHitDamage();
+	
+	//get multicrits
+	public int amountMultiHitCrits();
+	
+	//get multicritdmg
+	public float amountMultiHitCritDamage();
+	
 	public void resetValues();
 	
 	public int getPrio();
 	
 	public void setPrio(int prio);
+
+	public boolean canMultiHit();
+
+	public void addMultiHitCrit(float damage);
+
+	public void addMultiHit(float damage);
 	
 }

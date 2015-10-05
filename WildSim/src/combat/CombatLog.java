@@ -112,5 +112,16 @@ public class CombatLog {
 	public boolean getBufflog() {
 		return bufflog;
 	}
+
+	public void addMultiHit(Ability ability, double multihitdmg, boolean crit) {
+		if (combat.getCurrTime() < 300000) {
+			if (crit) {
+				combatlog.append("[" + helpers.msToString(combat.getCurrTime()) + "] " + "[Ressource: " + stalker.getResource() + "] " + ability.getName() + " MultiHit crits for: *" + multihitdmg + "*" + System.lineSeparator());
+			} else {
+				combatlog.append("[" + helpers.msToString(combat.getCurrTime()) + "] " + "[Ressource: " + stalker.getResource() + "] " + ability.getName() + " MultiHit hits for: " + multihitdmg + System.lineSeparator());
+			}
+		}
+		
+	}
 	
 }

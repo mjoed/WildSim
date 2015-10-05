@@ -44,7 +44,7 @@ public class PhysicalDamageTaken implements RaidDebuff {
 	}
 	
 	public float getAmount() {
-		return 0.045f;
+		return 0.1f;
 	}
 	
 	public void setAmount(float amount) {

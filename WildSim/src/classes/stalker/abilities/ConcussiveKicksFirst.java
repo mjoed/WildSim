@@ -10,9 +10,13 @@ public class ConcussiveKicksFirst implements Ability {
 	int amountHits = 0;
 	int amountCrits = 0;
 	int amountDeflects = 0;
+	int amountMultiHits = 0;
+	int amountMultiHitCrits = 0;
 	
 	float amountHitDamage = 0;
 	float amountCritDamage = 0;
+	float amountMultiHitDamage = 0;
+	float amountMultiCritDamage = 0;
 	
 	boolean useAfterPunish = false;
 	boolean punishUsed = false;
@@ -222,9 +226,13 @@ public class ConcussiveKicksFirst implements Ability {
 		amountHits = 0;
 		amountCrits = 0;
 		amountDeflects = 0;
+		amountMultiHits = 0;
+		amountMultiHitCrits = 0;
 		
 		amountHitDamage = 0;
 		amountCritDamage = 0;
+		amountMultiHitDamage = 0;
+		amountMultiCritDamage = 0;
 	
 		currentCD = 0;
 		
@@ -263,6 +271,50 @@ public class ConcussiveKicksFirst implements Ability {
 	
 	public void setPunishUsed(boolean punishUsed) {
 		this.punishUsed = punishUsed;
+	}
+
+	@Override
+	public boolean canMultiHit() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	@Override
+	public void addMultiHitCrit(float damage) {
+		amountMultiHits++;
+		amountMultiHitDamage += damage;
+	}
+
+
+	@Override
+	public void addMultiHit(float damage) {
+		amountMultiHitCrits++;
+		amountMultiCritDamage += damage;
+		
+	}
+
+
+	@Override
+	public int amountMultiHits() {
+		return amountMultiHits;
+	}
+
+
+	@Override
+	public float amountMultiHitDamage() {
+		return amountMultiHitDamage;
+	}
+
+
+	@Override
+	public int amountMultiHitCrits() {
+		return amountMultiHitCrits;
+	}
+
+
+	@Override
+	public float amountMultiHitCritDamage() {
+		return amountMultiCritDamage;
 	}
 	
 }

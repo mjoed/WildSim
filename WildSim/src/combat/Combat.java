@@ -191,27 +191,29 @@ public class Combat implements Runnable {
 		checkRaidDebuffs();
 		
 		//ap softcap logic
-		float ap = wildclass.getAP();
+		//DROP 6 - NO SOFTCAP
+//		float ap = wildclass.getAP();
+//		
+//		if (ap > 3600) {
+//			ap = (0.9997211f * ((float)Math.pow(0.9997211f, ap-3600)- 1) / (0.9997211f - 1)) + 3600f;
+//		}
 		
-		if (ap > 3600) {
-			ap = (0.9997211f * ((float)Math.pow(0.9997211f, ap-3600)- 1) / (0.9997211f - 1)) + 3600f;
-		}
+		float tooltipdmg = ability.calculateTooltipDmg(wildclass.getAP(), wildclass.getSP());
 		
-		float tooltipdmg = ability.calculateTooltipDmg(ap, wildclass.getSP());
-		
-		if (weaponspec.isActive() && ability.getType() == 1) {
-			float weaponspecamount;
-			if (weaponspec.getAmount() >= 12) {
-				weaponspecamount = 1.02f;
-			} else if (weaponspec.getAmount() >= 8) {
-				weaponspecamount = 1.015f;
-			} else if (weaponspec.getAmount() >= 4) {
-				weaponspecamount = 1.01f;
-			} else {
-				weaponspecamount = 1f;
-			}
-			tooltipdmg *= weaponspecamount;
-		}
+		//DROP 6 - no weaponspec
+//		if (weaponspec.isActive() && ability.getType() == 1) {
+//			float weaponspecamount;
+//			if (weaponspec.getAmount() >= 12) {
+//				weaponspecamount = 1.02f;
+//			} else if (weaponspec.getAmount() >= 8) {
+//				weaponspecamount = 1.015f;
+//			} else if (weaponspec.getAmount() >= 4) {
+//				weaponspecamount = 1.01f;
+//			} else {
+//				weaponspecamount = 1f;
+//			}
+//			tooltipdmg *= weaponspecamount;
+//		}
 		
 		//TODO  calculation correct?
 		float actualdmg = (tooltipdmg - ((tooltipdmg * (target.getMitigation(ability.getType()) * (1-(wildclass.getArmorPierce()+ability.getArmorPierce()))))));
@@ -219,6 +221,8 @@ public class Combat implements Runnable {
 		
 		actualdmg = checkRaidBuffs(actualdmg, ability);
 		
+		//TODO DROP 6 - vigor?
+		actualdmg *= (1 + wildclass.getVigor());
 		
 		//class specific flat dmg buffs (AMPs etc.)
 		if (wildclass.getFlatDamageBuff() != 0) {
@@ -228,45 +232,75 @@ public class Combat implements Runnable {
 		//1 roll for both
 		double roll = Math.random();
 		
+		//deflect possible
 		if (target.getDeflectchance() - wildclass.getStrikethrough() > 0) {
+			//check for deflect
 			if (ability.canDeflect() && roll < (double)(target.getDeflectchance() - wildclass.getStrikethrough())) {
 				if (combatlogdmg) {
 					combatlog.addAbilityHit(ability, actualdmg, false, true);
 				}
-				wildclass.afterHit(ability, false, true, 0);
+				wildclass.afterHit(ability, false, true, false, 0);
 				return 0;
 			}
+			//check for crit
 			if (ability.canCrit() && (target.getDeflectchance() - wildclass.getStrikethrough()) < roll && roll < ((target.getDeflectchance() - wildclass.getStrikethrough()) + wildclass.getCrit())) {
 				actualdmg *= wildclass.getCritSev();
 				if (combatlogdmg) {
 					combatlog.addAbilityHit(ability, actualdmg, true, false);
 				}
-				wildclass.afterHit(ability, true, false, actualdmg);
-				return actualdmg;
+				wildclass.afterHit(ability, true, false, false, actualdmg);
+			//otherwise hit
 			} else {
 				if (combatlogdmg) {
 					combatlog.addAbilityHit(ability, actualdmg, false, false);
 				}
-				wildclass.afterHit(ability, false, false, actualdmg);
-				return actualdmg;
+				wildclass.afterHit(ability, false, false, false, actualdmg);
 			}
+		//deflect impossible
 		} else {
+			//check for crit
 			if (ability.canCrit() && roll < wildclass.getCrit()) {
 				actualdmg *= wildclass.getCritSev();
 				if (combatlogdmg) {
 					combatlog.addAbilityHit(ability, actualdmg, true, false);
 				}
-				wildclass.afterHit(ability, true, false, actualdmg);
-				return actualdmg;
+				wildclass.afterHit(ability, true, false, false, actualdmg);
+			//otherwise hit
 			} else {
 				if (combatlogdmg) {
 					combatlog.addAbilityHit(ability, actualdmg, false, false);
 				}
-				wildclass.afterHit(ability, false, false, actualdmg);
-				return actualdmg;
+				wildclass.afterHit(ability, false, false, false, actualdmg);
 			}
 		}
 		
+		//TODO DROP 6 - check for multihit, own roll. not possible at deflect (?)
+		double multiroll = Math.random();
+		
+		if (multiroll < wildclass.getMultiHit() && ability.canMultiHit()) {
+			double multihitdmg;
+			//check for crit
+			if (ability.canCrit() && roll < wildclass.getCrit()) {
+				multihitdmg = (actualdmg * wildclass.getMultiHitSev());
+				actualdmg += multihitdmg;
+				if (combatlogdmg) {
+					combatlog.addMultiHit(ability, multihitdmg, true);
+				}
+				//TODO multihit doesn't proc anything on it's own (?)
+				//wildclass.afterHit(ability, true, false, actualdmg);
+			//otherwise hit
+			} else {
+				multihitdmg = (actualdmg * wildclass.getMultiHitSev());
+				actualdmg += multihitdmg;
+				if (combatlogdmg) {
+					combatlog.addMultiHit(ability, multihitdmg, false);
+				}
+				//TODO multihit doesn't proc anything on it's own (?)
+				//wildclass.afterHit(ability, false, false, actualdmg);
+			}
+		}
+		
+		return actualdmg;
 		
 	}
 	

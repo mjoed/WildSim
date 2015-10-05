@@ -204,4 +204,46 @@ public class Innate implements Ability {
 		
 	}
 
+	@Override
+	public boolean canMultiHit() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int amountMultiHits() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public float amountMultiHitDamage() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int amountMultiHitCrits() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public float amountMultiHitCritDamage() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void addMultiHitCrit(float damage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addMultiHit(float damage) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

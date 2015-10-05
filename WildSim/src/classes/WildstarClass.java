@@ -17,7 +17,7 @@ public interface WildstarClass {
 	
 	//gets called after each hit with information regarding the ability, if it was a crit or got deflected.
 	//usage examples: CD management, procs/stacks etc.
-	public void afterHit(Ability ability, boolean crit, boolean deflect, float damage);
+	public void afterHit(Ability ability, boolean crit, boolean deflect, boolean multihit, float damage);
 	
 	//last check before combat start
 	public void lastCheck();
@@ -58,5 +58,17 @@ public interface WildstarClass {
 	
 	public void setResourceCombatLog(int resourcelog);
 	public int getResourceCombatLog();
+
+	public float getMultiHit();
+
+	public float getMultiHitSev();
+
+	public float getVigor();
+
+	public void setMultiHit(float multihit);
+
+	public void setMultiHitSev(float multihitsev);
+
+	public void setVigor(float parseFloat);
 	
 }
